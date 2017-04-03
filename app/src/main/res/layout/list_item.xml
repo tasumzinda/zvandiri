@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:background="#FFF"
+              style="?android:attr/textAppearanceLarge">
+
+    <TextView
+            android:id="@+id/adapter_name"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:paddingLeft="15dip"
+            android:paddingRight="8dip"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:textAllCaps="true" />
+</LinearLayout>
+

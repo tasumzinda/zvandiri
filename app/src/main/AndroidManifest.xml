@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="zw.org.zvandiri" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+    <application
+        android:name=".business.util.DbUtil"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/applogo"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/MyAppTheme" >
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="never.db" />
+
+        <activity
+            android:name=".activity.LauncherActivity"
+            android:label="@string/app_name"
+            android:theme="@style/MyAppTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.BaseActivity" >
+        </activity>
+        <activity
+            android:name=".activity.ArvHistActivity"
+            android:label="@string/title_activity_arv_hist"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ArvAdverseEffectActivity"
+            android:label="@string/title_activity_arv_adverse_effect"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.SrhHistActivity"
+            android:label="@string/title_activity_srh_hist"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.SocialHistActivity"
+            android:label="@string/title_activity_social_hist"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.PatientActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity
+            android:name=".activity.PatientListActivity"
+            android:label="@string/title_activity_patient_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ChronicInfectionItemActivity"
+            android:label="@string/title_activity_chronic_infection_item"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.MedicalHistActivity"
+            android:label="@string/title_activity_medical_hist"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.HivConInfectionItemActivity"
+            android:label="@string/title_activity_hiv_con_infection_item"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.MentalHealthItemActivity"
+            android:label="@string/title_activity_mental_health_item"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ObstetricHistActivity"
+            android:label="@string/title_activity_obstetric_hist"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.SubstanceItemActivity"
+            android:label="@string/title_activity_substance_item"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.FamilyActivity"
+            android:label="@string/title_activity_family"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.DependantActivity"
+            android:label="@string/title_activity_dependant"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ArvHistListActivity"
+            android:label="@string/title_activity_arv_hist_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ChronicInfectionItemListActivity"
+            android:label="@string/title_activity_chronic_infection_item_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.SocialHistListActivity"
+            android:label="@string/title_activity_social_hist_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.FamilyListActivity"
+            android:label="@string/title_activity_family_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.MentalHealthItemListActivity"
+            android:label="@string/title_activity_mental_health_item_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.MedicalHistListActivity"
+            android:label="@string/title_activity_medical_hist_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.SubstanceItemListActivity"
+            android:label="@string/title_activity_substance_item_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.SrhHistListActivity"
+            android:label="@string/title_activity_srh_hist_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.HivConInfectionItemListActivity"
+            android:label="@string/title_activity_hiv_con_infectio_item_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ObstetricHistListActivity"
+            android:label="@string/title_activity_obstetric_hist_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.DependantListActivity"
+            android:label="@string/title_activity_dependant_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <!--<activity
+            android:name=".activity.PrimaryCareGiverActivity"
+            android:label="@string/title_activity_primary_care_giver"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.PrimaryCareGiverListActivity"
+            android:label="@string/title_activity_primary_care_giver_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>-->
+        <activity
+            android:name=".activity.PatientContactActivity"
+            android:label="@string/title_activity_patient_contact"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.Cd4CountActivity"
+            android:label="@string/title_activity_cd4_count"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.Cd4CountListActivity"
+            android:label="@string/title_activity_cd4_count_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ViralLoadActivity"
+            android:label="@string/title_activity_viral_load"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ViralLoadListActivity"
+            android:label="@string/title_activity_viral_load_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <!--<activity
+            android:name=".activity.ChangePatientStatusActivity"
+            android:label="@string/title_activity_change_patient_status"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.ChangePatientStatusListActivity"
+            android:label="@string/title_activity_change_patient_status_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.TransferPatientSupportGroupActivity"
+            android:label="@string/title_activity_transfer_patient_support_group"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.TransferPatientSupportGroupListActivity"
+            android:label="@string/title_activity_transfer_patient_support_group_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.TransferPatientFacilityActivity"
+            android:label="@string/title_activity_transfer_patient_facility"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.TransferPatientFacilityListActivity"
+            android:label="@string/title_activity_transfer_patient_facility_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>-->
+        <activity
+            android:name=".activity.PatientHistoryDashboard"
+            android:label="@string/title_activity_patient_history_dashboard"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.LabResultsDashBoard"
+            android:label="@string/title_activity_lab_results_dash_board"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.PatientReferralActivity"
+            android:label="@string/title_activity_patient_referral"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.OperationsDashBoard"
+            android:label="@string/title_activity_operations_dash_board"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.PatientReferralListActivity"
+            android:label="@string/title_activity_patient_referral_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.PatientContactListActivity"
+            android:label="@string/title_activity_patient_contact_list"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.PatientContactActivityFinal"
+            android:label="@string/title_activity_patient_contact_activity_final"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+
+        <service
+            android:name=".remote.SetUpDataDownloadService"
+            android:exported="true" />
+        <service
+                android:name=".remote.PushService"
+                android:exported="true" />
+        <service
+                android:name=".remote.PushPullService"
+                android:exported="true" />
+
+
+        <activity
+            android:name=".activity.PatientReferralActivityFinal"
+            android:label="@string/title_activity_patient_referral_activity_final" >
+        </activity>
+        <activity
+            android:name=".activity.PatientContactActivityStep2"
+            android:label="@string/title_activity_patient_contact_activity_step2" >
+        </activity>
+        <activity
+            android:name=".activity.PatientContactActivityStep3"
+            android:label="@string/title_activity_patient_contact_activity_step3" >
+        </activity>
+    </application>
+
+</manifest>

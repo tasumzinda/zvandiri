@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView
+        android:fillViewport="true"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+        <include layout="@layout/toolbar"/>
+
+        <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin">
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/add_referrals"
+                    android:text="Referrals"
+                    style="@style/ButtonStyle"
+            />
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/change_patient_status"
+                    android:text="Change Patient Status"
+                    style="@style/ButtonStyle"
+            />
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/transfer_support_group"
+                    android:text="Transfer Patient To Another Support Group"
+                    style="@style/ButtonStyle"
+            />
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/transfer_clinic"
+                    android:text="Transfer Patient To Another Clinic"
+                    style="@style/ButtonStyle"
+            />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
