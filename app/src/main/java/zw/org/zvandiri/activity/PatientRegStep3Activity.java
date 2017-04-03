@@ -105,7 +105,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
         supportGroupDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ArrayAdapter<SupportGroup> supportGroupArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, SupportGroup.getByDistrict((District) district.getSelectedItem()));
+                ArrayAdapter<SupportGroup> supportGroupArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, SupportGroup.getByDistrict((District) supportGroupDistrict.getSelectedItem()));
                 supportGroupArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 supportGroup.setAdapter(supportGroupArrayAdapter);
                 supportGroupArrayAdapter.notifyDataSetChanged();
@@ -163,7 +163,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep1Activity.class);
+        Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep3Activity.class);
         startActivity(intent);
         finish();
     }
@@ -171,7 +171,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep3Activity.this, PatientContactActivityStep2.class);
+            Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep4Activity.class);
             intent.putExtra(AppUtil.DETAILS_ID, itemID);
             intent.putExtra("dateOfBirth", dateOfBirth);
             intent.putExtra("firstName", firstName);
@@ -189,7 +189,9 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
             intent.putExtra("address", address.getText().toString());
             intent.putExtra("address1", address1.getText().toString());
             intent.putExtra("primaryClinic", ((Facility) primaryClinic.getSelectedItem()).id);
-            intent.putExtra("supportGroup", ((SupportGroup) supportGroup.getSelectedItem()).id);
+            if(supportGroup.getSelectedItem() != null){
+                intent.putExtra("supportGroup", ((SupportGroup) supportGroup.getSelectedItem()).id);
+            }
             startActivity(intent);
             finish();
         }
