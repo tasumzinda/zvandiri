@@ -57,7 +57,7 @@ public class SetUpDataDownloadService extends IntentService{
         Stable.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ActionTaken.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
-        /*Province.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
+        Province.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Relationship.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Referer.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         OrphanStatus.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
@@ -70,7 +70,7 @@ public class SetUpDataDownloadService extends IntentService{
         DisabilityCategory.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Substance.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ArvMedicine.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
-        HospCause.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));*/
+        HospCause.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
 
     }
 }

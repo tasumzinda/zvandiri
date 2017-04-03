@@ -186,7 +186,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep2Activity.this, PatientContactActivityStep2.class);
+            Intent intent = new Intent(PatientRegStep2Activity.this, PatientRegStep3Activity.class);
             intent.putExtra(AppUtil.DETAILS_ID, itemID);
             intent.putExtra("dateOfBirth", dateOfBirth);
             intent.putExtra("firstName", firstName);

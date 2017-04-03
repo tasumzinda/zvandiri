@@ -290,6 +290,7 @@
                 android:name=".activity.PatientRegStep1Activity"
         />
         <activity android:name=".activity.PatientRegStep2Activity"/>
+        <activity android:name=".activity.PatientRegStep3Activity"/>
     </application>
 
 </manifest>
