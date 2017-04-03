@@ -286,6 +286,9 @@
             android:name=".activity.PatientContactActivityStep3"
             android:label="@string/title_activity_patient_contact_activity_step3" >
         </activity>
+        <activity
+                android:name=".activity.PatientRegStep1Activity"
+        />
     </application>
 
 </manifest>

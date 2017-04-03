@@ -73,6 +73,9 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
                 Intent intent = new Intent(this, PushPullService.class);
                 startService(intent);
                 return true;
+            case R.id.action_add:
+                Intent intent1 = new Intent(this, PatientRegStep1Activity.class);
+                startActivity(intent1);
             default:
                 return super.onOptionsItemSelected(menuItem);
         }

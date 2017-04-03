@@ -31,17 +31,13 @@ import java.util.*;
 public class Patient extends Model {
 
     @Expose
-    @Column(name = "id")
-    public String id;
-
-    @Expose
     @Column(name = "name")
     public String name;
 
     @Column(name = "pushed")
     public boolean pushed = true;
 
-   /* @Expose
+    @Expose
     @Column(name = "uuid")
     public String uuid;
 
@@ -228,7 +224,7 @@ public class Patient extends Model {
     public List<Cd4Count> cd4Counts;
     @Expose
     public List<ViralLoad> viralLoads;
-    public List<DisabilityCategory> disabilityCategorys;*/
+    public List<DisabilityCategory> disabilityCategorys;
 
    @Expose
    public List<Contact> contacts;
