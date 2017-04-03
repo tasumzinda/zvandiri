@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.*;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.*;
-import zw.org.zvandiri.business.domain.util.FollowUp;
 import zw.org.zvandiri.business.domain.util.Gender;
-import zw.org.zvandiri.business.domain.util.Reason;
 import zw.org.zvandiri.business.util.AppUtil;
 
 import java.util.Calendar;
@@ -113,7 +111,7 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         if(view.getId() == next.getId()){
             if(validate(fields)){
                 if(validateLocal()){
-                    Intent intent = new Intent(PatientRegStep1Activity.this, PatientContactActivityStep2.class);
+                    Intent intent = new Intent(PatientRegStep1Activity.this, PatientRegStep2Activity.class);
                     intent.putExtra(AppUtil.DETAILS_ID, itemID);
                     intent.putExtra("dateOfBirth", dateOfBirth.getText().toString());
                     intent.putExtra("firstName", firstName.getText().toString());
