@@ -147,7 +147,8 @@ public class AppUtil {
 
     public static void removePreferences(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPreferences.edit().clear().commit();
+        //sharedPreferences.edit().clear().commit();
+        sharedPreferences.edit().remove("LOGGED_IN").commit();
     }
 
     public static HttpUrl getInternalRefferalUrl(Context context) {
@@ -357,6 +358,10 @@ public class AppUtil {
     public static RequestBody getPostBody(String json) {
         RequestBody body = RequestBody.create(JSON, json);
         return body;
+    }
+
+    public void loginReset(){
+
     }
 
 }

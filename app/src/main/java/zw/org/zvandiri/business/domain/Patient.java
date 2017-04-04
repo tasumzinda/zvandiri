@@ -465,7 +465,7 @@ public class Patient extends Model {
     }*/
 
     public String toString(){
-        return name;
+        return name != null ? name : firstName + " " + lastName;
     }
 
     private static void saveMentalHealthItems(JSONObject jsonObject){

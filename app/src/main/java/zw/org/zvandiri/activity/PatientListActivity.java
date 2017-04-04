@@ -76,6 +76,12 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
             case R.id.action_add:
                 Intent intent1 = new Intent(this, PatientRegStep1Activity.class);
                 startActivity(intent1);
+                return true;
+            case R.id.action_logout:
+                AppUtil.removePreferences(this);
+                Intent intent2 = new Intent(this, LauncherActivity.class);
+                startActivity(intent2);
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }

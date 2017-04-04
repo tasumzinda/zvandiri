@@ -17,4 +17,9 @@
           android:orderInCategory="300"
           app:showAsAction="always"
           android:icon="@mipmap/refresh"/>
+    <item android:id="@+id/action_logout"
+          android:title="Logout"
+          android:orderInCategory="400"
+          app:showAsAction="never"
+          android:icon="@mipmap/refresh"/>
 </menu>

@@ -56,12 +56,14 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     private Integer hIVDisclosureLocation;
     private ArrayList<String> disabilityCategorys;
     private Integer disability;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step6);
         Intent intent = getIntent();
+        email = intent.getStringExtra("email");
         disabilityCategorys = intent.getStringArrayListExtra("disabilityCategorys");
         disability = intent.getIntExtra("disability", 0);
         hivStatusKnown = intent.getIntExtra("hivStatusKnown", 0);
@@ -192,13 +194,14 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep6Activity.this, PatientContactActivityStep2.class);
+            Intent intent = new Intent(PatientRegStep6Activity.this, PatientRegStep7Activity.class);
             intent.putExtra(AppUtil.DETAILS_ID, itemID);
             intent.putExtra("dateOfBirth", dateOfBirth);
             intent.putExtra("firstName", firstName);
             intent.putExtra("lastName", lastName);
             intent.putExtra("middleName", middleName);
             intent.putExtra("gender", gender);
+            intent.putExtra("email", email);
             intent.putExtra("mobileNumber", mobileNumber);
             intent.putExtra("ownerName", ownerName);
             intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);

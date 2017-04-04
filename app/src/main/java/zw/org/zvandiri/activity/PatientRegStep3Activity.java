@@ -38,12 +38,14 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     private Integer ownSecondaryMobile;
     private String mobileOwnerRelation;
     private String secondaryMobileownerRelation;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step3);
         Intent intent = getIntent();
+        email = intent.getStringExtra("email");
         firstName = intent.getStringExtra("firstName");
         middleName = intent.getStringExtra("middleName");
         lastName = intent.getStringExtra("lastName");
@@ -178,6 +180,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
             intent.putExtra("lastName", lastName);
             intent.putExtra("middleName", middleName);
             intent.putExtra("gender", gender);
+            intent.putExtra("email", email);
             intent.putExtra("mobileNumber", mobileNumber);
             intent.putExtra("ownerName", ownerName);
             intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);

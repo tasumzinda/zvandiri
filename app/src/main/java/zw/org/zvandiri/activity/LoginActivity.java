@@ -36,6 +36,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         userNameField = (EditText) findViewById(R.id.username);
         passwordField = (EditText) findViewById(R.id.password);
         urlField = (EditText) findViewById(R.id.url);
+        urlField.setText(AppUtil.getBaseUrl(this));
         button = (Button) findViewById(R.id.btn_login);
         button.setOnClickListener(this);
         progressDialog = new ProgressDialog(this);
@@ -85,10 +86,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     public void onClick(View view){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if(view.getId() == button.getId()){
             if(validate(fields)){
                 if(AppUtil.isNetworkAvailable(getApplicationContext())){
                     loginRemote();
+                }else if(sharedPreferences.contains("USERNAME")){
+                    if(AppUtil.getUsername(this).equals(userNameField.getText().toString()) && AppUtil.getPassword(this).equals(passwordField.getText().toString())){
+                        AppUtil.savePreferences(getApplicationContext(), AppUtil.LOGGED_IN, Boolean.TRUE);
+                        Intent intent = new Intent(context, PatientListActivity.class);
+                        startActivity(intent);
+                    }else{
+                        AppUtil.createShortNotification(getApplicationContext(), "Wrong username or password");
+                    }
+
                 }else{
                     AppUtil.createShortNotification(getApplicationContext(), "No internet connection");
                 }

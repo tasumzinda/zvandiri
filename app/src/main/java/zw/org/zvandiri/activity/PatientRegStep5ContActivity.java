@@ -50,6 +50,7 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
     private Integer transmissionMode;
     private String dateTested;
     private Integer hIVDisclosureLocation;
+    private String email;
     ArrayAdapter<DisabilityCategory> disabilityCategorysArrayAdapter;
 
     @Override
@@ -57,6 +58,7 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step5_cont);
         Intent intent = getIntent();
+        email = intent.getStringExtra("email");
         hivStatusKnown = intent.getIntExtra("hivStatusKnown", 0);
         transmissionMode = intent.getIntExtra("transmissionMode", 0);
         hIVDisclosureLocation = intent.getIntExtra("hIVDisclosureLocation", 0);
@@ -173,6 +175,7 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
             intent.putExtra("lastName", lastName);
             intent.putExtra("middleName", middleName);
             intent.putExtra("gender", gender);
+            intent.putExtra("email", email);
             intent.putExtra("mobileNumber", mobileNumber);
             intent.putExtra("ownerName", ownerName);
             intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);

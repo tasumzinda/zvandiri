@@ -52,12 +52,14 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
     private String education;
     private String educationLevel;
     private String referer;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step5);
         Intent intent = getIntent();
+        email = intent.getStringExtra("email");
         dateJoined = intent.getStringExtra("dateJoined");
         education = intent.getStringExtra("education");
         educationLevel = intent.getStringExtra("educationLevel");
@@ -204,6 +206,7 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
             intent.putExtra("lastName", lastName);
             intent.putExtra("middleName", middleName);
             intent.putExtra("gender", gender);
+            intent.putExtra("email", email);
             intent.putExtra("mobileNumber", mobileNumber);
             intent.putExtra("ownerName", ownerName);
             intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);

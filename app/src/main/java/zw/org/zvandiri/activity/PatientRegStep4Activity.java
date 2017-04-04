@@ -43,12 +43,14 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
     private String primaryClinic;
     private String supportGroup;
     private DatePickerDialog dialog;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step4);
         Intent intent = getIntent();
+        email = intent.getStringExtra("email");
         address = intent.getStringExtra("address");
         address1 = intent.getStringExtra("address1");
         primaryClinic = intent.getStringExtra("primaryClinic");
@@ -182,6 +184,7 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
             intent.putExtra("education", ((Education) education.getSelectedItem()).id);
             intent.putExtra("educationLevel", ((EducationLevel) educationLevel.getSelectedItem()).id);
             intent.putExtra("referer", ((Referer) referer.getSelectedItem()).id);
+            intent.putExtra("email", email);
             startActivity(intent);
             finish();
         }

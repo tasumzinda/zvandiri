@@ -21,6 +21,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
     private EditText mobileNumber;
     private Spinner mobileOwner;
     private EditText ownerName;
+    private EditText email;
     private Spinner mobileOwnerRelation;
     private EditText secondaryMobileNumber;
     private Spinner ownSecondaryMobile;
@@ -51,6 +52,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
         next = (Button) findViewById(R.id.btn_save);
         mobileNumber = (EditText) findViewById(R.id.mobileNumber);
         ownerName = (EditText) findViewById(R.id.ownerName);
+        email = (EditText) findViewById(R.id.email);
         secondaryMobileNumber = (EditText) findViewById(R.id.secondaryMobileNumber);
         secondaryMobileOwnerName = (EditText) findViewById(R.id.secondaryMobileOwnerName);
         mobileOwner = (Spinner) findViewById(R.id.mobileOwner);
@@ -79,6 +81,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             item = Patient.findById(itemID);
             mobileNumber.setText(item.mobileNumber);
             ownerName.setText(item.ownerName);
+            email.setText(item.email);
             secondaryMobileNumber.setText(item.secondaryMobileNumber != null ? item.secondaryMobileNumber : "");
             secondaryMobileOwnerName.setText(item.secondaryMobileOwnerName != null ? item.secondaryMobileOwnerName : "");
             int i = 0;
@@ -193,6 +196,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             intent.putExtra("lastName", lastName);
             intent.putExtra("middleName", middleName);
             intent.putExtra("gender", gender);
+            intent.putExtra("email", email.getText().toString());
             intent.putExtra("mobileNumber", mobileNumber.getText().toString());
             intent.putExtra("ownerName", ownerName.getText().toString());
             intent.putExtra("secondaryMobileNumber", secondaryMobileNumber.getText().toString());
