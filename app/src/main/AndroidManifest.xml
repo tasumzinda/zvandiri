@@ -294,6 +294,7 @@
         <activity android:name=".activity.PatientRegStep4Activity"/>
         <activity android:name=".activity.PatientRegStep5Activity"/>
         <activity android:name=".activity.PatientRegStep5ContActivity"/>
+        <activity android:name=".activity.PatientRegStep6Activity"/>
     </application>
 
 </manifest>
