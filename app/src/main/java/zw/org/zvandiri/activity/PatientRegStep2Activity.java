@@ -189,35 +189,48 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep2Activity.this, PatientRegStep3Activity.class);
-            intent.putExtra(AppUtil.DETAILS_ID, itemID);
-            intent.putExtra("dateOfBirth", dateOfBirth);
-            intent.putExtra("firstName", firstName);
-            intent.putExtra("lastName", lastName);
-            intent.putExtra("middleName", middleName);
-            intent.putExtra("gender", gender);
-            intent.putExtra("email", email.getText().toString());
-            intent.putExtra("mobileNumber", mobileNumber.getText().toString());
-            intent.putExtra("ownerName", ownerName.getText().toString());
-            intent.putExtra("secondaryMobileNumber", secondaryMobileNumber.getText().toString());
-            intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName.getText().toString());
-            intent.putExtra("mobileOwner", ((YesNo) mobileOwner.getSelectedItem()).getCode());
-            intent.putExtra("ownSecondaryMobile", ((YesNo) ownSecondaryMobile.getSelectedItem()).getCode());
-            intent.putExtra("mobileOwnerRelation", ((Relationship) mobileOwnerRelation.getSelectedItem()).id);
-            intent.putExtra("secondaryMobileownerRelation", ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id);
-            startActivity(intent);
-            finish();
+            if(validateLocal()){
+                Intent intent = new Intent(PatientRegStep2Activity.this, PatientRegStep3Activity.class);
+                intent.putExtra(AppUtil.DETAILS_ID, itemID);
+                intent.putExtra("dateOfBirth", dateOfBirth);
+                intent.putExtra("firstName", firstName);
+                intent.putExtra("lastName", lastName);
+                intent.putExtra("middleName", middleName);
+                intent.putExtra("gender", gender);
+                intent.putExtra("email", email.getText().toString());
+                intent.putExtra("mobileNumber", mobileNumber.getText().toString());
+                intent.putExtra("ownerName", ownerName.getText().toString());
+                intent.putExtra("secondaryMobileNumber", secondaryMobileNumber.getText().toString());
+                intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName.getText().toString());
+                intent.putExtra("mobileOwner", ((YesNo) mobileOwner.getSelectedItem()).getCode());
+                intent.putExtra("ownSecondaryMobile", ((YesNo) ownSecondaryMobile.getSelectedItem()).getCode());
+                intent.putExtra("mobileOwnerRelation", ((Relationship) mobileOwnerRelation.getSelectedItem()).id);
+                intent.putExtra("secondaryMobileownerRelation", ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id);
+                startActivity(intent);
+                finish();
+            }
+
         }
     }
 
-    /*public boolean validateLocal(){
+    public boolean validateLocal(){
         boolean isValid = true;
-        if( ! checkDateFormat(dateOfBirth.getText().toString())){
-            dateOfBirth.setError(getResources().getString(R.string.date_format_error));
-            isValid = false;
-        }else{
-            dateOfBirth.setError(null);
+        if(mobileOwner.getSelectedItem().equals(YesNo.NO)){
+            if(ownerName.getText().toString().isEmpty()){
+                ownerName.setError(this.getString(R.string.required_field_error));
+                isValid = false;
+            }else{
+                ownerName.setError(null);
+            }
+        }
+        if(ownSecondaryMobile.getSelectedItem().equals(YesNo.NO)){
+            if(secondaryMobileOwnerName.getText().toString().isEmpty()){
+                secondaryMobileOwnerName.setError(this.getString(R.string.required_field_error));
+                isValid = false;
+            }else{
+                secondaryMobileOwnerName.setError(null);
+            }
         }
         return isValid;
-    }*/
+    }
 }
