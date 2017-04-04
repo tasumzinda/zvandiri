@@ -3,6 +3,7 @@
     <string name="action_exit">Exit</string>
     <string name="action_settings">Settings</string>
     <string name="date_mismatch_error">End date can not be before start date</string>
+    <string name="date_aftertoday">Date can not be in the future</string>
     <string name="action_add">Add New Item</string>
     <string name="action_search">Search Patiient</string>
     <string name="action_refresh">Refresh</string>
