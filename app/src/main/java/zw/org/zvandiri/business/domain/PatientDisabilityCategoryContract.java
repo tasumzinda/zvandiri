@@ -3,7 +3,10 @@ package zw.org.zvandiri.business.domain;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
+
+import java.util.List;
 
 /**
  * Created by Tasunungurwa Muzinda on 12/16/2016.
@@ -25,5 +28,12 @@ public class PatientDisabilityCategoryContract extends Model {
 
     public PatientDisabilityCategoryContract() {
         super();
+    }
+
+    public static List<PatientDisabilityCategoryContract> findByPatient(Patient c){
+        return new Select()
+                .from(ContactAssessmentContract.class)
+                .where("patient_id = ?", c.getId())
+                .execute();
     }
 }

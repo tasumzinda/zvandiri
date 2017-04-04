@@ -155,8 +155,11 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
+        if(view.getId() == dateJoined.getId()){
+            dialog.show();
+        }
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep4Activity.this, PatientContactActivityStep2.class);
+            Intent intent = new Intent(PatientRegStep4Activity.this, PatientRegStep5Activity.class);
             intent.putExtra(AppUtil.DETAILS_ID, itemID);
             intent.putExtra("dateOfBirth", dateOfBirth);
             intent.putExtra("firstName", firstName);

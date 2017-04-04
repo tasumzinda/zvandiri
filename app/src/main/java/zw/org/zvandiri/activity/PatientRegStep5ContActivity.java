@@ -1,6 +1,5 @@
 package zw.org.zvandiri.activity;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,25 +7,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import zw.org.zvandiri.R;
+import zw.org.zvandiri.business.domain.DisabilityCategory;
 import zw.org.zvandiri.business.domain.Patient;
-import zw.org.zvandiri.business.domain.util.HIVDisclosureLocation;
-import zw.org.zvandiri.business.domain.util.TransmissionMode;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 
 /**
- * Created by User on 4/3/2017.
+ * Created by User on 4/4/2017.
  */
-public class PatientRegStep5Activity extends BaseActivity implements View.OnClickListener{
+public class PatientRegStep5ContActivity extends BaseActivity implements View.OnClickListener{
 
-    private Spinner hivStatusKnown;
-    private Spinner transmissionMode;
-    private TextView transmissionLabel;
-    private EditText dateTested;
-    private TextView locationLabel;
-    private Spinner hIVDisclosureLocation;
+    private Spinner disability;
+    private TextView disabilityLabel;
+    private ListView disabilityCategorys;
     private Button next;
     private String itemID;
     private Patient item;
@@ -47,17 +42,25 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
     private String address1;
     private String primaryClinic;
     private String supportGroup;
-    private DatePickerDialog dialog;
     private String dateJoined;
     private String education;
     private String educationLevel;
     private String referer;
+    private Integer hivStatusKnown;
+    private Integer transmissionMode;
+    private String dateTested;
+    private Integer hIVDisclosureLocation;
+    ArrayAdapter<DisabilityCategory> disabilityCategorysArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_reg_step5);
+        setContentView(R.layout.activity_patient_reg_step5_cont);
         Intent intent = getIntent();
+        hivStatusKnown = intent.getIntExtra("hivStatusKnown", 0);
+        transmissionMode = intent.getIntExtra("transmissionMode", 0);
+        hIVDisclosureLocation = intent.getIntExtra("hIVDisclosureLocation", 0);
+        dateTested = intent.getStringExtra("dateTested");
         dateJoined = intent.getStringExtra("dateJoined");
         education = intent.getStringExtra("education");
         educationLevel = intent.getStringExtra("educationLevel");
@@ -81,39 +84,27 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
         mobileOwnerRelation = intent.getStringExtra("mobileOwnerRelation");
         secondaryMobileownerRelation = intent.getStringExtra("secondaryMobileownerRelation");
         next = (Button) findViewById(R.id.btn_save);
-        dateTested = (EditText) findViewById(R.id.dateTested);
-        hivStatusKnown = (Spinner) findViewById(R.id.hivStatusKnown);
-        transmissionMode = (Spinner) findViewById(R.id.transmissionMode);
-        hIVDisclosureLocation = (Spinner) findViewById(R.id.hIVDisclosureLocation);
-        transmissionLabel = (TextView) findViewById(R.id.transmissionLabel);
-        locationLabel = (TextView) findViewById(R.id.locationLabel);
-        ArrayAdapter<YesNo> hivStatusKnownArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
-        hivStatusKnownArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        hivStatusKnown.setAdapter(hivStatusKnownArrayAdapter);
-        hivStatusKnownArrayAdapter.notifyDataSetChanged();
-        hivStatusKnown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        disability = (Spinner) findViewById(R.id.disability);
+        disabilityLabel = (TextView) findViewById(R.id.disabilityLabel);
+        disabilityCategorys = (ListView) findViewById(R.id.disabilityCategorys);
+        ArrayAdapter<YesNo> disabilityArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
+        disabilityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        disability.setAdapter(disabilityArrayAdapter);
+        disabilityArrayAdapter.notifyDataSetChanged();
+        disabilityCategorys.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        disabilityCategorys.setItemsCanFocus(false);
+        disability.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(hivStatusKnown.getSelectedItem().equals(YesNo.YES)){
-                    transmissionMode.setVisibility(View.VISIBLE);
-                    ArrayAdapter<TransmissionMode> transmissionModeArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, TransmissionMode.values());
-                    transmissionModeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    transmissionMode.setAdapter(transmissionModeArrayAdapter);
-                    transmissionModeArrayAdapter.notifyDataSetChanged();
-                    transmissionLabel.setVisibility(View.VISIBLE);
-                    dateTested.setVisibility(View.VISIBLE);
-                    locationLabel.setVisibility(View.VISIBLE);
-                    hIVDisclosureLocation.setVisibility(View.VISIBLE);
-                    ArrayAdapter<HIVDisclosureLocation> hIVDisclosureLocationArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, HIVDisclosureLocation.values());
-                    hIVDisclosureLocationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    hIVDisclosureLocation.setAdapter(hIVDisclosureLocationArrayAdapter);
-                    hIVDisclosureLocationArrayAdapter.notifyDataSetChanged();
+                if(disability.getSelectedItem().equals(YesNo.YES)){
+                    disabilityCategorys.setVisibility(View.VISIBLE);
+                    disabilityCategorysArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.check_box_item, DisabilityCategory.getAll());
+                    disabilityCategorys.setAdapter(disabilityCategorysArrayAdapter);
+                    disabilityCategorysArrayAdapter.notifyDataSetChanged();
+                    disabilityLabel.setVisibility(View.VISIBLE);
                 }else{
-                    transmissionMode.setVisibility(View.GONE);
-                    transmissionLabel.setVisibility(View.GONE);
-                    dateTested.setVisibility(View.GONE);
-                    locationLabel.setVisibility(View.GONE);
-                    hIVDisclosureLocation.setVisibility(View.GONE);
+                    disabilityLabel.setVisibility(View.GONE);
+                    disabilityCategorys.setVisibility(View.GONE);
                 }
             }
 
@@ -122,42 +113,23 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
 
             }
         });
-        dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                updateLabel(newDate.getTime(), dateTested);
-            }
-        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        );
-        dateTested.setOnClickListener(this);
         if(itemID != null){
             item = Patient.findById(itemID);
-            updateLabel(item.dateTested, dateTested);
             int i = 0;
             for(YesNo m : YesNo.values()){
-                if(item.hivStatusKnown != null  && item.hivStatusKnown.equals(hivStatusKnown.getItemAtPosition(i))){
-                    hivStatusKnown.setSelection(i, true);
+                if(item.disability != null  && item.disability.equals(disability.getItemAtPosition(i))){
+                    disability.setSelection(i, true);
                     break;
                 }
                 i++;
             }
-            i = 0;
-            for(TransmissionMode m : TransmissionMode.values()){
-                if(item.transmissionMode != null  && item.transmissionMode.equals(transmissionMode.getItemAtPosition(i))){
-                    transmissionMode.setSelection(i, true);
-                    break;
+            ArrayList<DisabilityCategory> disabilityCategorysList = (ArrayList<DisabilityCategory>) DisabilityCategory.findByPatient(Patient.findById(itemID));
+            int disabilityCategorysCount = disabilityCategorysArrayAdapter.getCount();
+            for(i = 0; i < disabilityCategorysCount; i++){
+                DisabilityCategory current = disabilityCategorysArrayAdapter.getItem(i);
+                if(disabilityCategorysList.contains(current)){
+                    disabilityCategorys.setItemChecked(i, true);
                 }
-                i++;
-            }
-            i = 0;
-            for(HIVDisclosureLocation m : HIVDisclosureLocation.values()){
-                if(item.hIVDisclosureLocation != null  && item.hIVDisclosureLocation.equals(hIVDisclosureLocation.getItemAtPosition(i))){
-                    hIVDisclosureLocation.setSelection(i, true);
-                    break;
-                }
-                i++;
             }
         }
         next.setOnClickListener(this);
@@ -186,18 +158,15 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientRegStep5Activity.this, PatientRegStep1Activity.class);
+        Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientRegStep1Activity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == dateTested.getId()){
-            dialog.show();
-        }
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep5Activity.this, PatientRegStep5ContActivity.class);
+            Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientContactActivityStep2.class);
             intent.putExtra(AppUtil.DETAILS_ID, itemID);
             intent.putExtra("dateOfBirth", dateOfBirth);
             intent.putExtra("firstName", firstName);
@@ -220,10 +189,12 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
             intent.putExtra("education", education);
             intent.putExtra("educationLevel", educationLevel);
             intent.putExtra("referer", referer);
-            intent.putExtra("hivStatusKnown", ((YesNo) hivStatusKnown.getSelectedItem()).getCode());
-            intent.putExtra("transmissionMode", ((TransmissionMode) transmissionMode.getSelectedItem()).getCode());
-            intent.putExtra("dateTested", dateTested.getText().toString());
-            intent.putExtra("hIVDisclosureLocation", ((HIVDisclosureLocation) hIVDisclosureLocation.getSelectedItem()).getCode());
+            intent.putExtra("hivStatusKnown", hivStatusKnown);
+            intent.putExtra("transmissionMode", transmissionMode);
+            intent.putExtra("dateTested", dateTested);
+            intent.putExtra("hIVDisclosureLocation", hIVDisclosureLocation);
+            intent.putExtra("disability", ((YesNo) disability.getSelectedItem()).getCode());
+            intent.putExtra("disabilityCategorys", getDisabilityCategorys());
             startActivity(intent);
             finish();
         }
@@ -239,4 +210,16 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
         }
         return isValid;
     }*/
+
+    private ArrayList<String> getDisabilityCategorys(){
+        ArrayList<String> a = new ArrayList<>();
+        for(int i = 0; i < disabilityCategorys.getCount(); i++){
+            if(disabilityCategorys.isItemChecked(i)){
+                a.add(disabilityCategorysArrayAdapter.getItem(i).id);
+            }else{
+                a.remove(disabilityCategorysArrayAdapter.getItem(i).id);
+            }
+        }
+        return a;
+    }
 }

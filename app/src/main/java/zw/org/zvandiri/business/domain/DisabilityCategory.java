@@ -92,6 +92,15 @@ public class DisabilityCategory extends Model {
         new Delete().from(DisabilityCategory.class).execute();
     }
 
+    public static List<DisabilityCategory> findByPatient(Patient c){
+        return new Select()
+                .from(DisabilityCategory.class)
+                .innerJoin(PatientDisabilityCategoryContract.class)
+                .on("patient_disability_category.disability_category_id = disability_category._id ")
+                .where("patient_disability_category.patient_id = ?", c.getId())
+                .execute();
+    }
+
     @Override
     public String toString() {
         return name;
