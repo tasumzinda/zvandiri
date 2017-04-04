@@ -3,5 +3,5 @@ package zw.org.zvandiri.activity;
 /**
  * Created by User on 4/4/2017.
  */
-public class PatientRegStep7Activity {
+public class PatientRegStep7Activity extends BaseActivity {
 }
