@@ -48,7 +48,8 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
         Patient patient = (Patient) parent.getAdapter().getItem(position);
         Intent intent = new Intent(PatientListActivity.this, PatientContactListActivity.class);
         intent.putExtra(AppUtil.ID, patient.id);
-        intent.putExtra(AppUtil.NAME, patient.name);
+        String name = patient.name != null ? patient.name : patient.firstName + " " + patient.lastName;
+        intent.putExtra(AppUtil.NAME, name);
         startActivity(intent);
         finish();
     }

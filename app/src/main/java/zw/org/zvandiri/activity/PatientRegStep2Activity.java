@@ -37,6 +37,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
     private Integer gender;
     private TextView relationshipLabel;
     private TextView secondaryRelationshipLabel;
+    private String OINumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
         lastName = intent.getStringExtra("lastName");
         dateOfBirth = intent.getStringExtra("dateOfBirth");
         gender = intent.getIntExtra("gender", 0);
+        OINumber = intent.getStringExtra("OINumber");
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         next = (Button) findViewById(R.id.btn_save);
         mobileNumber = (EditText) findViewById(R.id.mobileNumber);
@@ -206,6 +208,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
                 intent.putExtra("ownSecondaryMobile", ((YesNo) ownSecondaryMobile.getSelectedItem()).getCode());
                 intent.putExtra("mobileOwnerRelation", ((Relationship) mobileOwnerRelation.getSelectedItem()).id);
                 intent.putExtra("secondaryMobileownerRelation", ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id);
+                intent.putExtra("OINumber", OINumber);
                 startActivity(intent);
                 finish();
             }
@@ -215,6 +218,12 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
 
     public boolean validateLocal(){
         boolean isValid = true;
+        /*if(secondaryMobileNumber.getText().toString().isEmpty()){
+            secondaryMobileNumber.setError(this.getString(R.string.required_field_error));
+            isValid = false;
+        }else{
+            secondaryMobileNumber.setError(null);
+        }*/
         if(mobileOwner.getSelectedItem().equals(YesNo.NO)){
             if(ownerName.getText().toString().isEmpty()){
                 ownerName.setError(this.getString(R.string.required_field_error));

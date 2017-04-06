@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fitsSystemWindows="true">
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,47 +53,7 @@
                     android:layout_marginTop="12dp"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="VST Student"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
-            />
-            <Spinner
-                    android:id="@+id/vstStudent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
-                    android:prompt="@string/prompt"
-            />
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="VST Status"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
-                    android:visibility="gone"
-                    android:id="@+id/statusLabel"
-            />
-            <Spinner
-                    android:id="@+id/vstStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
-                    android:visibility="gone"
-                    android:prompt="@string/prompt"
-            />
+            
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -141,4 +100,4 @@
 
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</ScrollView>

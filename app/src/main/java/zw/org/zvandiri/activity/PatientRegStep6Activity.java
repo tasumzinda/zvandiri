@@ -21,11 +21,8 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
 
     private Spinner consentToPhoto;
     private Spinner consentToMHealth;
-    private Spinner vstStudent;
-    private Spinner vstStatus;
     private Spinner cat;
     private Spinner youngMumGroup;
-    private TextView statusLabel;
     private Button next;
     private String itemID;
     private Patient item;
@@ -57,12 +54,18 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     private ArrayList<String> disabilityCategorys;
     private Integer disability;
     private String email;
+    private String reasonForNotReachingOLevel;
+    private String refererName;
+    private String OINumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step6);
         Intent intent = getIntent();
+        OINumber = intent.getStringExtra("OINumber");
+        refererName = intent.getStringExtra("refererName");
+        reasonForNotReachingOLevel = intent.getStringExtra("reasonForNotReachingOLevel");
         email = intent.getStringExtra("email");
         disabilityCategorys = intent.getStringArrayListExtra("disabilityCategorys");
         disability = intent.getIntExtra("disability", 0);
@@ -95,9 +98,6 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         next = (Button) findViewById(R.id.btn_save);
         consentToPhoto = (Spinner) findViewById(R.id.consentToPhoto);
         consentToMHealth = (Spinner) findViewById(R.id.consentToMHealth);
-        vstStudent = (Spinner) findViewById(R.id.vstStudent);
-        vstStatus = (Spinner) findViewById(R.id.vstStatus);
-        statusLabel = (TextView) findViewById(R.id.statusLabel);
         cat = (Spinner) findViewById(R.id.cat);
         youngMumGroup = (Spinner) findViewById(R.id.youngMumGroup);
         ArrayAdapter<YesNo> consentToPhotoArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
@@ -108,31 +108,6 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         consentToMHealthArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         consentToMHealth.setAdapter(consentToMHealthArrayAdapter);
         consentToMHealthArrayAdapter.notifyDataSetChanged();
-        ArrayAdapter<YesNo> vstStudentArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
-        vstStudentArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        vstStudent.setAdapter(vstStudentArrayAdapter);
-        vstStudentArrayAdapter.notifyDataSetChanged();
-        vstStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(vstStudent.getSelectedItem().equals(YesNo.YES)){
-                    vstStatus.setVisibility(View.VISIBLE);
-                    statusLabel.setVisibility(View.VISIBLE);
-                    ArrayAdapter<PatientChangeEvent> vstStatusArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, PatientChangeEvent.values());
-                    vstStatusArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    vstStatus.setAdapter(vstStatusArrayAdapter);
-                    vstStatusArrayAdapter.notifyDataSetChanged();
-                }else{
-                    statusLabel.setVisibility(View.GONE);
-                    vstStatus.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
         ArrayAdapter<YesNo> catArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
         catArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cat.setAdapter(catArrayAdapter);
@@ -226,10 +201,11 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
             intent.putExtra("disabilityCategorys", disabilityCategorys);
             intent.putExtra("consentToPhoto", ((YesNo) consentToPhoto.getSelectedItem()).getCode());
             intent.putExtra("consentToMHealth", ((YesNo) consentToMHealth.getSelectedItem()).getCode());
-            intent.putExtra("vstStudent", ((YesNo) vstStudent.getSelectedItem()).getCode());
             intent.putExtra("cat", ((YesNo) cat.getSelectedItem()).getCode());
             intent.putExtra("youngMumGroup", ((YesNo) youngMumGroup.getSelectedItem()).getCode());
-            intent.putExtra("vstStatus", ((PatientChangeEvent) vstStatus.getSelectedItem()).getCode());
+            intent.putExtra("refererName", refererName);
+            intent.putExtra("reasonForNotReachingOLevel", reasonForNotReachingOLevel);
+            intent.putExtra("OINumber", OINumber);
             startActivity(intent);
             finish();
         }

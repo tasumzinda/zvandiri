@@ -53,12 +53,18 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
     private String educationLevel;
     private String referer;
     private String email;
+    private String reasonForNotReachingOLevel;
+    private String refererName;
+    private String OINumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step5);
         Intent intent = getIntent();
+        OINumber = intent.getStringExtra("OINumber");
+        refererName = intent.getStringExtra("refererName");
+        reasonForNotReachingOLevel = intent.getStringExtra("reasonForNotReachingOLevel");
         email = intent.getStringExtra("email");
         dateJoined = intent.getStringExtra("dateJoined");
         education = intent.getStringExtra("education");
@@ -227,6 +233,9 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
             intent.putExtra("transmissionMode", ((TransmissionMode) transmissionMode.getSelectedItem()).getCode());
             intent.putExtra("dateTested", dateTested.getText().toString());
             intent.putExtra("hIVDisclosureLocation", ((HIVDisclosureLocation) hIVDisclosureLocation.getSelectedItem()).getCode());
+            intent.putExtra("refererName", refererName);
+            intent.putExtra("reasonForNotReachingOLevel", reasonForNotReachingOLevel);
+            intent.putExtra("OINumber", OINumber);
             startActivity(intent);
             finish();
         }

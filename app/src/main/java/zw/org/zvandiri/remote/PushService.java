@@ -37,9 +37,7 @@ public class PushService extends IntentService{
             for(Contact c : Contact.findByPatientAndPushed(p)){
                 c.assessments = Assessment.findByContact(c);
                 c.stables = Stable.findByContact(c);
-                c.intensives = Intensive.findByContact(c);
                 c.enhanceds = Enhanced.findByContact(c);
-                c.actionTaken = ActionTaken.findByContact(c);
                 c.dateOfContact = c.contactDate.toString();
                 if(c.isNew == true){
                     c.id = "";

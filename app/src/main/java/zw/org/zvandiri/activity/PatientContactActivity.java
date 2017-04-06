@@ -23,12 +23,14 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     private Spinner reason;
     private Spinner externalReferral;
     private Spinner internalReferral;
-    private EditText subjective;
+    /*private EditText subjective;
     private EditText objective;
-    private EditText plan;
+    private EditText plan;*/
     private Spinner followUp;
     TextView externalReferralLabel;
     TextView internalReferralLabel;
+    private EditText lastClinicAppointmentDate;
+    private Spinner attendedClinicAppointment;
     private Button save;
     private Contact item;
     private String id;
@@ -36,6 +38,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     private String itemID;
     private EditText[] fields;
     DatePickerDialog dialog;
+    DatePickerDialog dialog1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +48,15 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         location = (Spinner) findViewById(R.id.location);
         position = (Spinner) findViewById(R.id.position);
         reason = (Spinner) findViewById(R.id.reason);
+        attendedClinicAppointment = (Spinner) findViewById(R.id.attendedClinicAppointment);
         externalReferral = (Spinner) findViewById(R.id.externalReferral);
         internalReferral = (Spinner) findViewById(R.id.internalReferral);
-        subjective = (EditText) findViewById(R.id.subjective);
+        lastClinicAppointmentDate = (EditText) findViewById(R.id.lastClinicAppointmentDate);
+        /*subjective = (EditText) findViewById(R.id.subjective);
         objective = (EditText) findViewById(R.id.objective);
-        plan = (EditText) findViewById(R.id.plan);
+        plan = (EditText) findViewById(R.id.plan);*/
         followUp = (Spinner) findViewById(R.id.followUp);
-        fields = new EditText[] {contactDate, subjective, objective, plan};
+        //fields = new EditText[] {contactDate, subjective, objective, plan};
         save = (Button) findViewById(R.id.btn_save);
         externalReferralLabel = (TextView) findViewById(R.id.externalReferralLabel);
         internalReferralLabel = (TextView) findViewById(R.id.internalReferralLabel);
@@ -59,6 +64,10 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
+        ArrayAdapter<YesNo> yesNoArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
+        yesNoArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        attendedClinicAppointment.setAdapter(yesNoArrayAdapter);
+        yesNoArrayAdapter.notifyDataSetChanged();
         ArrayAdapter<Location> locationArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, Location.getAll());
         locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         location.setAdapter(locationArrayAdapter);
@@ -93,12 +102,22 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
         contactDate.setOnClickListener(this);
+        dialog1 = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                updateLabel(newDate.getTime(), lastClinicAppointmentDate);
+            }
+        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        );
+        lastClinicAppointmentDate.setOnClickListener(this);
         if(itemID != null){
             item = Contact.findById(itemID);
             updateLabel(item.contactDate, contactDate);
-            subjective.setText(item.subjective);
+            /*subjective.setText(item.subjective);
             objective.setText(item.objective);
-            plan.setText(item.plan);
+            plan.setText(item.plan);*/
             int i = 0;
             for(Location m : Location.getAll()){
                 if(item.location != null && item.location.equals(location.getItemAtPosition(i))){
@@ -143,6 +162,13 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             for(FollowUp m : FollowUp.values()){
                 if(item.followUp != null && item.followUp.equals(followUp.getItemAtPosition(i))){
                     followUp.setSelection(i, true);
+                    break;
+                }
+            }
+            i = 0;
+            for(YesNo m : YesNo.values()){
+                if(item.attendedClinicAppointment != null && item.attendedClinicAppointment.equals(attendedClinicAppointment.getItemAtPosition(i))){
+                    attendedClinicAppointment.setSelection(i, true);
                     break;
                 }
             }
@@ -206,6 +232,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         if(view.getId() == contactDate.getId()){
             dialog.show();
         }
+        if(view.getId() == lastClinicAppointmentDate.getId()){
+            dialog1.show();
+        }
         if(view.getId() == save.getId()){
             if(validate(fields)){
                 if(validateLocal()){
@@ -214,9 +243,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                     intent.putExtra(AppUtil.ID, id);
                     intent.putExtra(AppUtil.DETAILS_ID, itemID);
                     intent.putExtra("contactDate", contactDate.getText().toString());
-                    intent.putExtra("subjective", subjective.getText().toString());
+                    /*intent.putExtra("subjective", subjective.getText().toString());
                     intent.putExtra("objective", objective.getText().toString());
-                    intent.putExtra("plan", plan.getText().toString());
+                    intent.putExtra("plan", plan.getText().toString());*/
                     Location loc = (Location) location.getSelectedItem();
                     intent.putExtra("location", loc.id);
                     Position pos = (Position) position.getSelectedItem();
@@ -227,6 +256,8 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                     intent.putExtra("internalReferral", intRef.id);
                     intent.putExtra("reason", ((Reason) reason.getSelectedItem()).getCode());
                     intent.putExtra("followUp", ((FollowUp) followUp.getSelectedItem()).getCode());
+                    intent.putExtra("attendedClinicAppointment", ((YesNo) attendedClinicAppointment.getSelectedItem()).getCode());
+                    intent.putExtra("lastClinicAppointmentDate", lastClinicAppointmentDate.getText().toString());
                     startActivity(intent);
                     finish();
                 }

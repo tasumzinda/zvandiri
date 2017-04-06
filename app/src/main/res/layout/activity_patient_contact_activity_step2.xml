@@ -90,11 +90,30 @@
                 android:visibility="gone"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="7.0sp" />
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_taken_label"
+                android:layout_marginTop="@dimen/margin_top"
+                android:layout_marginStart="@dimen/input_side_margin"
+                android:layout_marginEnd="@dimen/input_side_margin"
+                android:textSize="@dimen/text_size"
+        />
+        <Spinner
+                android:id="@+id/actionTaken"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/input_side_margin"
+                android:layout_marginEnd="@dimen/input_side_margin"
+                android:prompt="@string/prompt"
+        />
 
                 <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_next"
                 style="@style/ButtonStyle"
-                android:text="@string/btn_next_label"
+                android:text="@string/btn_save_label"
         />
     </LinearLayout>
 </LinearLayout>

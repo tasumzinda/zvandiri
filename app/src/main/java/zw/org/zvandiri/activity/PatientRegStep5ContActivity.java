@@ -9,8 +9,10 @@ import android.widget.*;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.DisabilityCategory;
 import zw.org.zvandiri.business.domain.Patient;
+import zw.org.zvandiri.business.domain.ReasonForNotReachingOLevel;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
 
@@ -52,12 +54,19 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
     private Integer hIVDisclosureLocation;
     private String email;
     ArrayAdapter<DisabilityCategory> disabilityCategorysArrayAdapter;
+    private String reasonForNotReachingOLevel;
+    private String refererName;
+    private String OINumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step5_cont);
+        //Log.d("reason", "1. " + ReasonForNotReachingOLevel.getItem(reasonForNotReachingOLevel).name);
         Intent intent = getIntent();
+        OINumber = intent.getStringExtra("OINumber");
+        refererName = intent.getStringExtra("refererName");
+        reasonForNotReachingOLevel = intent.getStringExtra("reasonForNotReachingOLevel");
         email = intent.getStringExtra("email");
         hivStatusKnown = intent.getIntExtra("hivStatusKnown", 0);
         transmissionMode = intent.getIntExtra("transmissionMode", 0);
@@ -198,6 +207,9 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
             intent.putExtra("hIVDisclosureLocation", hIVDisclosureLocation);
             intent.putExtra("disability", ((YesNo) disability.getSelectedItem()).getCode());
             intent.putExtra("disabilityCategorys", getDisabilityCategorys());
+            intent.putExtra("refererName", refererName);
+            intent.putExtra("reasonForNotReachingOLevel", reasonForNotReachingOLevel);
+            intent.putExtra("OINumber", OINumber);
             startActivity(intent);
             finish();
         }

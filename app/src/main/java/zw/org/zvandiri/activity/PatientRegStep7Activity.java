@@ -60,11 +60,12 @@ public class PatientRegStep7Activity extends BaseActivity implements View.OnClic
     private Integer disability;
     private Integer consentToPhoto;
     private Integer consentToMHealth;
-    private Integer vstStudent;
     private Integer cat;
     private Integer youngMumGroup;
-    private Integer vstStatus;
     private String email;
+    private String reasonForNotReachingOLevel;
+    private String refererName;
+    private String OINumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +77,14 @@ public class PatientRegStep7Activity extends BaseActivity implements View.OnClic
         pgender = (Spinner) findViewById(R.id.pgender);
         relationship = (Spinner) findViewById(R.id.relationship);
         Intent intent = getIntent();
+        OINumber = intent.getStringExtra("OINumber");
+        refererName = intent.getStringExtra("refererName");
+        reasonForNotReachingOLevel = intent.getStringExtra("reasonForNotReachingOLevel");
         email = intent.getStringExtra("email");
         consentToPhoto = intent.getIntExtra("consentToPhoto", 0);
         consentToMHealth = intent.getIntExtra("consentToMHealth", 0);
-        vstStudent = intent.getIntExtra("vstStudent", 0);
         cat = intent.getIntExtra("cat", 0);
         youngMumGroup = intent.getIntExtra("youngMumGroup", 0);
-        vstStatus = intent.getIntExtra("vstStatus", 0);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         next = (Button) findViewById(R.id.btn_save);
         disabilityCategorys = intent.getStringArrayListExtra("disabilityCategorys");
@@ -205,9 +207,14 @@ public class PatientRegStep7Activity extends BaseActivity implements View.OnClic
         item.cat = YesNo.get(cat);
         item.consentToMHealth = YesNo.get(consentToMHealth);
         item.consentToPhoto = YesNo.get(consentToPhoto);
-        item.dateJoined = DateUtil.getDateFromString(dateJoined);
+        item.OINumber = OINumber;
+        /*if( ! dateJoined.isEmpty()){
+            item.dateJoined = DateUtil.getDateFromString(dateJoined);
+        }
+        if( ! dateTested.isEmpty()){
+            item.dateTested = DateUtil.getDateFromString(dateTested);
+        }*/
         item.dateOfBirth = DateUtil.getDateFromString(dateOfBirth);
-        item.dateTested = DateUtil.getDateFromString(dateTested);
         item.disability = YesNo.get(disability);
         item.education = Education.getItem(education);
         item.educationLevel = EducationLevel.getItem(educationLevel);
@@ -233,12 +240,13 @@ public class PatientRegStep7Activity extends BaseActivity implements View.OnClic
         item.secondaryMobileNumber = secondaryMobileNumber;
         item.secondaryMobileOwnerName = secondaryMobileOwnerName;
         item.secondaryMobileownerRelation = Relationship.getItem(secondaryMobileownerRelation);
-        //item.status = PatientChangeEvent.get(vstStatus);
         item.supportGroup = SupportGroup.getItem(supportGroup);
         item.transmissionMode = TransmissionMode.get(transmissionMode);
-        item.vstStatus = PatientChangeEvent.get(vstStatus);
-        item.vstStudent = YesNo.get(vstStudent);
         item.youngMumGroup = YesNo.get(youngMumGroup);
+        item.refererName = refererName;
+        /*if(! reasonForNotReachingOLevel.isEmpty()){
+            item.reasonForNotReachingOLevel = ReasonForNotReachingOLevel.getItem(reasonForNotReachingOLevel);
+        }*/
         item.save();
         if(itemID != null){
             for(PatientDisabilityCategoryContract c : PatientDisabilityCategoryContract.findByPatient(Patient.findById(itemID))){

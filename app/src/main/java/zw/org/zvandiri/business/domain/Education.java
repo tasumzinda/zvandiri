@@ -72,7 +72,8 @@ public class Education extends Model {
 
     public static Education getItem(String id) {
         return new Select()
-                .from(Education.class).where("id = ?", id).executeSingle();
+                .from(Education.class)
+                .where("id = ?", id).executeSingle();
     }
 
     public static List<Education> getAll() {

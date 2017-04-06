@@ -107,17 +107,22 @@ public class Contact extends Model {
     public boolean pushed = true;
     @Column(name = "is_new")
     public boolean isNew = false;
+    //@Expose
+    @Column(name = "lastClinicAppointmentDate")
+    public Date lastClinicAppointmentDate;
+    @Expose
+    @Column(name = "attendedClinicAppointment")
+    public YesNo attendedClinicAppointment;
+
 
     @Expose
     public List<Assessment> assessments;
     @Expose
     public List<Stable> stables;
     @Expose
-    public List<Intensive> intensives;
-    @Expose
     public List<Enhanced> enhanceds;
     @Expose
-    public List<zw.org.zvandiri.business.domain.ActionTaken> actionTaken;
+    public zw.org.zvandiri.business.domain.ActionTaken actionTaken;
 
     public Contact() {
         super();

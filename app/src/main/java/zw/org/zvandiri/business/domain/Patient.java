@@ -126,9 +126,6 @@ public class Patient extends Model {
     @Column(name = "hiv_disclosure_location")
     public HIVDisclosureLocation hIVDisclosureLocation;
     @Expose
-    @Column(name = "vst_student")
-    public YesNo vstStudent;
-    @Expose
     @Column(name = "disability")
     public YesNo disability;
     @Expose
@@ -192,11 +189,10 @@ public class Patient extends Model {
     @Column(name = "status")
     public PatientChangeEvent status;
     @Expose
-    @Column(name = "vstStatus")
-    public PatientChangeEvent vstStatus;
+    @Column(name = "selfConsent")
+    public YesNo selfConsent;
 
-
-    @Expose
+    /*@Expose
     public List<Dependent> dependents;
     @Expose
     public List<MedicalHist> medicalHists;
@@ -223,8 +219,17 @@ public class Patient extends Model {
     @Expose
     public List<Cd4Count> cd4Counts;
     @Expose
-    public List<ViralLoad> viralLoads;
+    public List<ViralLoad> viralLoads;*/
     public List<DisabilityCategory> disabilityCategorys;
+    @Expose
+    @Column(name = "refererName")
+    public String refererName;
+    @Expose
+    @Column(name = "OINumber")
+    public String OINumber;
+    @Expose
+    @Column(name = "reasonForNotReachingOLevel")
+    public ReasonForNotReachingOLevel reasonForNotReachingOLevel;
 
    @Expose
    public List<Contact> contacts;
@@ -468,7 +473,7 @@ public class Patient extends Model {
         return name != null ? name : firstName + " " + lastName;
     }
 
-    private static void saveMentalHealthItems(JSONObject jsonObject){
+   /* private static void saveMentalHealthItems(JSONObject jsonObject){
         try{
             JSONArray mentalHealthItems = jsonObject.getJSONArray("mentalHealthItems");
             for(int j = 0; j < mentalHealthItems.length(); j++){
@@ -863,6 +868,6 @@ public class Patient extends Model {
         }catch(JSONException ex){
             Log.d("Contact", ex.getMessage());
         }
-    }
+    }*/
 
 }

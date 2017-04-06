@@ -7,7 +7,7 @@ import zw.org.zvandiri.business.util.StringUtils;
  */
 public enum CareLevel {
 
-    STABLE(1), ENHANCED(2), INTENSIVE(3);
+    STABLE(1), ENHANCED(2);
 
     private final Integer code;
 
@@ -21,8 +21,6 @@ public enum CareLevel {
                 return STABLE;
             case 2:
                 return ENHANCED;
-            case 3:
-                return INTENSIVE;
             default:
                 throw new IllegalArgumentException("Illegal parameter passed to method :" + code);
         }

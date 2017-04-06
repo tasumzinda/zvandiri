@@ -17,15 +17,16 @@
                 android:layout_marginEnd="@dimen/input_side_margin"
                 android:textSize="@dimen/text_size"
         />
-        <ListView
+        <Spinner
                 android:id="@+id/actionTaken"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="@dimen/input_side_margin"
                 android:layout_marginEnd="@dimen/input_side_margin"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="7.0sp" />
+                android:prompt="@string/prompt"
+        />
         <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_save"
                 style="@style/ButtonStyle"

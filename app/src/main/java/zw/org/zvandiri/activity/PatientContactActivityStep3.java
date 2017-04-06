@@ -38,15 +38,18 @@ public class PatientContactActivityStep3 extends BaseActivity implements View.On
     private Integer careLevel;
     private Button next;
     private Contact c;
-    private ArrayList<String> intensives;
     private ArrayList<String> enhanceds;
     private ArrayList<String> stables;
+    private String lastClinicAppointmentDate;
+    private Integer attendedClinicAppointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_contact_activity_step3);
         Intent intent = getIntent();
+        lastClinicAppointmentDate = intent.getStringExtra("lastClinicAppointmentDate");
+        attendedClinicAppointment = intent.getIntExtra("attendedClinicAppointment", 0);
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
@@ -60,7 +63,6 @@ public class PatientContactActivityStep3 extends BaseActivity implements View.On
         reason = intent.getIntExtra("reason", 1);
         followUp = intent.getIntExtra("followUp", 1);
         position = intent.getStringExtra("position");
-        intensives = intent.getStringArrayListExtra("intensives");
         enhanceds = intent.getStringArrayListExtra("enhanceds");
         stables = intent.getStringArrayListExtra("stables");
         careLevel = intent.getIntExtra("careLevel", 1);
@@ -140,9 +142,10 @@ public class PatientContactActivityStep3 extends BaseActivity implements View.On
             intent.putExtra("followUp", followUp);
             intent.putExtra("careLevel", careLevel);
             intent.putStringArrayListExtra("enhanceds", enhanceds);
-            intent.putStringArrayListExtra("intensives", intensives);
             intent.putStringArrayListExtra("stables", stables);
             intent.putStringArrayListExtra("assessments", getAssessments());
+            intent.putExtra("attendedClinicAppointment", attendedClinicAppointment);
+            intent.putExtra("lastClinicAppointmentDate", lastClinicAppointmentDate);
             startActivity(intent);
             finish();
         }

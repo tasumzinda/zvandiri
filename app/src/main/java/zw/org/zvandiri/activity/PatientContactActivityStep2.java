@@ -3,6 +3,7 @@ package zw.org.zvandiri.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,10 +14,13 @@ import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.domain.util.CareLevel;
 import zw.org.zvandiri.business.domain.util.FollowUp;
 import zw.org.zvandiri.business.domain.util.Reason;
+import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
 import zw.org.zvandiri.business.util.UUIDGen;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PatientContactActivityStep2 extends BaseActivity implements View.OnClickListener {
 
@@ -24,20 +28,15 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     private Spinner careLevel;
     private ListView stable;
     private ListView enhanced;
-    private ListView intensive;
     private TextView stableLabel;
     private TextView enhancedLabel;
-    private TextView intensiveLabel;
     private String itemID;
-    private SparseBooleanArray stables;
-    private SparseBooleanArray enhanceds;
-    private SparseBooleanArray intensives;
     private String id;
     private String name;
     private String contactDate;
-    private String subjective;
+    /*private String subjective;
     private String objective;
-    private String plan;
+    private String plan;*/
     private String location;
     private String externalReferral;
     private String internalReferral;
@@ -48,20 +47,25 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     private Contact c;
     private ArrayAdapter<Stable> stableArrayAdapter;
     private ArrayAdapter<Enhanced> enhancedArrayAdapter;
-    private ArrayAdapter<Intensive> intensiveArrayAdapter;
     private ArrayList<String> list;
+    private String lastClinicAppointmentDate;
+    private Integer attendedClinicAppointment;
+    private Spinner actionTaken;
+    private ArrayAdapter<zw.org.zvandiri.business.domain.ActionTaken> actionTakenArrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_contact_activity_step2);
         Intent intent = getIntent();
+        lastClinicAppointmentDate = intent.getStringExtra("lastClinicAppointmentDate");
+        attendedClinicAppointment = intent.getIntExtra("attendedClinicAppointment", 0);
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         contactDate = intent.getStringExtra("contactDate");
-        subjective = intent.getStringExtra("subjective");
+        /*subjective = intent.getStringExtra("subjective");
         objective = intent.getStringExtra("objective");
-        plan = intent.getStringExtra("plan");
+        plan = intent.getStringExtra("plan");*/
         location = intent.getStringExtra("location");
         externalReferral = intent.getStringExtra("externalReferral");
         internalReferral = intent.getStringExtra("internalReferral");
@@ -71,10 +75,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         careLevel = (Spinner) findViewById(R.id.careLevel);
         stable = (ListView) findViewById(R.id.stable);
         enhanced = (ListView) findViewById(R.id.enhanced);
-        intensive = (ListView) findViewById(R.id.intensive);
         stableLabel = (TextView) findViewById(R.id.stableLabel);
         enhancedLabel = (TextView) findViewById(R.id.enhancedLabel);
-        intensiveLabel = (TextView) findViewById(R.id.intensiveLabel);
+        actionTaken = (Spinner) findViewById(R.id.actionTaken);
         list = new ArrayList<>();
         next = (Button) findViewById(R.id.btn_next);
         next.setOnClickListener(this);
@@ -88,12 +91,6 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         enhancedArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Enhanced.getAll());
         enhanced.setAdapter(enhancedArrayAdapter);
         enhancedArrayAdapter.notifyDataSetChanged();
-        intensiveArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Intensive.getAll());
-        intensive.setAdapter(intensiveArrayAdapter);
-        intensiveArrayAdapter.notifyDataSetChanged();
-        stables = new SparseBooleanArray();
-        enhanceds = new SparseBooleanArray();
-        intensives = new SparseBooleanArray();
         careLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -102,20 +99,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                     stableLabel.setVisibility(View.VISIBLE);
                     enhanced.setVisibility(View.GONE);
                     enhancedLabel.setVisibility(View.GONE);
-                    intensive.setVisibility(View.GONE);
-                    intensiveLabel.setVisibility(View.GONE);
                 } else if (careLevel.getSelectedItem().equals(CareLevel.ENHANCED)) {
                     enhanced.setVisibility(View.VISIBLE);
                     enhancedLabel.setVisibility(View.VISIBLE);
-                    stable.setVisibility(View.GONE);
-                    stableLabel.setVisibility(View.GONE);
-                    intensive.setVisibility(View.GONE);
-                    intensiveLabel.setVisibility(View.GONE);
-                } else if (careLevel.getSelectedItem().equals(CareLevel.INTENSIVE)) {
-                    intensive.setVisibility(View.VISIBLE);
-                    intensiveLabel.setVisibility(View.VISIBLE);
-                    enhanced.setVisibility(View.GONE);
-                    enhancedLabel.setVisibility(View.GONE);
                     stable.setVisibility(View.GONE);
                     stableLabel.setVisibility(View.GONE);
                 }
@@ -128,28 +114,12 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         });
         stable.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         stable.setItemsCanFocus(false);
-        stable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-                stables = stable.getCheckedItemPositions();
-            }
-        });
         enhanced.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         enhanced.setItemsCanFocus(false);
-        enhanced.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-                enhanceds = enhanced.getCheckedItemPositions();
-            }
-        });
-        intensive.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        intensive.setItemsCanFocus(false);
-        intensive.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-                intensives = intensive.getCheckedItemPositions();
-            }
-        });
+        actionTakenArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, zw.org.zvandiri.business.domain.ActionTaken.getAll());
+        actionTakenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        actionTaken.setAdapter(actionTakenArrayAdapter);
+        actionTakenArrayAdapter.notifyDataSetChanged();
         if(itemID != null){
             c = Contact.findById(itemID);
             int i = 0;
@@ -176,13 +146,13 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                     enhanced.setItemChecked(i, true);
                 }
             }
-            ArrayList<Intensive> intensives = (ArrayList<Intensive>) Intensive.findByContact(Contact.findById(itemID));
-            int intensiveCount = intensiveArrayAdapter.getCount();
-            for(i = 0; i < intensiveCount; i++){
-                Intensive current = intensiveArrayAdapter.getItem(i);
-                if(intensives.contains(current)){
-                    intensive.setItemChecked(i, true);
+            i = 0;
+            for (ActionTaken m : ActionTaken.getAll()) {
+                if (c.actionTaken != null && c.actionTaken.equals(actionTaken.getItemAtPosition(i))) {
+                    actionTaken.setSelection(i, true);
+                    break;
                 }
+                i++;
             }
             setSupportActionBar(createToolBar("Update Contact - Step 2"));
         }else{
@@ -225,8 +195,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientContactActivityStep2.this, PatientContactActivityStep3.class);
-            intent.putExtra(AppUtil.NAME, name);
+            save();
+            Intent intent = new Intent(PatientContactActivityStep2.this, PatientContactListActivity.class);
+            /*intent.putExtra(AppUtil.NAME, name);
             intent.putExtra(AppUtil.ID, id);
             intent.putExtra(AppUtil.DETAILS_ID, itemID);
             intent.putExtra("contactDate", contactDate);
@@ -241,11 +212,102 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
             intent.putExtra("followUp", followUp);
             intent.putExtra("careLevel", ((CareLevel) careLevel.getSelectedItem()).getCode());
             intent.putStringArrayListExtra("enhanceds", getEnhanceds());
-            intent.putStringArrayListExtra("intensives", getIntensives());
             intent.putStringArrayListExtra("stables", getStables());
+            intent.putExtra("attendedClinicAppointment", attendedClinicAppointment);
+            intent.putExtra("lastClinicAppointmentDate", lastClinicAppointmentDate);*/
             startActivity(intent);
             finish();
         }
+    }
+
+    public void save(){
+        String contactId = UUIDGen.generateUUID();
+        if(itemID != null){
+            c.id = itemID;
+            c.dateModified = new Date();
+            c.isNew = false;
+        }else{
+            c.id = contactId;
+            c.dateCreated = new Date();
+            c.isNew = true;
+        }
+        c.careLevel = (CareLevel) careLevel.getSelectedItem();
+        c.followUp = FollowUp.get(followUp);
+        if(internalReferral != null){
+            c.internalReferral = InternalReferral.getItem(internalReferral);
+        }
+        if(contactDate != null){
+            c.contactDate = DateUtil.getDateFromString(contactDate);
+        }
+
+        if(externalReferral != null){
+            c.externalReferral = ExternalReferral.getItem(externalReferral);
+        }
+        c.location = Location.getItem(location);
+        //c.objective = objective;
+        Patient p = Patient.findById(id);
+        c.patient = p;
+        //c.plan = plan;
+        c.position = Position.getItem(position);
+        c.reason = Reason.get(reason);
+        //c.subjective = subjective;
+        c.pushed = false;
+        c.attendedClinicAppointment = YesNo.get(attendedClinicAppointment);
+        c.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
+       /* if(lastClinicAppointmentDate != null){
+            c.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate);
+        }*/
+        c.save();
+        if(itemID != null){
+            /*for(ContactAssessmentContract c : ContactAssessmentContract.findByContact(Contact.findById(itemID))){
+                c.delete();
+            }*/
+            deleteCareLevelSelections();
+        }
+        /*for(int i = 0; i < assessments.size(); i++){
+            ContactAssessmentContract contract = new ContactAssessmentContract();
+            contract.assessment = Assessment.getItem(assessments.get(i));
+            if(itemID != null){
+                contract.contact = Contact.findById(itemID);
+            }else{
+                contract.contact = Contact.findById(contactId);
+            }
+            contract.id = UUIDGen.generateUUID();
+            contract.save();
+        }*/
+        if(careLevel.getSelectedItem().equals(CareLevel.ENHANCED)){
+            for(int i = 0; i < getEnhanceds().size(); i++){
+                ContactEnhancedContract contract = new ContactEnhancedContract();
+                contract.enhanced = Enhanced.getItem(getEnhanceds().get(i));
+                if(itemID != null){
+                    contract.contact = Contact.findById(itemID);
+                }else{
+                    contract.contact = Contact.findById(contactId);
+                }
+                contract.id = UUIDGen.generateUUID();
+                contract.save();
+            }
+        }else if(careLevel.getSelectedItem().equals(CareLevel.STABLE)){
+            for(int i = 0; i <  getStables().size(); i++){
+                ContactStableContract contract = new ContactStableContract();
+                contract.stable = Stable.getItem( getStables().get(i));
+                if(itemID != null){
+                    contract.contact = Contact.findById(itemID);
+                }else{
+                    contract.contact = Contact.findById(contactId);
+                }
+                contract.id = UUIDGen.generateUUID();
+                contract.save();
+            }
+        }
+        p.pushed = false;
+        p.save();
+        AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
+        Intent intent = new Intent(PatientContactActivityStep2.this, PatientContactListActivity.class);
+        intent.putExtra(AppUtil.NAME, name);
+        intent.putExtra(AppUtil.ID, id);
+        startActivity(intent);
+        finish();
     }
 
     private ArrayList<String> getEnhanceds(){
@@ -255,17 +317,6 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 a.add(enhancedArrayAdapter.getItem(i).id);
             }else{
                 a.remove(enhancedArrayAdapter.getItem(i).id);
-            }
-        }
-        return a;
-    }
-    private ArrayList<String> getIntensives(){
-        ArrayList<String> a = new ArrayList<>();
-        for(int i = 0; i < intensive.getCount(); i++){
-            if(intensive.isItemChecked(i)){
-                a.add(intensiveArrayAdapter.getItem(i).id);
-            }else{
-                a.remove(intensiveArrayAdapter.getItem(i).id);
             }
         }
         return a;
@@ -280,5 +331,18 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
             }
         }
         return a;
+    }
+
+    public void deleteCareLevelSelections(){
+        for(ContactStableContract c : ContactStableContract.findByContact(Contact.findById(itemID))){
+            if(c != null)
+                c.delete();
+            Log.d("Deleted stables", c.stable.name);
+        }
+        for(ContactEnhancedContract c: ContactEnhancedContract.findByContact(Contact.findById(itemID))){
+            if(c != null)
+                c.delete();
+            Log.d("Deleted enhanceds", c.enhanced.name);
+        }
     }
 }

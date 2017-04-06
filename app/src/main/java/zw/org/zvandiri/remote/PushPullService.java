@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import org.json.JSONArray;
@@ -72,8 +73,33 @@ public class PushPullService extends IntentService {
 
         }*/
         try{
-            for(Contact c : getAllContacts()){
-                save(run(AppUtil.getPushContactUrl(context), c), c);
+            for(Contact item : getAllContacts()){
+                //int res = Integer.parseInt(run(AppUtil.getPushContactUrl(context), item));
+                /*if(res == 1){
+                    for(ContactAssessmentContract c : ContactAssessmentContract.findByContact(Contact.findById(item.id))){
+                        c.delete();
+                    }
+                    for(ContactActionTakenContract c : ContactActionTakenContract.findByContact(Contact.findById(item.id))){
+                        c.delete();
+                    }
+                    for(ContactIntensiveContract c : ContactIntensiveContract.findByContact(Contact.findById(item.id))){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted intensives", c.intensive.name);
+                    }
+                    for(ContactStableContract c : ContactStableContract.findByContact(Contact.findById(item.id))){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted stables", c.stable.name);
+                    }
+                    for(ContactEnhancedContract c: ContactEnhancedContract.findByContact(Contact.findById(item.id))){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted enhanceds", c.enhanced.name);
+                    }
+                    item.delete();
+                }*/
+                Log.d("Result", "Result " + run(AppUtil.getPushContactUrl(context), item));
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -373,9 +399,7 @@ public class PushPullService extends IntentService {
         for(Contact c : Contact.getAll()){
             c.assessments = Assessment.findByContact(c);
             c.stables = Stable.findByContact(c);
-            c.intensives = Intensive.findByContact(c);
             c.enhanceds = Enhanced.findByContact(c);
-            c.actionTaken = ActionTaken.findByContact(c);
             c.dateOfContact = AppUtil.getStringDate(c.contactDate);
             contacts.add(c);
         }

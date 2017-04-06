@@ -39,12 +39,14 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     private String mobileOwnerRelation;
     private String secondaryMobileownerRelation;
     private String email;
+    private String OINumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step3);
         Intent intent = getIntent();
+        OINumber = intent.getStringExtra("OINumber");
         email = intent.getStringExtra("email");
         firstName = intent.getStringExtra("firstName");
         middleName = intent.getStringExtra("middleName");
@@ -165,7 +167,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep3Activity.class);
+        Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep2Activity.class);
         startActivity(intent);
         finish();
     }
@@ -173,41 +175,45 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep4Activity.class);
-            intent.putExtra(AppUtil.DETAILS_ID, itemID);
-            intent.putExtra("dateOfBirth", dateOfBirth);
-            intent.putExtra("firstName", firstName);
-            intent.putExtra("lastName", lastName);
-            intent.putExtra("middleName", middleName);
-            intent.putExtra("gender", gender);
-            intent.putExtra("email", email);
-            intent.putExtra("mobileNumber", mobileNumber);
-            intent.putExtra("ownerName", ownerName);
-            intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);
-            intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName);
-            intent.putExtra("mobileOwner", mobileOwner);
-            intent.putExtra("ownSecondaryMobile", ownSecondaryMobile);
-            intent.putExtra("mobileOwnerRelation", mobileOwnerRelation);
-            intent.putExtra("secondaryMobileownerRelation", secondaryMobileownerRelation);
-            intent.putExtra("address", address.getText().toString());
-            intent.putExtra("address1", address1.getText().toString());
-            intent.putExtra("primaryClinic", ((Facility) primaryClinic.getSelectedItem()).id);
-            if(supportGroup.getSelectedItem() != null){
-                intent.putExtra("supportGroup", ((SupportGroup) supportGroup.getSelectedItem()).id);
+            if(validateLocal()){
+                Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep4Activity.class);
+                intent.putExtra(AppUtil.DETAILS_ID, itemID);
+                intent.putExtra("dateOfBirth", dateOfBirth);
+                intent.putExtra("firstName", firstName);
+                intent.putExtra("lastName", lastName);
+                intent.putExtra("middleName", middleName);
+                intent.putExtra("gender", gender);
+                intent.putExtra("email", email);
+                intent.putExtra("mobileNumber", mobileNumber);
+                intent.putExtra("ownerName", ownerName);
+                intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);
+                intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName);
+                intent.putExtra("mobileOwner", mobileOwner);
+                intent.putExtra("ownSecondaryMobile", ownSecondaryMobile);
+                intent.putExtra("mobileOwnerRelation", mobileOwnerRelation);
+                intent.putExtra("secondaryMobileownerRelation", secondaryMobileownerRelation);
+                intent.putExtra("address", address.getText().toString());
+                intent.putExtra("address1", address1.getText().toString());
+                intent.putExtra("primaryClinic", ((Facility) primaryClinic.getSelectedItem()).id);
+                intent.putExtra("OINumber", OINumber);
+                if(supportGroup.getSelectedItem() != null){
+                    intent.putExtra("supportGroup", ((SupportGroup) supportGroup.getSelectedItem()).id);
+                }
+                startActivity(intent);
+                finish();
             }
-            startActivity(intent);
-            finish();
+
         }
     }
 
-    /*public boolean validateLocal(){
+    public boolean validateLocal(){
         boolean isValid = true;
-        if( ! checkDateFormat(dateOfBirth.getText().toString())){
-            dateOfBirth.setError(getResources().getString(R.string.date_format_error));
+        if(address.getText().toString().isEmpty()){
+            address.setError(getResources().getString(R.string.required_field_error));
             isValid = false;
         }else{
-            dateOfBirth.setError(null);
+            address.setError(null);
         }
         return isValid;
-    }*/
+    }
 }

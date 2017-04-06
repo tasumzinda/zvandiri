@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fitsSystemWindows="true">
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -103,6 +102,23 @@
                         android:inputType="text"
                 />
             </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_top"
+                    android:layout_marginBottom="@dimen/margin_top"
+                    android:layout_marginStart="@dimen/input_side_margin"
+                    android:layout_marginEnd="@dimen/input_side_margin"
+            >
+                <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/OINumber"
+                        android:textSize="@dimen/text_size"
+                        android:hint="Enter OI Number"
+                        android:inputType="text"
+                />
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_save"
@@ -112,4 +128,4 @@
 
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</ScrollView>

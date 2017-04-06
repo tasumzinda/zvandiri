@@ -31,6 +31,7 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
     private EditText[] fields;
     private String itemID;
     private Patient item;
+    private EditText oiNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         lastName = (EditText) findViewById(R.id.lastName);
         dateOfBirth = (EditText) findViewById(R.id.dateOfBirth);
         gender = (Spinner) findViewById(R.id.gender);
+        oiNumber = (EditText) findViewById(R.id.OINumber);
         Intent intent = getIntent();
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         fields = new EditText[] {firstName, lastName, dateOfBirth};
@@ -65,6 +67,7 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
             firstName.setText(item.firstName);
             lastName.setText(item.lastName);
             middleName.setText(item.middleName != null ? item.middleName : "");
+            oiNumber.setText(item.OINumber);
             int i = 0;
             for(Gender m : Gender.values()){
                 if(item.gender != null  && item.gender.equals(gender.getItemAtPosition(i))){
@@ -120,6 +123,7 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                     intent.putExtra("lastName", lastName.getText().toString());
                     intent.putExtra("middleName", middleName.getText().toString());
                     intent.putExtra("gender", ((Gender) gender.getSelectedItem()).getCode());
+                    intent.putExtra("OINumber", oiNumber.getText().toString());
                     startActivity(intent);
                     finish();
                 }

@@ -44,12 +44,17 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
     private String supportGroup;
     private DatePickerDialog dialog;
     private String email;
+    private TextView reasonLabel;
+    private Spinner reasonForNotReachingOLevel;
+    private EditText refererName;
+    private String OINumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step4);
         Intent intent = getIntent();
+        OINumber = intent.getStringExtra("OINumber");
         email = intent.getStringExtra("email");
         address = intent.getStringExtra("address");
         address1 = intent.getStringExtra("address1");
@@ -74,6 +79,9 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         education = (Spinner) findViewById(R.id.education);
         educationLevel = (Spinner) findViewById(R.id.educationLevel);
         referer = (Spinner) findViewById(R.id.referer);
+        refererName = (EditText) findViewById(R.id.refererName);
+        reasonForNotReachingOLevel = (Spinner) findViewById(R.id.reasonForNotReachingOLevel);
+        reasonLabel = (TextView) findViewById(R.id.reasonLabel);
         ArrayAdapter<Education> educationArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, Education.getAll());
         educationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         education.setAdapter(educationArrayAdapter);
@@ -82,6 +90,27 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         educationLevelArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         educationLevel.setAdapter(educationLevelArrayAdapter);
         educationLevelArrayAdapter.notifyDataSetChanged();
+        educationLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(((EducationLevel)educationLevel.getSelectedItem()).name.equals("Primary School") || ((EducationLevel)educationLevel.getSelectedItem()).name.equals("N/A")){
+                    reasonForNotReachingOLevel.setVisibility(View.VISIBLE);
+                    reasonLabel.setVisibility(View.VISIBLE);
+                    ArrayAdapter<ReasonForNotReachingOLevel> reasonForNotReachingOLevelArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, ReasonForNotReachingOLevel.getAll());
+                    reasonForNotReachingOLevelArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    reasonForNotReachingOLevel.setAdapter(reasonForNotReachingOLevelArrayAdapter);
+                    reasonForNotReachingOLevelArrayAdapter.notifyDataSetChanged();
+                }else{
+                    reasonForNotReachingOLevel.setVisibility(View.GONE);
+                    reasonLabel.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         ArrayAdapter<Referer> refererArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, Referer.getAll());
         refererArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         referer.setAdapter(refererArrayAdapter);
@@ -185,19 +214,24 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
             intent.putExtra("educationLevel", ((EducationLevel) educationLevel.getSelectedItem()).id);
             intent.putExtra("referer", ((Referer) referer.getSelectedItem()).id);
             intent.putExtra("email", email);
+            intent.putExtra("refererName", refererName.getText().toString());
+            intent.putExtra("OINumber", OINumber);
+            if(reasonForNotReachingOLevel.getVisibility() == View.VISIBLE){
+                intent.putExtra("reasonForNotReachingOLevel", ((ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getSelectedItem()).id);
+            }
             startActivity(intent);
             finish();
         }
     }
 
-    /*public boolean validateLocal(){
+    public boolean validateLocal(){
         boolean isValid = true;
-        if( ! checkDateFormat(dateOfBirth.getText().toString())){
-            dateOfBirth.setError(getResources().getString(R.string.date_format_error));
+        if(dateJoined.getText().toString().isEmpty()){
+            dateJoined.setError(getResources().getString(R.string.required_field_error));
             isValid = false;
         }else{
-            dateOfBirth.setError(null);
+            dateJoined.setError(null);
         }
         return isValid;
-    }*/
+    }
 }

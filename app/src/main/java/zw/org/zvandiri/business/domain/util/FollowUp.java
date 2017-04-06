@@ -7,7 +7,7 @@ import zw.org.zvandiri.business.util.StringUtils;
  */
 public enum FollowUp {
 
-    STABLE(1), ENHANCED(2), INTENSIVE(3), VST(4), YOUNG_MOTHERS_GROUP(5), YOUTH_GROUP(6);
+    STABLE(1), ENHANCED(2), VST(3), YOUNG_MOTHERS_GROUP(4), YOUTH_GROUP(5);
 
     private final Integer code;
 
@@ -22,12 +22,10 @@ public enum FollowUp {
             case 2:
                 return ENHANCED;
             case 3:
-                return INTENSIVE;
-            case 4:
                 return VST;
-            case 5:
+            case 4:
                 return YOUNG_MOTHERS_GROUP;
-            case 6:
+            case 5:
                 return YOUTH_GROUP;
             default:
                 throw new IllegalArgumentException("Illegal parameter passed to method :" + code);
