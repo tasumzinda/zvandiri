@@ -48,9 +48,6 @@ public class Referral extends Model {
     @Column(name = "patient")
     public Patient patient;
     @Expose
-    @Column(name = "referral_status")
-    public ReferralStatus referralStatus;
-    @Expose
     @Column(name = "referral_date")
     public Date referralDate;
     @Expose
@@ -60,14 +57,16 @@ public class Referral extends Model {
     @Column(name = "attending_officer")
     public String attendingOfficer;
     @Expose
-    @Column(name = "community")
-    public String community;
-    @Expose
     @Column(name = "designation")
     public String designation;
     @Expose
     @Column(name = "organisation")
     public String organisation;
+    @Expose
+    @Column(name = "expectedVisitDate")
+    public Date expectedVisitDate;
+    public String servicesRequestedError;
+    public String servicesAvailedError;
     @Expose
     @Column(name = "action_taken")
     public ReferralActionTaken actionTaken;
@@ -77,8 +76,33 @@ public class Referral extends Model {
     public boolean isNew = false;
 
     @Expose
-    public List<ServicesReferred> servicesReferreds;
-
+    public List<ServicesReferred> hivStiServicesReq;
+    @Expose
+    public List<ServicesReferred> hivStiServicesAvailed;
+    @Expose
+    public List<ServicesReferred> oiArtReq;
+    @Expose
+    public List<ServicesReferred> oiArtAvailed;
+    @Expose
+    public List<ServicesReferred> srhReq;
+    @Expose
+    public List<ServicesReferred> srhAvailed;
+    @Expose
+    public List<ServicesReferred> laboratoryReq;
+    @Expose
+    public List<ServicesReferred> laboratoryAvailed;
+    @Expose
+    public List<ServicesReferred> tbReq;
+    @Expose
+    public List<ServicesReferred> tbAvailed;
+    @Expose
+    public List<ServicesReferred> psychReq;
+    @Expose
+    public List<ServicesReferred> psychAvailed;
+    @Expose
+    public List<ServicesReferred> legalReq;
+    @Expose
+    public List<ServicesReferred> legalAvailed;
     public static Referral findById(String id){
         return new Select().from(Referral.class).where("id = ?", id).executeSingle();
     }
@@ -90,7 +114,7 @@ public class Referral extends Model {
     }
 
     public String toString(){
-        return "Referral Status: " + referralStatus.getName();
+        return "Referral Status: " /*+ referralStatus.getName()*/;
     }
 
     public static List<Referral> findByPatient(Patient patient){
