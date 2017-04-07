@@ -6,7 +6,6 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import zw.org.zvandiri.business.domain.util.ReferralActionTaken;
-import zw.org.zvandiri.business.domain.util.ReferralStatus;
 
 import java.util.Date;
 import java.util.List;

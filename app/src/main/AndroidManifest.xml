@@ -296,6 +296,9 @@
         <activity android:name=".activity.PatientRegStep5ContActivity"/>
         <activity android:name=".activity.PatientRegStep6Activity"/>
         <activity android:name=".activity.PatientRegStep7Activity"/>
+        <activity android:name=".activity.PatientReferralStep3Activity"/>
+        <activity android:name=".activity.PatientReferralStep4Activity"/>
+        <activity android:name=".activity.PatientRefferalStep2Activity"/>
     </application>
 
 </manifest>

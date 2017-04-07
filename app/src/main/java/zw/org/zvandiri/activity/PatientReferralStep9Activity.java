@@ -8,20 +8,18 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import zw.org.zvandiri.R;
-import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.domain.Referral;
-import zw.org.zvandiri.business.domain.ReferralServicesReferredContract;
 import zw.org.zvandiri.business.domain.ServicesReferred;
-import zw.org.zvandiri.business.domain.util.ReferralActionTaken;
 import zw.org.zvandiri.business.util.AppUtil;
-import zw.org.zvandiri.business.util.DateUtil;
-import zw.org.zvandiri.business.util.UUIDGen;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-public class PatientReferralActivityFinal extends BaseActivity implements View.OnClickListener {
+/**
+ * Created by User on 4/6/2017.
+ */
+public class PatientReferralStep9Activity extends BaseActivity implements View.OnClickListener {
 
     private ListView servicesReferred;
     private Referral item;
@@ -36,14 +34,31 @@ public class PatientReferralActivityFinal extends BaseActivity implements View.O
     private String attendingOfficer;
     private String designation;
     private Integer actionTaken;
+    private ArrayList<String> hivStiServicesReq;
+    private ArrayList<String> oiArtReq;
+    private ArrayList<String> srhReq;
+    private ArrayList<String> laboratoryReq;
+    private ArrayList<String> tbReq;
+    private ArrayList<String> psychReq;
+    private ArrayList<String> legalReq;
+    private TextView label;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_referral_final);
+        setContentView(R.layout.activity_patient_referral_step3);
         servicesReferred = (ListView) findViewById(R.id.list);
         save = (Button) findViewById(R.id.btn_save);
+        label = (TextView) findViewById(R.id.label);
+        label.setText("HIV/STI Prevention");
         Intent intent = getIntent();
+        hivStiServicesReq = intent.getStringArrayListExtra("hivStiServicesReq");
+        oiArtReq = intent.getStringArrayListExtra("oiArtReq");
+        srhReq = intent.getStringArrayListExtra("srhReq");
+        laboratoryReq = intent.getStringArrayListExtra("laboratoryReq");
+        tbReq = intent.getStringArrayListExtra("tbReq");
+        psychReq = intent.getStringArrayListExtra("psychReq");
+        legalReq = intent.getStringArrayListExtra("legalReq");
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
@@ -68,10 +83,10 @@ public class PatientReferralActivityFinal extends BaseActivity implements View.O
                     servicesReferred.setItemChecked(i, true);
                 }
             }
-            setSupportActionBar(createToolBar("Update Referrals-Step 2"));
+            setSupportActionBar(createToolBar("Update Referrals-Step 2: Services Provided/Received"));
         }else{
             item = new Referral();
-            setSupportActionBar(createToolBar("Add Referrals-Step 2"));
+            setSupportActionBar(createToolBar("Add Referrals-Step 2: Services Provided/Received"));
         }
         save.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,7 +113,7 @@ public class PatientReferralActivityFinal extends BaseActivity implements View.O
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientReferralActivityFinal.this, PatientReferralActivity.class);
+        Intent intent = new Intent(PatientReferralStep9Activity.this, PatientReferralStep8Activity.class);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
@@ -106,56 +121,25 @@ public class PatientReferralActivityFinal extends BaseActivity implements View.O
         finish();
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == save.getId()){
-            save();
-        }
-    }
-
-    public void save(){
-        String referralID = UUIDGen.generateUUID();
-        if(itemID != null){
-            item.id = itemID;
-            item.dateModified = new Date();
-            item.isNew = false;
-        }else{
-            item.id = referralID;
-            item.dateCreated = new Date();
-            item.isNew = true;
-        }
-        item.pushed = false;
-        item.referralDate = DateUtil.getDateFromString(referralDate);
-        Patient p = Patient.findById(id);
-        item.patient = p;
-        item.actionTaken = ReferralActionTaken.get(actionTaken);
-        item.attendingOfficer = attendingOfficer;
-        item.designation = designation;
-        item.organisation = organisation;
-        item.dateAttended = DateUtil.getDateFromString(dateAttended);
-        item.save();
-        if(itemID != null){
-            for(ReferralServicesReferredContract item : ReferralServicesReferredContract.findByReferral(Referral.findById(itemID))){
-                item.delete();
-            }
-        }
-        for (ServicesReferred s : getServicesReferred()){
-            ReferralServicesReferredContract contract = new ReferralServicesReferredContract();
-            if(itemID != null){
-                contract.referral = Referral.findById(itemID);
-            }else{
-                contract.referral = Referral.findById(referralID);
-            }
-            contract.servicesReferred = s;
-            contract.id = UUIDGen.generateUUID();
-            contract.save();
-        }
-        p.pushed = false;
-        p.save();
-        AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
-        Intent intent = new Intent(PatientReferralActivityFinal.this, PatientReferralListActivity.class);
+    public void onClick(View v){
+        Intent intent = new Intent(this, PatientReferralStep10Activity.class);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
+        intent.putExtra(AppUtil.DETAILS_ID, itemID);
+        intent.putExtra("referralDate", referralDate);
+        intent.putExtra("organisation", organisation);
+        intent.putExtra("dateAttended", dateAttended);
+        intent.putExtra("attendingOfficer", attendingOfficer);
+        intent.putExtra("designation", designation);
+        intent.putExtra("actionTaken", actionTaken);
+        intent.putExtra("hivStiServicesReq", hivStiServicesReq);
+        intent.putExtra("oiArtReq", oiArtReq);
+        intent.putExtra("srhReq", srhReq);
+        intent.putExtra("laboratoryReq", laboratoryReq);
+        intent.putExtra("tbReq", tbReq);
+        intent.putExtra("psychReq", psychReq);
+        intent.putExtra("legalReq", legalReq);
+        intent.putExtra("hivStiServicesAvailed", getServicesReferred());
         startActivity(intent);
         finish();
     }

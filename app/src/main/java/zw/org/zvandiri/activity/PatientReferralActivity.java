@@ -27,7 +27,6 @@ import java.util.Date;
 public class PatientReferralActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText referralDate;
-    private Spinner referralStatus;
     private EditText organisation;
     private EditText dateAttended;
     private EditText attendingOfficer;
@@ -47,7 +46,6 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_referral);
         referralDate = (EditText) findViewById(R.id.referralDate);
-        referralStatus = (Spinner) findViewById(R.id.referralStatus);
         organisation = (EditText) findViewById(R.id.organisation);
         dateAttended = (EditText) findViewById(R.id.dateAttended);
         attendingOfficer = (EditText) findViewById(R.id.attendingOfficer);
@@ -79,10 +77,6 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
         );
         referralDate.setOnClickListener(this);
         dateAttended.setOnClickListener(this);
-        ArrayAdapter<ReferralStatus> referralStatusArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, ReferralStatus.values());
-        referralStatusArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        referralStatus.setAdapter(referralStatusArrayAdapter);
-        referralStatusArrayAdapter.notifyDataSetChanged();
         ArrayAdapter<ReferralActionTaken> referralActionTakenArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, ReferralActionTaken.values());
         referralActionTakenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         actionTaken.setAdapter(referralActionTakenArrayAdapter);
@@ -97,13 +91,6 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
             attendingOfficer.setText(item.attendingOfficer);
             designation.setText(item.designation);
             int i = 0;
-            for(ReferralStatus m : ReferralStatus.values()){
-                if(item.referralStatus != null && item.referralStatus.equals(referralStatus.getItemAtPosition(i))){
-                    referralStatus.setSelection(i, true);
-                    break;
-                }
-                i++;
-            }
             i = 0;
             for(ReferralActionTaken m : ReferralActionTaken.values()){
                 if(item.actionTaken != null && item.actionTaken.equals(actionTaken.getItemAtPosition(i))){
@@ -170,7 +157,6 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
                 intent.putExtra(AppUtil.ID, id);
                 intent.putExtra(AppUtil.DETAILS_ID, itemID);
                 intent.putExtra("referralDate", referralDate.getText().toString());
-                intent.putExtra("referralStatus", ((ReferralStatus) referralStatus.getSelectedItem()).getCode());
                 intent.putExtra("organisation", organisation.getText().toString());
                 intent.putExtra("dateAttended", dateAttended.getText().toString());
                 intent.putExtra("attendingOfficer", attendingOfficer.getText().toString());
