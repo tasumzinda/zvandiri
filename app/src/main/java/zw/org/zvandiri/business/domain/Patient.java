@@ -30,12 +30,13 @@ import java.util.*;
 @Table(name = "patient", id = "_id")
 public class Patient extends Model {
 
+
     @Expose
     @Column(name = "name")
     public String name;
 
     @Column(name = "pushed")
-    public boolean pushed = true;
+    public int pushed = 0;
 
     @Expose
     @Column(name = "uuid")
@@ -48,10 +49,6 @@ public class Patient extends Model {
     @Expose
     @Column(name = "date_modified")
     public Date dateModified;
-
-    @Expose
-    @Column(name = "version")
-    public Long version;
 
     @Expose
     @Column(name = "active")
@@ -224,12 +221,14 @@ public class Patient extends Model {
     @Expose
     @Column(name = "refererName")
     public String refererName;
-    @Expose
-    @Column(name = "OINumber")
-    public String OINumber;
+    //@Expose
+    @Column(name = "oINumber")
+    public String oINumber;
     @Expose
     @Column(name = "reasonForNotReachingOLevel")
     public ReasonForNotReachingOLevel reasonForNotReachingOLevel;
+    @Expose
+    public Long version = 0L;
 
    @Expose
    public List<Contact> contacts;
@@ -240,8 +239,13 @@ public class Patient extends Model {
         super();
     }
 
-    public static Patient findById(String id){
+    /*public static Patient findById(String id){
         return new Select().from(Patient.class).where("id = ?", id).executeSingle();
+    }*/
+
+    public static Patient findById(String id) {
+        return new Select()
+                .from(Patient.class).where("id = ?", id).executeSingle();
     }
 
 
@@ -255,7 +259,7 @@ public class Patient extends Model {
     public static List<Patient> findByPushed(){
         return new Select()
                 .from(Patient.class)
-                .where("pushed = ?", 0)
+                .where("pushed = ?", 1)
                 .execute();
     }
 
@@ -276,6 +280,7 @@ public class Patient extends Model {
                         for(Patient item : itemList){
                             Patient checkDuplicate = Patient.getById(item.id);
                             if(checkDuplicate == null){
+                                //item.pushed = true;
                                 item.save();
                             }
 
@@ -287,7 +292,7 @@ public class Patient extends Model {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("Location", error.toString());
+                        Log.d("Patient", error.toString());
                     }
                 }
         ){

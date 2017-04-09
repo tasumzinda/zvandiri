@@ -152,7 +152,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
     public void save(){
         if(validate(fields)){
             if(validateLocal()){
-                Intent intent = new Intent(PatientReferralActivity.this, PatientReferralActivityFinal.class);
+                Intent intent = new Intent(PatientReferralActivity.this, PatientRefferalStep2Activity.class);
                 intent.putExtra(AppUtil.NAME, name);
                 intent.putExtra(AppUtil.ID, id);
                 intent.putExtra(AppUtil.DETAILS_ID, itemID);

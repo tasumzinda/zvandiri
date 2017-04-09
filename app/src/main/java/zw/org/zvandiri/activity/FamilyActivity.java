@@ -116,7 +116,7 @@ public class FamilyActivity extends BaseActivity implements View.OnClickListener
             item.patient = p;
             item.pushed = false;
             item.save();
-            p.pushed = false;
+            p.pushed = 1;
             p.save();
             AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
             Intent intent = new Intent(FamilyActivity.this, FamilyListActivity.class);

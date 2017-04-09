@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by User on 4/6/2017.
  */
-@Table(name = "referral_legalb_availed")
+@Table(name = "referral_legalb_availed", id = "_id")
 public class ReferralLegalAvailedContract extends Model {
 
     @Expose

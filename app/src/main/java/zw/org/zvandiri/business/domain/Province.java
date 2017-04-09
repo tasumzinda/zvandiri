@@ -52,10 +52,6 @@ public class Province extends Model {
     @Column(name = "description")
     public String description;
 
-    @Expose
-    @Column(name = "short_name")
-    public String shortName;
-
     public Province() {
         super();
     }

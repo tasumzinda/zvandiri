@@ -150,7 +150,7 @@ public class PatientReferralActivityFinal extends BaseActivity implements View.O
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        p.pushed = false;
+        p.pushed = 1;
         p.save();
         AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
         Intent intent = new Intent(PatientReferralActivityFinal.this, PatientReferralListActivity.class);

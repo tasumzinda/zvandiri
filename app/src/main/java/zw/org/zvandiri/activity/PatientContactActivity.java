@@ -236,7 +236,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             dialog1.show();
         }
         if(view.getId() == save.getId()){
-            if(validate(fields)){
+            //if(validate(fields)){
                 if(validateLocal()){
                     Intent intent = new Intent(PatientContactActivity.this, PatientContactActivityStep2.class);
                     intent.putExtra(AppUtil.NAME, name);
@@ -262,7 +262,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                     finish();
                 }
 
-            }
+            //}
 
         }
     }

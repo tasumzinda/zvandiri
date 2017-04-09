@@ -15,6 +15,7 @@ import zw.org.zvandiri.business.domain.Contact;
 import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.domain.SrhHist;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
 
@@ -28,8 +29,10 @@ public class PatientContactListActivity extends BaseActivity implements AdapterV
         setContentView(R.layout.generic_list_view);
         Intent intent = getIntent();
         name = intent.getStringExtra(AppUtil.NAME);
+        Log.d("name", name);
         id = intent.getStringExtra(AppUtil.ID);
-        Patient patient = Patient.findById(id);
+        Log.d("id", "id" + id);
+        Patient patient = Patient.getById(id);
         ContactAdapter contactAdapter = (new ContactAdapter(this, new ArrayList<>(Contact.findByPatient(patient))));
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setEmptyView(findViewById(R.id.empty));

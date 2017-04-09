@@ -32,7 +32,7 @@ public class PatientDisabilityCategoryContract extends Model {
 
     public static List<PatientDisabilityCategoryContract> findByPatient(Patient c){
         return new Select()
-                .from(ContactAssessmentContract.class)
+                .from(PatientDisabilityCategoryContract.class)
                 .where("patient_id = ?", c.getId())
                 .execute();
     }

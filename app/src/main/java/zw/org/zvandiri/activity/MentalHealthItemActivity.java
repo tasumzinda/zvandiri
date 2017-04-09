@@ -251,7 +251,7 @@ public class MentalHealthItemActivity extends BaseActivity implements View.OnCli
                 item.startDate = DateUtil.getDateFromString(startDate.getText().toString());
                 item.pushed = false;
                 item.save();
-                p.pushed = false;
+                p.pushed = 1;
                 p.save();
                 AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
                 Intent intent = new Intent(MentalHealthItemActivity.this, MentalHealthItemListActivity.class);

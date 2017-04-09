@@ -43,7 +43,7 @@ public class AppUtil {
     private static Context mContext;
     private static Gson gson;
     private RequestQueue requestQueue;
-    public static String DATE_FORMAT = "dd/MM/yyyy";
+    public static String DATE_FORMAT = "yyyy-MM-dd";
     public static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private AppUtil(Context context) {
@@ -96,7 +96,7 @@ public class AppUtil {
                 .addType(Patient.class)
                 .addType(Contact.class)
                 .registerOn(gsonBuilder);*/
-        gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().setDateFormat("dd-MM-yyyy").create();
+        gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd").create();
         return gson;
     }
 
@@ -213,6 +213,18 @@ public class AppUtil {
 
     public static HttpUrl getPushContactUrl(Context context) {
         return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-contact")).newBuilder()
+                //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))
+                .build();
+    }
+
+    public static HttpUrl getPushPatientUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-patient")).newBuilder()
+                //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))
+                .build();
+    }
+
+    public static HttpUrl getPushReferralUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-referral")).newBuilder()
                 //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))
                 .build();
     }

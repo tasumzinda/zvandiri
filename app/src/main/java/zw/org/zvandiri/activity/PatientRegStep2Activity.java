@@ -218,12 +218,6 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
 
     public boolean validateLocal(){
         boolean isValid = true;
-        /*if(secondaryMobileNumber.getText().toString().isEmpty()){
-            secondaryMobileNumber.setError(this.getString(R.string.required_field_error));
-            isValid = false;
-        }else{
-            secondaryMobileNumber.setError(null);
-        }*/
         if(mobileOwner.getSelectedItem().equals(YesNo.NO)){
             if(ownerName.getText().toString().isEmpty()){
                 ownerName.setError(this.getString(R.string.required_field_error));

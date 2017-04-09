@@ -299,6 +299,18 @@
         <activity android:name=".activity.PatientReferralStep3Activity"/>
         <activity android:name=".activity.PatientReferralStep4Activity"/>
         <activity android:name=".activity.PatientRefferalStep2Activity"/>
+        <activity android:name=".activity.SelectionActivity"/>
+        <activity android:name=".activity.PatientReferralStep5Activity"/>
+        <activity android:name=".activity.PatientReferralStep6Activity"/>
+        <activity android:name=".activity.PatientReferralStep7Activity"/>
+        <activity android:name=".activity.PatientReferralStep8Activity"/>
+        <activity android:name=".activity.PatientReferralStep9Activity"/>
+        <activity android:name=".activity.PatientReferralStep10Activity"/>
+        <activity android:name=".activity.PatientReferralStep11Activity"/>
+        <activity android:name=".activity.PatientReferralStep12Activity"/>
+        <activity android:name=".activity.PatientReferralStep13Activity"/>
+        <activity android:name=".activity.PatientReferralStep14Activity"/>
+        <activity android:name=".activity.PatientReferralStep15Activity"/>
     </application>
 
 </manifest>

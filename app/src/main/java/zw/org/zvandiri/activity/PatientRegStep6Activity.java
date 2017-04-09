@@ -7,12 +7,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import zw.org.zvandiri.R;
-import zw.org.zvandiri.business.domain.Patient;
-import zw.org.zvandiri.business.domain.util.PatientChangeEvent;
-import zw.org.zvandiri.business.domain.util.YesNo;
+import zw.org.zvandiri.business.domain.*;
+import zw.org.zvandiri.business.domain.util.*;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
+import zw.org.zvandiri.business.util.UUIDGen;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by User on 4/4/2017.
@@ -134,9 +136,11 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
                     disabilityCategorys.setItemChecked(i, true);
                 }
             }*/
+        }else{
+            item = new Patient();
         }
         next.setOnClickListener(this);
-        setSupportActionBar(createToolBar("Create Patient Add Zvandiri Details Step 6 of 7  "));
+        setSupportActionBar(createToolBar("Create Patient Add Zvandiri Details Final"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -169,8 +173,9 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep6Activity.this, PatientRegStep7Activity.class);
-            intent.putExtra(AppUtil.DETAILS_ID, itemID);
+            Intent intent = new Intent(PatientRegStep6Activity.this, PatientListActivity.class);
+            save();
+            /*intent.putExtra(AppUtil.DETAILS_ID, itemID);
             intent.putExtra("dateOfBirth", dateOfBirth);
             intent.putExtra("firstName", firstName);
             intent.putExtra("lastName", lastName);
@@ -205,7 +210,7 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
             intent.putExtra("youngMumGroup", ((YesNo) youngMumGroup.getSelectedItem()).getCode());
             intent.putExtra("refererName", refererName);
             intent.putExtra("reasonForNotReachingOLevel", reasonForNotReachingOLevel);
-            intent.putExtra("OINumber", OINumber);
+            intent.putExtra("OINumber", OINumber);*/
             startActivity(intent);
             finish();
         }
@@ -221,4 +226,87 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         }
         return isValid;
     }*/
+
+    public void save(){
+        String patientId = UUIDGen.generateUUID();
+        if(itemID != null){
+            item.id = itemID;
+            item.dateModified = new Date();
+        }else{
+            item.id = patientId;
+            item.dateCreated = new Date();
+        }
+        item.pushed = 1;
+        item.address = address;
+        item.address1 = address1;
+        item.cat = (YesNo) cat.getSelectedItem();
+        item.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
+        item.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();
+        item.oINumber = OINumber;
+        if( checkDateFormat(dateJoined)){
+            item.dateJoined = DateUtil.getDateFromString(dateJoined);
+        }
+        if( checkDateFormat(dateTested)){
+            item.dateTested = DateUtil.getDateFromString(dateTested);
+        }
+        item.dateOfBirth = DateUtil.getDateFromString(dateOfBirth);
+        item.disability = YesNo.get(disability);
+        if(education != null && ! education.isEmpty()){
+            item.education = Education.getItem(education);
+        }
+        if(educationLevel != null && ! educationLevel.isEmpty()){
+            item.educationLevel = EducationLevel.getItem(educationLevel);
+        }
+        item.email = email;
+        item.firstName = firstName;
+        item.gender = Gender.get(gender);
+        item.hIVDisclosureLocation = HIVDisclosureLocation.get(hIVDisclosureLocation);
+        item.hivStatusKnown = YesNo.get(hivStatusKnown);
+        item.lastName = lastName;
+        item.middleName = middleName;
+        item.mobileNumber = mobileNumber;
+        item.mobileOwner = YesNo.get(mobileOwner);
+        if(mobileOwnerRelation != null && ! mobileOwnerRelation.isEmpty()){
+            item.mobileOwnerRelation = Relationship.getItem(mobileOwnerRelation);
+        }
+        item.ownerName = ownerName;
+        item.ownSecondaryMobile = YesNo.get(ownSecondaryMobile);
+        if(primaryClinic != null && ! primaryClinic.isEmpty()){
+            item.primaryClinic = Facility.getItem(primaryClinic);
+        }
+        if(referer != null && ! referer.isEmpty()){
+            item.referer = Referer.getItem(referer);
+        }
+        item.secondaryMobileNumber = secondaryMobileNumber;
+        item.secondaryMobileOwnerName = secondaryMobileOwnerName;
+        if(secondaryMobileownerRelation != null && ! secondaryMobileownerRelation.isEmpty()){
+            item.secondaryMobileownerRelation = Relationship.getItem(secondaryMobileownerRelation);
+        }
+        if(supportGroup != null && ! supportGroup.isEmpty()){
+            item.supportGroup = SupportGroup.getItem(supportGroup);
+        }
+        item.transmissionMode = TransmissionMode.get(transmissionMode);
+        item.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();
+        item.refererName = refererName;
+        if(reasonForNotReachingOLevel != null && ! reasonForNotReachingOLevel.isEmpty()){
+            item.reasonForNotReachingOLevel = ReasonForNotReachingOLevel.getItem(reasonForNotReachingOLevel);
+        }
+        item.save();
+        if(itemID != null){
+            for(PatientDisabilityCategoryContract c : PatientDisabilityCategoryContract.findByPatient(Patient.findById(itemID))){
+                c.delete();
+            }
+        }
+        for(int i = 0; i < disabilityCategorys.size(); i++){
+            PatientDisabilityCategoryContract contract = new PatientDisabilityCategoryContract();
+            contract.disabilityCategory = DisabilityCategory.getItem(disabilityCategorys.get(i));
+            if(itemID != null){
+                contract.patient = Patient.findById(itemID);
+            }else{
+                contract.patient = Patient.findById(patientId);
+            }
+            contract.id = UUIDGen.generateUUID();
+            contract.save();
+        }
+    }
 }

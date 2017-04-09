@@ -201,13 +201,13 @@ public class PatientRegStep7Activity extends BaseActivity implements View.OnClic
             item.id = patientId;
             item.dateCreated = new Date();
         }
-        item.pushed = false;
+        item.pushed = 1;
         item.address = address;
         item.address1 = address1;
         item.cat = YesNo.get(cat);
         item.consentToMHealth = YesNo.get(consentToMHealth);
         item.consentToPhoto = YesNo.get(consentToPhoto);
-        item.OINumber = OINumber;
+        item.oINumber = OINumber;
         /*if( ! dateJoined.isEmpty()){
             item.dateJoined = DateUtil.getDateFromString(dateJoined);
         }

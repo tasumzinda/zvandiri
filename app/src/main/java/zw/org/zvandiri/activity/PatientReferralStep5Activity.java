@@ -12,6 +12,7 @@ import android.widget.TextView;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.Referral;
 import zw.org.zvandiri.business.domain.ServicesReferred;
+import zw.org.zvandiri.business.domain.util.ReferalType;
 import zw.org.zvandiri.business.util.AppUtil;
 
 import java.util.ArrayList;
@@ -60,14 +61,14 @@ public class PatientReferralStep5Activity extends BaseActivity implements View.O
         attendingOfficer = intent.getStringExtra("attendingOfficer");
         designation = intent.getStringExtra("designation");
         actionTaken = intent.getIntExtra("actionTaken", 1);
-        servicesReferredArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServicesReferred.getAll());
+        servicesReferredArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServicesReferred.getByType(ReferalType.LABORATORY_DIAGNOSES));
         servicesReferred.setAdapter(servicesReferredArrayAdapter);
         servicesReferredArrayAdapter.notifyDataSetChanged();
         servicesReferred.setItemsCanFocus(false);
         servicesReferred.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         if(itemID != null){
             item = Referral.findById(itemID);
-            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) ServicesReferred.findByReferral(Referral.findById(itemID));
+            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) ServicesReferred.LabReq(Referral.findById(itemID));
             int count = servicesReferredArrayAdapter.getCount();
             for(int i = 0; i < count; i++){
                 ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
@@ -75,10 +76,10 @@ public class PatientReferralStep5Activity extends BaseActivity implements View.O
                     servicesReferred.setItemChecked(i, true);
                 }
             }
-            setSupportActionBar(createToolBar("Update Referrals-Step 2"));
+            setSupportActionBar(createToolBar("Update Referrals: Services Referred"));
         }else{
             item = new Referral();
-            setSupportActionBar(createToolBar("Add Referrals-Step 2"));
+            setSupportActionBar(createToolBar("Add Referrals: Services Referred"));
         }
         save.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -132,13 +133,13 @@ public class PatientReferralStep5Activity extends BaseActivity implements View.O
         finish();
     }
 
-    private ArrayList<ServicesReferred> getServicesReferred(){
-        ArrayList<ServicesReferred> a = new ArrayList<>();
+    private ArrayList<String> getServicesReferred(){
+        ArrayList<String> a = new ArrayList<>();
         for(int i = 0; i < servicesReferred.getCount(); i++){
             if(servicesReferred.isItemChecked(i)){
-                a.add(servicesReferredArrayAdapter.getItem(i));
+                a.add(servicesReferredArrayAdapter.getItem(i).id);
             }else{
-                a.remove(servicesReferredArrayAdapter.getItem(i));
+                a.remove(servicesReferredArrayAdapter.getItem(i).id);
             }
         }
         return a;

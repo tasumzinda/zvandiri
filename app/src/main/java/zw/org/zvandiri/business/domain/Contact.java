@@ -61,7 +61,6 @@ public class Contact extends Model {
     public Patient patient;
 
     @Expose
-    public String dateOfContact;
     @Column(name = "contact_date")
     public Date contactDate;
     @Expose
@@ -107,7 +106,7 @@ public class Contact extends Model {
     public boolean pushed = true;
     @Column(name = "is_new")
     public boolean isNew = false;
-    //@Expose
+    @Expose
     @Column(name = "lastClinicAppointmentDate")
     public Date lastClinicAppointmentDate;
     @Expose

@@ -67,7 +67,7 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
             firstName.setText(item.firstName);
             lastName.setText(item.lastName);
             middleName.setText(item.middleName != null ? item.middleName : "");
-            oiNumber.setText(item.OINumber);
+            oiNumber.setText(item.oINumber);
             int i = 0;
             for(Gender m : Gender.values()){
                 if(item.gender != null  && item.gender.equals(gender.getItemAtPosition(i))){

@@ -150,7 +150,7 @@ public class ArvHistActivity extends BaseActivity implements View.OnClickListene
             }
             arvHist.pushed = false;
             arvHist.save();
-            p.pushed = false;
+            p.pushed = 1;
             p.save();
             Intent intent = new Intent(ArvHistActivity.this, ArvHistListActivity.class);
             intent.putExtra(AppUtil.NAME, name);

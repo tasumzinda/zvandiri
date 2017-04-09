@@ -154,7 +154,7 @@ public class HivConInfectionItemActivity extends BaseActivity implements View.On
                item.patient = p;
                item.pushed = false;
                item.save();
-               p.pushed = false;
+               p.pushed = 1;
                p.save();
                Intent intent = new Intent(HivConInfectionItemActivity.this, HivConInfectionItemListActivity.class);
                intent.putExtra(AppUtil.NAME, name);

@@ -85,14 +85,14 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
         attendingOfficer = intent.getStringExtra("attendingOfficer");
         designation = intent.getStringExtra("designation");
         actionTaken = intent.getIntExtra("actionTaken", 1);
-        servicesReferredArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServicesReferred.getAll());
+        servicesReferredArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServicesReferred.getByType(ReferalType.LEGAL_SUPPORT));
         servicesReferred.setAdapter(servicesReferredArrayAdapter);
         servicesReferredArrayAdapter.notifyDataSetChanged();
         servicesReferred.setItemsCanFocus(false);
         servicesReferred.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         if(itemID != null){
             item = Referral.findById(itemID);
-            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) ServicesReferred.findByReferral(Referral.findById(itemID));
+            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) ServicesReferred.LegalAvailed(Referral.findById(itemID));
             int count = servicesReferredArrayAdapter.getCount();
             for(int i = 0; i < count; i++){
                 ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
@@ -100,10 +100,10 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
                     servicesReferred.setItemChecked(i, true);
                 }
             }
-            setSupportActionBar(createToolBar("Update Referrals-Step 2: Services Provided/Received"));
+            setSupportActionBar(createToolBar("Update Referrals: Services Provided/Received"));
         }else{
             item = new Referral();
-            setSupportActionBar(createToolBar("Add Referrals-Step 2: Services Provided/Received"));
+            setSupportActionBar(createToolBar("Add Referrals: Services Provided/Received"));
         }
         save.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -139,7 +139,7 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
     }
 
     public void onClick(View v){
-
+        save();
     }
 
     private ArrayList<ServicesReferred> getServicesReferred(){
@@ -166,10 +166,10 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
             item.isNew = true;
         }
         item.actionTaken = ReferralActionTaken.get(actionTaken);
-        if(referralDate != null){
+        if(checkDateFormat(referralDate)){
             item.referralDate = DateUtil.getDateFromString(referralDate);
         }
-        if(dateAttended != null){
+        if(checkDateFormat(dateAttended)){
             item.dateAttended = DateUtil.getDateFromString(dateAttended);
         }
         item.organisation = organisation;
@@ -366,8 +366,17 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        p.pushed = false;
-        p.save();
+        for(int i = 0; i < getServicesReferred().size(); i++){
+            ReferralLegalAvailedContract contract = new ReferralLegalAvailedContract();
+            contract.legalAvailed = getServicesReferred().get(i);
+            if(itemID != null){
+                contract.referral = Referral.findById(itemID);
+            }else{
+                contract.referral = Referral.findById(contactId);
+            }
+            contract.id = UUIDGen.generateUUID();
+            contract.save();
+        }
         AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
         Intent intent = new Intent(this, PatientReferralListActivity.class);
         intent.putExtra(AppUtil.NAME, name);

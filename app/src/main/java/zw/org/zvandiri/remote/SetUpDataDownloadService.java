@@ -55,7 +55,6 @@ public class SetUpDataDownloadService extends IntentService{
         Position.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Enhanced.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Stable.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
-        //Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ActionTaken.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Province.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Relationship.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
@@ -72,5 +71,6 @@ public class SetUpDataDownloadService extends IntentService{
         ArvMedicine.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         HospCause.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ReasonForNotReachingOLevel.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
+        //Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
     }
 }

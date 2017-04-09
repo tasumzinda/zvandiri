@@ -194,7 +194,9 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
                 intent.putExtra("secondaryMobileownerRelation", secondaryMobileownerRelation);
                 intent.putExtra("address", address.getText().toString());
                 intent.putExtra("address1", address1.getText().toString());
-                intent.putExtra("primaryClinic", ((Facility) primaryClinic.getSelectedItem()).id);
+                if(primaryClinic.getSelectedItem() != null){
+                    intent.putExtra("primaryClinic", ((Facility) primaryClinic.getSelectedItem()).id);
+                }
                 intent.putExtra("OINumber", OINumber);
                 if(supportGroup.getSelectedItem() != null){
                     intent.putExtra("supportGroup", ((SupportGroup) supportGroup.getSelectedItem()).id);

@@ -72,9 +72,6 @@ public class District extends Model {
     @Column(name = "province")
     public Province province;
 
-    @Expose
-    @Column(name = "short_name")
-    public String shortName;
 
     private static final Type type = new TypeToken<List<District>>(){}.getType();
 
@@ -139,7 +136,6 @@ public class District extends Model {
                                 district.deleted = jsonObject.getBoolean("deleted");
                                 district.description = jsonObject.getString("description");
                                 district.name = jsonObject.getString("name");
-                                district.shortName = jsonObject.getString("shortName");
                                 district.version = jsonObject.getLong("version");
                                 JSONObject province = jsonObject.getJSONObject("province");
                                 district.province = Province.getItem(province.getString("id"));

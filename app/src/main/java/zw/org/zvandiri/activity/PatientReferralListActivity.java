@@ -65,7 +65,7 @@ public class PatientReferralListActivity extends BaseActivity implements Adapter
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientReferralListActivity.this, OperationsDashBoard.class);
+        Intent intent = new Intent(PatientReferralListActivity.this, SelectionActivity.class);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         startActivity(intent);

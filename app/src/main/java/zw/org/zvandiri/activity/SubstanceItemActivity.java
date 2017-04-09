@@ -204,7 +204,7 @@ public class SubstanceItemActivity extends BaseActivity implements View.OnClickL
                 typeAmount.setText(String.valueOf(item.typeAmount));
                 item.pushed = false;
                 item.save();
-                p.pushed = false;
+                p.pushed = 1;
                 p.save();
                 AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
                 Intent intent = new Intent(SubstanceItemActivity.this, SubstanceItemListActivity.class);

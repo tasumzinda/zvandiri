@@ -60,6 +60,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         lastClinicAppointmentDate = intent.getStringExtra("lastClinicAppointmentDate");
         attendedClinicAppointment = intent.getIntExtra("attendedClinicAppointment", 0);
         id = intent.getStringExtra(AppUtil.ID);
+        Log.d("ID", id);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         contactDate = intent.getStringExtra("contactDate");
@@ -196,27 +197,6 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     public void onClick(View view) {
         if(view.getId() == next.getId()){
             save();
-            Intent intent = new Intent(PatientContactActivityStep2.this, PatientContactListActivity.class);
-            /*intent.putExtra(AppUtil.NAME, name);
-            intent.putExtra(AppUtil.ID, id);
-            intent.putExtra(AppUtil.DETAILS_ID, itemID);
-            intent.putExtra("contactDate", contactDate);
-            intent.putExtra("subjective", subjective);
-            intent.putExtra("objective", objective);
-            intent.putExtra("plan", plan);
-            intent.putExtra("location", location);
-            intent.putExtra("position", position);
-            intent.putExtra("externalReferral", externalReferral);
-            intent.putExtra("internalReferral", internalReferral);
-            intent.putExtra("reason", reason);
-            intent.putExtra("followUp", followUp);
-            intent.putExtra("careLevel", ((CareLevel) careLevel.getSelectedItem()).getCode());
-            intent.putStringArrayListExtra("enhanceds", getEnhanceds());
-            intent.putStringArrayListExtra("stables", getStables());
-            intent.putExtra("attendedClinicAppointment", attendedClinicAppointment);
-            intent.putExtra("lastClinicAppointmentDate", lastClinicAppointmentDate);*/
-            startActivity(intent);
-            finish();
         }
     }
 
@@ -244,9 +224,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
             c.externalReferral = ExternalReferral.getItem(externalReferral);
         }
         c.location = Location.getItem(location);
-        //c.objective = objective;
-        Patient p = Patient.findById(id);
-        c.patient = p;
+        c.patient =Patient.getById(id);
         //c.plan = plan;
         c.position = Position.getItem(position);
         c.reason = Reason.get(reason);
@@ -254,9 +232,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         c.pushed = false;
         c.attendedClinicAppointment = YesNo.get(attendedClinicAppointment);
         c.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
-       /* if(lastClinicAppointmentDate != null){
+        if(checkDateFormat(lastClinicAppointmentDate)){
             c.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate);
-        }*/
+        }
         c.save();
         if(itemID != null){
             /*for(ContactAssessmentContract c : ContactAssessmentContract.findByContact(Contact.findById(itemID))){
@@ -300,12 +278,12 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 contract.save();
             }
         }
-        p.pushed = false;
-        p.save();
         AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
         Intent intent = new Intent(PatientContactActivityStep2.this, PatientContactListActivity.class);
         intent.putExtra(AppUtil.NAME, name);
+        Log.d("name", name);
         intent.putExtra(AppUtil.ID, id);
+        Log.d("id", id);
         startActivity(intent);
         finish();
     }

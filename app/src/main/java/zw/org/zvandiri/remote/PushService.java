@@ -38,7 +38,7 @@ public class PushService extends IntentService{
                 c.assessments = Assessment.findByContact(c);
                 c.stables = Stable.findByContact(c);
                 c.enhanceds = Enhanced.findByContact(c);
-                c.dateOfContact = c.contactDate.toString();
+                //c.dateOfContact = c.contactDate.toString();
                 if(c.isNew == true){
                     c.id = "";
                 }

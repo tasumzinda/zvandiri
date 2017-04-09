@@ -193,7 +193,7 @@ public class ObstetricHistActivity extends BaseActivity implements View.OnClickL
             item.pregType = (PregType) pregType.getSelectedItem();
             item.pushed = false;
             item.save();
-            p.pushed = false;
+            p.pushed = 1;
             p.save();
             Intent intent = new Intent(ObstetricHistActivity.this, ObstetricHistListActivity.class);
             intent.putExtra(AppUtil.NAME, name);

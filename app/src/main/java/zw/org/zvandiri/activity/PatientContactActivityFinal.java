@@ -116,7 +116,6 @@ public class PatientContactActivityFinal extends BaseActivity implements View.On
         if(contactDate != null){
             c.contactDate = DateUtil.getDateFromString(contactDate);
         }
-
         if(externalReferral != null){
             c.externalReferral = ExternalReferral.getItem(externalReferral);
         }
@@ -134,6 +133,9 @@ public class PatientContactActivityFinal extends BaseActivity implements View.On
        /* if(lastClinicAppointmentDate != null){
             c.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate);
         }*/
+       if(checkDateFormat(lastClinicAppointmentDate)){
+           c.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate);
+       }
         c.save();
         if(itemID != null){
             for(ContactAssessmentContract c : ContactAssessmentContract.findByContact(Contact.findById(itemID))){
@@ -177,7 +179,7 @@ public class PatientContactActivityFinal extends BaseActivity implements View.On
                 contract.save();
             }
         }
-        p.pushed = false;
+        p.pushed = 1;
         p.save();
         AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
         Intent intent = new Intent(PatientContactActivityFinal.this, PatientContactListActivity.class);

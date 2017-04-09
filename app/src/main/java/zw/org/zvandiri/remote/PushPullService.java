@@ -74,32 +74,127 @@ public class PushPullService extends IntentService {
         }*/
         try{
             for(Contact item : getAllContacts()){
-                //int res = Integer.parseInt(run(AppUtil.getPushContactUrl(context), item));
-                /*if(res == 1){
-                    for(ContactAssessmentContract c : ContactAssessmentContract.findByContact(Contact.findById(item.id))){
-                        c.delete();
-                    }
-                    for(ContactActionTakenContract c : ContactActionTakenContract.findByContact(Contact.findById(item.id))){
-                        c.delete();
-                    }
-                    for(ContactIntensiveContract c : ContactIntensiveContract.findByContact(Contact.findById(item.id))){
-                        if(c != null)
-                            c.delete();
-                        Log.d("Deleted intensives", c.intensive.name);
-                    }
-                    for(ContactStableContract c : ContactStableContract.findByContact(Contact.findById(item.id))){
+                int res = Integer.parseInt(run(AppUtil.getPushContactUrl(context), item));
+                if(res == 1){
+                    for(ContactStableContract c : ContactStableContract.findByContact(item)){
                         if(c != null)
                             c.delete();
                         Log.d("Deleted stables", c.stable.name);
                     }
-                    for(ContactEnhancedContract c: ContactEnhancedContract.findByContact(Contact.findById(item.id))){
+                    for(ContactEnhancedContract c: ContactEnhancedContract.findByContact(item)){
                         if(c != null)
                             c.delete();
                         Log.d("Deleted enhanceds", c.enhanced.name);
                     }
                     item.delete();
-                }*/
-                Log.d("Result", "Result " + run(AppUtil.getPushContactUrl(context), item));
+                    Log.d("Deleted", " " + item.contactDate);
+                }
+
+                Log.d("Result", "Result " + res);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            result = Activity.RESULT_CANCELED;
+        }
+        try{
+            for(Patient item : getAllPatients()){
+                Log.d("Size", getAllPatients() + " ");
+                int res = Integer.parseInt(run(AppUtil.getPushPatientUrl(context), item));
+                if(res == 1){
+                    for(PatientDisabilityCategoryContract c : PatientDisabilityCategoryContract.findByPatient(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted disability", c.disabilityCategory.name);
+                    }
+                    item.delete();
+                    Log.d("Deleted", " " + item.firstName);
+                }
+
+                Log.d("Result", "Result " + res);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            result = Activity.RESULT_CANCELED;
+        }
+        try{
+            for(Referral item : getAllReferrals()){
+                int res = Integer.parseInt(run(AppUtil.getPushReferralUrl(context), item));
+                if(res == 1){
+                    for(ReferralHivStiServicesReqContract c : ReferralHivStiServicesReqContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted hivServicesReq", c.hivStiServicesReq.name);
+                    }
+                    for(ReferralHivStiServicesAvailedContract c : ReferralHivStiServicesAvailedContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted hivAvailed", c.hivStiServicesAvailed.name);
+                    }
+                    for(ReferralLaboratoryAvailedContract c : ReferralLaboratoryAvailedContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted labAvailed", c.laboratoryAvailed.name);
+                    }
+                    for(ReferralLaboratoryReqContract c : ReferralLaboratoryReqContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted laboratoryReq", c.laboratoryReq.name);
+                    }
+                    for(ReferralLegalAvailedContract c : ReferralLegalAvailedContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted legalAvailed", c.legalAvailed.name);
+                    }
+                    for(ReferralLegalReqContract c : ReferralLegalReqContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted legalReq", c.legalReq.name);
+                    }
+                    for(ReferralOIArtAvailedContract c : ReferralOIArtAvailedContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted oiArtAvailed", c.oiArtAvailed.name);
+                    }
+                    for(ReferralOIArtReqContract c : ReferralOIArtReqContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted oiArtReq", c.oiArtReq.name);
+                    }
+                    for(ReferralPsychAvailedContract c : ReferralPsychAvailedContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted psychAvailed", c.psychAvailed.name);
+                    }
+                    for(ReferralPsychReqContract c : ReferralPsychReqContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted psychReq", c.psychReq.name);
+                    }
+                    for(ReferralSrhAvailedContract c : ReferralSrhAvailedContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted srhAvailed", c.srhAvailed.name);
+                    }
+                    for(ReferralSrhReqContract c : ReferralSrhReqContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted srhReq", c.srhReq.name);
+                    }
+                    for(ReferralTbAvailedContract c : ReferralTbAvailedContract.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted tbAvailed", c.tbAvailed.name);
+                    }
+                    for(ReferralTbReqContact c : ReferralTbReqContact.findByReferral(item)){
+                        if(c != null)
+                            c.delete();
+                        Log.d("Deleted tbReq", c.tbReq.name);
+                    }
+                    item.delete();
+                    Log.d("Deleted", " " + item.referralDate);
+                }
+
+                Log.d("Result", "Result " + res);
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -120,7 +215,26 @@ public class PushPullService extends IntentService {
         client = AppUtil.connectionSettings(client);
         client = AppUtil.getUnsafeOkHttpClient(client);
         client = AppUtil.createAuthenticationData(client, context);
-        form.dateOfContact = AppUtil.getStringDate(form.contactDate);
+        String json = AppUtil.createGson().toJson(form);
+        return AppUtil.getResponeBody(client, httpUrl, json);
+    }
+
+    private String run(HttpUrl httpUrl, Patient form) {
+
+        OkHttpClient client = new OkHttpClient();
+        client = AppUtil.connectionSettings(client);
+        client = AppUtil.getUnsafeOkHttpClient(client);
+        client = AppUtil.createAuthenticationData(client, context);
+        String json = AppUtil.createGson().toJson(form);
+        return AppUtil.getResponeBody(client, httpUrl, json);
+    }
+
+    private String run(HttpUrl httpUrl, Referral form) {
+
+        OkHttpClient client = new OkHttpClient();
+        client = AppUtil.connectionSettings(client);
+        client = AppUtil.getUnsafeOkHttpClient(client);
+        client = AppUtil.createAuthenticationData(client, context);
         String json = AppUtil.createGson().toJson(form);
         return AppUtil.getResponeBody(client, httpUrl, json);
     }
@@ -400,10 +514,43 @@ public class PushPullService extends IntentService {
             c.assessments = Assessment.findByContact(c);
             c.stables = Stable.findByContact(c);
             c.enhanceds = Enhanced.findByContact(c);
-            c.dateOfContact = AppUtil.getStringDate(c.contactDate);
+            c.id = "";
             contacts.add(c);
         }
         return contacts;
+    }
+
+    public List<Patient> getAllPatients(){
+        final List<Patient> patients = new ArrayList<>();
+        for(Patient c : Patient.findByPushed()){
+            c.disabilityCategorys = DisabilityCategory.findByPatient(c);
+            c.id = "";
+            patients.add(c);
+        }
+        return patients;
+    }
+
+    public List<Referral> getAllReferrals(){
+        final List<Referral> referrals = new ArrayList<>();
+        for(Referral c : Referral.getAll()){
+            c.hivStiServicesAvailed = ServicesReferred.HivStiAvailed(c);
+            c.hivStiServicesReq = ServicesReferred.HivStiReq(c);
+            c.laboratoryAvailed = ServicesReferred.LabAvailed(c);
+            c.laboratoryReq = ServicesReferred.LabReq(c);
+            c.legalAvailed = ServicesReferred.LegalAvailed(c);
+            c.legalReq = ServicesReferred.LegalReq(c);
+            c.oiArtAvailed = ServicesReferred.OIArtAvailed(c);
+            c.oiArtReq = ServicesReferred.OIArtReq(c);
+            c.psychAvailed = ServicesReferred.PsychAvailed(c);
+            c.psychReq = ServicesReferred.PsychReq(c);
+            c.srhAvailed = ServicesReferred.SrhAvailed(c);
+            c.srhReq = ServicesReferred.SrhReq(c);
+            c.tbAvailed = ServicesReferred.TbAvailed(c);
+            c.tbReq = ServicesReferred.TbReq(c);
+            c.id = "";
+            referrals.add(c);
+        }
+        return referrals;
     }
 
 
