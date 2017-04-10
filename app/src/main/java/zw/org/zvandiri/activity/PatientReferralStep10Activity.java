@@ -86,10 +86,10 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
                     servicesReferred.setItemChecked(i, true);
                 }
             }
-            setSupportActionBar(createToolBar("Update Referrals-Step 2: Services Referred/Received"));
+            setSupportActionBar(createToolBar("Update Referrals: Services Referred/Received"));
         }else{
             item = new Referral();
-            setSupportActionBar(createToolBar("Add Referrals-Step 2: Services Referred/Received"));
+            setSupportActionBar(createToolBar("Add Referrals: Services Referred/Received"));
         }
         save.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

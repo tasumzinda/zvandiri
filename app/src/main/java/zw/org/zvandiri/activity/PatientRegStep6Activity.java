@@ -59,6 +59,7 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     private String reasonForNotReachingOLevel;
     private String refererName;
     private String OINumber;
+    private TextView youngMumGroupLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,7 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         consentToMHealth = (Spinner) findViewById(R.id.consentToMHealth);
         cat = (Spinner) findViewById(R.id.cat);
         youngMumGroup = (Spinner) findViewById(R.id.youngMumGroup);
+        youngMumGroupLabel = (TextView) findViewById(R.id.label);
         ArrayAdapter<YesNo> consentToPhotoArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
         consentToPhotoArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         consentToPhoto.setAdapter(consentToPhotoArrayAdapter);
@@ -117,6 +119,14 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         ArrayAdapter<YesNo> youngMumGroupArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
         youngMumGroupArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         youngMumGroup.setAdapter(youngMumGroupArrayAdapter);
+        Gender g = Gender.get(gender);
+        if(g.equals(Gender.FEMALE)){
+            youngMumGroup.setVisibility(View.VISIBLE);
+            youngMumGroupLabel.setVisibility(View.VISIBLE);
+        }else{
+            youngMumGroup.setVisibility(View.GONE);
+            youngMumGroupLabel.setVisibility(View.GONE);
+        }
         youngMumGroupArrayAdapter.notifyDataSetChanged();
         if(itemID != null){
             item = Patient.findById(itemID);
@@ -286,7 +296,9 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
             item.supportGroup = SupportGroup.getItem(supportGroup);
         }
         item.transmissionMode = TransmissionMode.get(transmissionMode);
-        item.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();
+        if(youngMumGroup.getVisibility() == View.VISIBLE){
+            item.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();
+        }
         item.refererName = refererName;
         if(reasonForNotReachingOLevel != null && ! reasonForNotReachingOLevel.isEmpty()){
             item.reasonForNotReachingOLevel = ReasonForNotReachingOLevel.getItem(reasonForNotReachingOLevel);

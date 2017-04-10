@@ -34,9 +34,6 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     private String id;
     private String name;
     private String contactDate;
-    /*private String subjective;
-    private String objective;
-    private String plan;*/
     private String location;
     private String externalReferral;
     private String internalReferral;
@@ -64,9 +61,6 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         contactDate = intent.getStringExtra("contactDate");
-        /*subjective = intent.getStringExtra("subjective");
-        objective = intent.getStringExtra("objective");
-        plan = intent.getStringExtra("plan");*/
         location = intent.getStringExtra("location");
         externalReferral = intent.getStringExtra("externalReferral");
         internalReferral = intent.getStringExtra("internalReferral");
@@ -213,22 +207,20 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         }
         c.careLevel = (CareLevel) careLevel.getSelectedItem();
         c.followUp = FollowUp.get(followUp);
-        if(internalReferral != null){
+        if(internalReferral != null && internalReferral.isEmpty()){
             c.internalReferral = InternalReferral.getItem(internalReferral);
         }
         if(contactDate != null){
             c.contactDate = DateUtil.getDateFromString(contactDate);
         }
 
-        if(externalReferral != null){
+        if(externalReferral != null && externalReferral.isEmpty()){
             c.externalReferral = ExternalReferral.getItem(externalReferral);
         }
         c.location = Location.getItem(location);
         c.patient =Patient.getById(id);
-        //c.plan = plan;
         c.position = Position.getItem(position);
         c.reason = Reason.get(reason);
-        //c.subjective = subjective;
         c.pushed = false;
         c.attendedClinicAppointment = YesNo.get(attendedClinicAppointment);
         c.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
@@ -237,22 +229,8 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         }
         c.save();
         if(itemID != null){
-            /*for(ContactAssessmentContract c : ContactAssessmentContract.findByContact(Contact.findById(itemID))){
-                c.delete();
-            }*/
             deleteCareLevelSelections();
         }
-        /*for(int i = 0; i < assessments.size(); i++){
-            ContactAssessmentContract contract = new ContactAssessmentContract();
-            contract.assessment = Assessment.getItem(assessments.get(i));
-            if(itemID != null){
-                contract.contact = Contact.findById(itemID);
-            }else{
-                contract.contact = Contact.findById(contactId);
-            }
-            contract.id = UUIDGen.generateUUID();
-            contract.save();
-        }*/
         if(careLevel.getSelectedItem().equals(CareLevel.ENHANCED)){
             for(int i = 0; i < getEnhanceds().size(); i++){
                 ContactEnhancedContract contract = new ContactEnhancedContract();
@@ -279,11 +257,14 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
             }
         }
         AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
-        Intent intent = new Intent(PatientContactActivityStep2.this, PatientContactListActivity.class);
+        Intent intent;
+        if(c.actionTaken.equals(ActionTaken.findByName("External Referral"))){
+            intent = new Intent(PatientContactActivityStep2.this, PatientReferralListActivity.class);
+        }else{
+            intent = new Intent(PatientContactActivityStep2.this, PatientContactListActivity.class);
+        }
         intent.putExtra(AppUtil.NAME, name);
-        Log.d("name", name);
         intent.putExtra(AppUtil.ID, id);
-        Log.d("id", id);
         startActivity(intent);
         finish();
     }
@@ -315,12 +296,10 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         for(ContactStableContract c : ContactStableContract.findByContact(Contact.findById(itemID))){
             if(c != null)
                 c.delete();
-            Log.d("Deleted stables", c.stable.name);
         }
         for(ContactEnhancedContract c: ContactEnhancedContract.findByContact(Contact.findById(itemID))){
             if(c != null)
                 c.delete();
-            Log.d("Deleted enhanceds", c.enhanced.name);
         }
     }
 }

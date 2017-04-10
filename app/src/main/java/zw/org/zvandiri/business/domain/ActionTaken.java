@@ -81,6 +81,13 @@ public class ActionTaken extends Model {
                 .execute();
     }
 
+    public static ActionTaken findByName(String name){
+        return new Select()
+                .from(ActionTaken.class)
+                .where("name = ?", name)
+                .executeSingle();
+    }
+
     public static void deleteItem(String id) {
         new Delete().from(ActionTaken.class).where("id = ?", id).executeSingle();
     }

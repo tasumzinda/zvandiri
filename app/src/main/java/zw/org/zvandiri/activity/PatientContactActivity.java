@@ -23,9 +23,6 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     private Spinner reason;
     private Spinner externalReferral;
     private Spinner internalReferral;
-    /*private EditText subjective;
-    private EditText objective;
-    private EditText plan;*/
     private Spinner followUp;
     TextView externalReferralLabel;
     TextView internalReferralLabel;
@@ -36,7 +33,6 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     private String id;
     private String name;
     private String itemID;
-    private EditText[] fields;
     DatePickerDialog dialog;
     DatePickerDialog dialog1;
 
@@ -52,11 +48,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         externalReferral = (Spinner) findViewById(R.id.externalReferral);
         internalReferral = (Spinner) findViewById(R.id.internalReferral);
         lastClinicAppointmentDate = (EditText) findViewById(R.id.lastClinicAppointmentDate);
-        /*subjective = (EditText) findViewById(R.id.subjective);
-        objective = (EditText) findViewById(R.id.objective);
-        plan = (EditText) findViewById(R.id.plan);*/
         followUp = (Spinner) findViewById(R.id.followUp);
-        //fields = new EditText[] {contactDate, subjective, objective, plan};
         save = (Button) findViewById(R.id.btn_save);
         externalReferralLabel = (TextView) findViewById(R.id.externalReferralLabel);
         internalReferralLabel = (TextView) findViewById(R.id.internalReferralLabel);
@@ -115,9 +107,6 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         if(itemID != null){
             item = Contact.findById(itemID);
             updateLabel(item.contactDate, contactDate);
-            /*subjective.setText(item.subjective);
-            objective.setText(item.objective);
-            plan.setText(item.plan);*/
             int i = 0;
             for(Location m : Location.getAll()){
                 if(item.location != null && item.location.equals(location.getItemAtPosition(i))){
@@ -186,6 +175,11 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                     internalReferral.setVisibility(View.VISIBLE);
                     externalReferral.setVisibility(View.GONE);
                     externalReferralLabel.setVisibility(View.GONE);
+                }else{
+                    internalReferral.setVisibility(View.GONE);
+                    internalReferralLabel.setVisibility(View.GONE);
+                    externalReferral.setVisibility(View.GONE);
+                    externalReferralLabel.setVisibility(View.GONE);
                 }
             }
 
@@ -236,33 +230,31 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             dialog1.show();
         }
         if(view.getId() == save.getId()){
-            //if(validate(fields)){
-                if(validateLocal()){
-                    Intent intent = new Intent(PatientContactActivity.this, PatientContactActivityStep2.class);
-                    intent.putExtra(AppUtil.NAME, name);
-                    intent.putExtra(AppUtil.ID, id);
-                    intent.putExtra(AppUtil.DETAILS_ID, itemID);
-                    intent.putExtra("contactDate", contactDate.getText().toString());
-                    /*intent.putExtra("subjective", subjective.getText().toString());
-                    intent.putExtra("objective", objective.getText().toString());
-                    intent.putExtra("plan", plan.getText().toString());*/
-                    Location loc = (Location) location.getSelectedItem();
-                    intent.putExtra("location", loc.id);
-                    Position pos = (Position) position.getSelectedItem();
-                    intent.putExtra("position", pos.id);
+            if(validateLocal()){
+                Intent intent = new Intent(PatientContactActivity.this, PatientContactActivityStep2.class);
+                intent.putExtra(AppUtil.NAME, name);
+                intent.putExtra(AppUtil.ID, id);
+                intent.putExtra(AppUtil.DETAILS_ID, itemID);
+                intent.putExtra("contactDate", contactDate.getText().toString());
+                Location loc = (Location) location.getSelectedItem();
+                intent.putExtra("location", loc.id);
+                Position pos = (Position) position.getSelectedItem();
+                intent.putExtra("position", pos.id);
+                if(externalReferral.getVisibility() == View.VISIBLE){
                     ExternalReferral extRef = (ExternalReferral) externalReferral.getSelectedItem();
                     intent.putExtra("externalReferral", extRef.id);
+                }
+                if(internalReferral.getVisibility() == View.VISIBLE){
                     InternalReferral intRef = (InternalReferral) internalReferral.getSelectedItem();
                     intent.putExtra("internalReferral", intRef.id);
-                    intent.putExtra("reason", ((Reason) reason.getSelectedItem()).getCode());
-                    intent.putExtra("followUp", ((FollowUp) followUp.getSelectedItem()).getCode());
-                    intent.putExtra("attendedClinicAppointment", ((YesNo) attendedClinicAppointment.getSelectedItem()).getCode());
-                    intent.putExtra("lastClinicAppointmentDate", lastClinicAppointmentDate.getText().toString());
-                    startActivity(intent);
-                    finish();
                 }
-
-            //}
+                intent.putExtra("reason", ((Reason) reason.getSelectedItem()).getCode());
+                intent.putExtra("followUp", ((FollowUp) followUp.getSelectedItem()).getCode());
+                intent.putExtra("attendedClinicAppointment", ((YesNo) attendedClinicAppointment.getSelectedItem()).getCode());
+                intent.putExtra("lastClinicAppointmentDate", lastClinicAppointmentDate.getText().toString());
+                startActivity(intent);
+                finish();
+            }
 
         }
     }

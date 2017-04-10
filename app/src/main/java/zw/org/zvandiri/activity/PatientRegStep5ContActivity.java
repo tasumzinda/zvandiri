@@ -62,7 +62,6 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step5_cont);
-        //Log.d("reason", "1. " + ReasonForNotReachingOLevel.getItem(reasonForNotReachingOLevel).name);
         Intent intent = getIntent();
         OINumber = intent.getStringExtra("OINumber");
         refererName = intent.getStringExtra("refererName");

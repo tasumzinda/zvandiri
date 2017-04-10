@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import zw.org.zvandiri.business.domain.util.ReferralActionTaken;
+import zw.org.zvandiri.business.util.DateUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -113,7 +114,7 @@ public class Referral extends Model {
     }
 
     public String toString(){
-        return "Referral Status: " /*+ referralStatus.getName()*/;
+        return "Referral Date: " + DateUtil.formatDate(referralDate);
     }
 
     public static List<Referral> findByPatient(Patient patient){

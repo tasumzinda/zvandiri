@@ -13,8 +13,10 @@ import zw.org.zvandiri.business.domain.util.HIVDisclosureLocation;
 import zw.org.zvandiri.business.domain.util.TransmissionMode;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by User on 4/3/2017.
@@ -241,14 +243,17 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
         }
     }
 
-    /*public boolean validateLocal(){
+    public boolean validateLocal(){
         boolean isValid = true;
-        if( ! checkDateFormat(dateOfBirth.getText().toString())){
-            dateOfBirth.setError(getResources().getString(R.string.date_format_error));
-            isValid = false;
-        }else{
-            dateOfBirth.setError(null);
+        Date today = new Date();
+        if( ! dateTested.getText().toString().isEmpty()){
+            if(DateUtil.getDateFromString(dateTested.getText().toString()).after(today)){
+                dateTested.setError(this.getString(R.string.date_aftertoday));
+                isValid = false;
+            }else{
+                dateTested.setError(null);
+            }
         }
         return isValid;
-    }*/
+    }
 }

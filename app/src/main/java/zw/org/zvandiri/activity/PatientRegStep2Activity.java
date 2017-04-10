@@ -206,8 +206,12 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
                 intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName.getText().toString());
                 intent.putExtra("mobileOwner", ((YesNo) mobileOwner.getSelectedItem()).getCode());
                 intent.putExtra("ownSecondaryMobile", ((YesNo) ownSecondaryMobile.getSelectedItem()).getCode());
-                intent.putExtra("mobileOwnerRelation", ((Relationship) mobileOwnerRelation.getSelectedItem()).id);
-                intent.putExtra("secondaryMobileownerRelation", ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id);
+                if(mobileOwnerRelation.getVisibility() == View.VISIBLE){
+                    intent.putExtra("mobileOwnerRelation", ((Relationship) mobileOwnerRelation.getSelectedItem()).id);
+                }
+                if(secondaryMobileownerRelation.getVisibility() == View.VISIBLE){
+                    intent.putExtra("secondaryMobileownerRelation", ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id);
+                }
                 intent.putExtra("OINumber", OINumber);
                 startActivity(intent);
                 finish();
@@ -218,7 +222,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
 
     public boolean validateLocal(){
         boolean isValid = true;
-        if(mobileOwner.getSelectedItem().equals(YesNo.NO)){
+        if(mobileOwner.getSelectedItem().equals(YesNo.NO) &&  ! mobileNumber.getText().toString().isEmpty()){
             if(ownerName.getText().toString().isEmpty()){
                 ownerName.setError(this.getString(R.string.required_field_error));
                 isValid = false;
@@ -226,7 +230,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
                 ownerName.setError(null);
             }
         }
-        if(ownSecondaryMobile.getSelectedItem().equals(YesNo.NO)){
+        if(ownSecondaryMobile.getSelectedItem().equals(YesNo.NO) &&  ! secondaryMobileNumber.getText().toString().isEmpty()){
             if(secondaryMobileOwnerName.getText().toString().isEmpty()){
                 secondaryMobileOwnerName.setError(this.getString(R.string.required_field_error));
                 isValid = false;

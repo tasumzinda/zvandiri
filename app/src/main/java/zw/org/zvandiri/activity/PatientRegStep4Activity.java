@@ -10,8 +10,10 @@ import android.widget.*;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by User on 4/3/2017.
@@ -190,37 +192,40 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
             dialog.show();
         }
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep4Activity.this, PatientRegStep5Activity.class);
-            intent.putExtra(AppUtil.DETAILS_ID, itemID);
-            intent.putExtra("dateOfBirth", dateOfBirth);
-            intent.putExtra("firstName", firstName);
-            intent.putExtra("lastName", lastName);
-            intent.putExtra("middleName", middleName);
-            intent.putExtra("gender", gender);
-            intent.putExtra("mobileNumber", mobileNumber);
-            intent.putExtra("ownerName", ownerName);
-            intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);
-            intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName);
-            intent.putExtra("mobileOwner", mobileOwner);
-            intent.putExtra("ownSecondaryMobile", ownSecondaryMobile);
-            intent.putExtra("mobileOwnerRelation", mobileOwnerRelation);
-            intent.putExtra("secondaryMobileownerRelation", secondaryMobileownerRelation);
-            intent.putExtra("address", address);
-            intent.putExtra("address1", address1);
-            intent.putExtra("primaryClinic", primaryClinic);
-            intent.putExtra("supportGroup", supportGroup);
-            intent.putExtra("dateJoined", dateJoined.getText().toString());
-            intent.putExtra("education", ((Education) education.getSelectedItem()).id);
-            intent.putExtra("educationLevel", ((EducationLevel) educationLevel.getSelectedItem()).id);
-            intent.putExtra("referer", ((Referer) referer.getSelectedItem()).id);
-            intent.putExtra("email", email);
-            intent.putExtra("refererName", refererName.getText().toString());
-            intent.putExtra("OINumber", OINumber);
-            if(reasonForNotReachingOLevel.getVisibility() == View.VISIBLE){
-                intent.putExtra("reasonForNotReachingOLevel", ((ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getSelectedItem()).id);
+            if(validateLocal()){
+                Intent intent = new Intent(PatientRegStep4Activity.this, PatientRegStep5Activity.class);
+                intent.putExtra(AppUtil.DETAILS_ID, itemID);
+                intent.putExtra("dateOfBirth", dateOfBirth);
+                intent.putExtra("firstName", firstName);
+                intent.putExtra("lastName", lastName);
+                intent.putExtra("middleName", middleName);
+                intent.putExtra("gender", gender);
+                intent.putExtra("mobileNumber", mobileNumber);
+                intent.putExtra("ownerName", ownerName);
+                intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);
+                intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName);
+                intent.putExtra("mobileOwner", mobileOwner);
+                intent.putExtra("ownSecondaryMobile", ownSecondaryMobile);
+                intent.putExtra("mobileOwnerRelation", mobileOwnerRelation);
+                intent.putExtra("secondaryMobileownerRelation", secondaryMobileownerRelation);
+                intent.putExtra("address", address);
+                intent.putExtra("address1", address1);
+                intent.putExtra("primaryClinic", primaryClinic);
+                intent.putExtra("supportGroup", supportGroup);
+                intent.putExtra("dateJoined", dateJoined.getText().toString());
+                intent.putExtra("education", ((Education) education.getSelectedItem()).id);
+                intent.putExtra("educationLevel", ((EducationLevel) educationLevel.getSelectedItem()).id);
+                intent.putExtra("referer", ((Referer) referer.getSelectedItem()).id);
+                intent.putExtra("email", email);
+                intent.putExtra("refererName", refererName.getText().toString());
+                intent.putExtra("OINumber", OINumber);
+                if(reasonForNotReachingOLevel.getVisibility() == View.VISIBLE){
+                    intent.putExtra("reasonForNotReachingOLevel", ((ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getSelectedItem()).id);
+                }
+                startActivity(intent);
+                finish();
             }
-            startActivity(intent);
-            finish();
+
         }
     }
 
@@ -232,6 +237,16 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         }else{
             dateJoined.setError(null);
         }
+        Date today = new Date();
+        if( ! dateJoined.getText().toString().isEmpty()){
+            if(DateUtil.getDateFromString(dateJoined.getText().toString()).after(today)){
+                dateJoined.setError(this.getString(R.string.date_aftertoday));
+                isValid = false;
+            }else{
+                dateJoined.setError(null);
+            }
+        }
+
         return isValid;
     }
 }

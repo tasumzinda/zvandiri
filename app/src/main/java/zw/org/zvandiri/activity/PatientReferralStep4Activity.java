@@ -77,7 +77,7 @@ public class PatientReferralStep4Activity extends BaseActivity implements View.O
             setSupportActionBar(createToolBar("Update Referrals: Services Referred"));
         }else{
             item = new Referral();
-            setSupportActionBar(createToolBar("Add ReferralsServices Referred"));
+            setSupportActionBar(createToolBar("Add Referrals: Services Referred"));
         }
         save.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
