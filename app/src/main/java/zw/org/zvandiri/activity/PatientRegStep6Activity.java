@@ -150,7 +150,7 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
             item = new Patient();
         }
         next.setOnClickListener(this);
-        setSupportActionBar(createToolBar("Create Patient Add Zvandiri Details Final"));
+        setSupportActionBar(createToolBar("Create Patient Final"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

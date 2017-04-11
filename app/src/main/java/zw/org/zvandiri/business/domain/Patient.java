@@ -221,7 +221,7 @@ public class Patient extends Model {
     @Expose
     @Column(name = "refererName")
     public String refererName;
-    //@Expose
+    @Expose
     @Column(name = "oINumber")
     public String oINumber;
     @Expose

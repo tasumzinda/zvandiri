@@ -51,7 +51,7 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
                         }
 
                     }
-                }, 0, 1, TimeUnit.HOURS);
+                }, 5, 30, TimeUnit.MINUTES);
         ScheduledExecutorService scheduler1 =
                 Executors.newSingleThreadScheduledExecutor();
 
@@ -64,7 +64,7 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
                         }
 
                     }
-                }, 0, 7, TimeUnit.DAYS);
+                }, 30, 60, TimeUnit.MINUTES);
     }
 
     @Override
