@@ -11,6 +11,7 @@ import zw.org.zvandiri.business.domain.util.*;
 import zw.org.zvandiri.business.domain.util.ActionTaken;
 import zw.org.zvandiri.business.util.DateUtil;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by Tasunungurwa Muzinda on 12/17/2016.
  */
 @Table(name = "contact", id = "_id")
-public class Contact extends Model {
+public class Contact extends Model implements Serializable{
 
     @Expose
     @Column(name = "uuid")

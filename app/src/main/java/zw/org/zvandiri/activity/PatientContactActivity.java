@@ -12,6 +12,7 @@ import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.domain.util.*;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
 
 import java.util.Calendar;
 
@@ -35,6 +36,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     private String itemID;
     DatePickerDialog dialog;
     DatePickerDialog dialog1;
+    Contact holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         externalReferralLabel = (TextView) findViewById(R.id.externalReferralLabel);
         internalReferralLabel = (TextView) findViewById(R.id.internalReferralLabel);
         Intent intent = getIntent();
+        holder = (Contact) intent.getSerializableExtra("contact");
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
@@ -107,6 +110,10 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         if(itemID != null){
             item = Contact.findById(itemID);
             updateLabel(item.contactDate, contactDate);
+            if(item.lastClinicAppointmentDate != null){
+                updateLabel(item.lastClinicAppointmentDate, lastClinicAppointmentDate);
+            }
+
             int i = 0;
             for(Location m : Location.getAll()){
                 if(item.location != null && item.location.equals(location.getItemAtPosition(i))){
@@ -153,6 +160,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                     followUp.setSelection(i, true);
                     break;
                 }
+                i++;
             }
             i = 0;
             for(YesNo m : YesNo.values()){
@@ -160,7 +168,73 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                     attendedClinicAppointment.setSelection(i, true);
                     break;
                 }
+                i++;
             }
+            setSupportActionBar(createToolBar("Update Contact - Step 1"));
+        }else if(holder != null){
+            updateLabel(holder.contactDate, contactDate);
+            if(holder.lastClinicAppointmentDate != null){
+                updateLabel(holder.lastClinicAppointmentDate, lastClinicAppointmentDate);
+            }
+            int i = 0;
+            for(Location m : Location.getAll()){
+                if(holder.location != null && holder.location.equals(location.getItemAtPosition(i))){
+                    location.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(Position m : Position.getAll()){
+                if(holder.position != null && holder.position.equals(position.getItemAtPosition(i))){
+                    position.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(Reason m : Reason.values()){
+                if(holder.reason != null  && holder.reason.equals(reason.getItemAtPosition(i))){
+                    reason.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(ExternalReferral m : ExternalReferral.getAll()){
+                if(holder.externalReferral != null && holder.externalReferral.equals(externalReferral.getItemAtPosition(i))){
+                    externalReferral.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(InternalReferral m : InternalReferral.getAll()){
+                if(holder.internalReferral != null && holder.internalReferral.equals(internalReferral.getItemAtPosition(i))){
+                    internalReferral.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(FollowUp m : FollowUp.values()){
+                if(holder.followUp != null && holder.followUp.equals(followUp.getItemAtPosition(i))){
+                    followUp.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(YesNo m : YesNo.values()){
+                if(holder.attendedClinicAppointment != null && holder.attendedClinicAppointment.equals(attendedClinicAppointment.getItemAtPosition(i))){
+                    attendedClinicAppointment.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            setSupportActionBar(createToolBar("Add Contact - Step 1"));
+        }else{
+            setSupportActionBar(createToolBar("Add Contact - Step 1"));
         }
         reason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
@@ -189,7 +263,6 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             }
         });
         save.setOnClickListener(this);
-        setSupportActionBar(createToolBar("Add Contact - Step 1"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -235,23 +308,23 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 intent.putExtra(AppUtil.NAME, name);
                 intent.putExtra(AppUtil.ID, id);
                 intent.putExtra(AppUtil.DETAILS_ID, itemID);
-                intent.putExtra("contactDate", contactDate.getText().toString());
-                Location loc = (Location) location.getSelectedItem();
-                intent.putExtra("location", loc.id);
-                Position pos = (Position) position.getSelectedItem();
-                intent.putExtra("position", pos.id);
+                holder = new Contact();
+                holder.contactDate = DateUtil.getDateFromString(contactDate.getText().toString());
+                holder.location = (Location) location.getSelectedItem();
+                holder.position = (Position) position.getSelectedItem();
                 if(externalReferral.getVisibility() == View.VISIBLE){
-                    ExternalReferral extRef = (ExternalReferral) externalReferral.getSelectedItem();
-                    intent.putExtra("externalReferral", extRef.id);
+                    holder.externalReferral = (ExternalReferral) externalReferral.getSelectedItem();
                 }
                 if(internalReferral.getVisibility() == View.VISIBLE){
-                    InternalReferral intRef = (InternalReferral) internalReferral.getSelectedItem();
-                    intent.putExtra("internalReferral", intRef.id);
+                    holder.internalReferral = (InternalReferral) internalReferral.getSelectedItem();
                 }
-                intent.putExtra("reason", ((Reason) reason.getSelectedItem()).getCode());
-                intent.putExtra("followUp", ((FollowUp) followUp.getSelectedItem()).getCode());
-                intent.putExtra("attendedClinicAppointment", ((YesNo) attendedClinicAppointment.getSelectedItem()).getCode());
-                intent.putExtra("lastClinicAppointmentDate", lastClinicAppointmentDate.getText().toString());
+                holder.reason = (Reason) reason.getSelectedItem();
+                holder.followUp = (FollowUp) followUp.getSelectedItem();
+                holder.attendedClinicAppointment = (YesNo) attendedClinicAppointment.getSelectedItem();
+                if(checkDateFormat(lastClinicAppointmentDate.getText().toString())){
+                    holder.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate.getText().toString());
+                }
+                intent.putExtra("contact", holder);
                 startActivity(intent);
                 finish();
             }

@@ -33,47 +33,29 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     private String itemID;
     private String id;
     private String name;
-    private String contactDate;
-    private String location;
-    private String externalReferral;
-    private String internalReferral;
-    private Integer reason;
-    private Integer followUp;
-    private String position;
     private Button next;
     private Contact c;
     private ArrayAdapter<Stable> stableArrayAdapter;
     private ArrayAdapter<Enhanced> enhancedArrayAdapter;
-    private ArrayList<String> list;
-    private String lastClinicAppointmentDate;
-    private Integer attendedClinicAppointment;
     private Spinner actionTaken;
     private ArrayAdapter<zw.org.zvandiri.business.domain.ActionTaken> actionTakenArrayAdapter;
+    private Contact holder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_contact_activity_step2);
         Intent intent = getIntent();
-        lastClinicAppointmentDate = intent.getStringExtra("lastClinicAppointmentDate");
-        attendedClinicAppointment = intent.getIntExtra("attendedClinicAppointment", 0);
+        holder = (Contact) intent.getSerializableExtra("contact");
         id = intent.getStringExtra(AppUtil.ID);
-        Log.d("ID", id);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        contactDate = intent.getStringExtra("contactDate");
-        location = intent.getStringExtra("location");
-        externalReferral = intent.getStringExtra("externalReferral");
-        internalReferral = intent.getStringExtra("internalReferral");
-        reason = intent.getIntExtra("reason", 1);
-        followUp = intent.getIntExtra("followUp", 1);
-        position = intent.getStringExtra("position");
         careLevel = (Spinner) findViewById(R.id.careLevel);
         stable = (ListView) findViewById(R.id.stable);
         enhanced = (ListView) findViewById(R.id.enhanced);
         stableLabel = (TextView) findViewById(R.id.stableLabel);
         enhancedLabel = (TextView) findViewById(R.id.enhancedLabel);
         actionTaken = (Spinner) findViewById(R.id.actionTaken);
-        list = new ArrayList<>();
         next = (Button) findViewById(R.id.btn_next);
         next.setOnClickListener(this);
         ArrayAdapter<CareLevel> careLevelArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, CareLevel.values());
@@ -115,7 +97,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         actionTakenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         actionTaken.setAdapter(actionTakenArrayAdapter);
         actionTakenArrayAdapter.notifyDataSetChanged();
-        if(itemID != null){
+        if(itemID != null && ! itemID.isEmpty()){
             c = Contact.findById(itemID);
             int i = 0;
             for (CareLevel m : CareLevel.values()) {
@@ -183,6 +165,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
+        if(itemID == null){
+            intent.putExtra("contact", holder);
+        }
         startActivity(intent);
         finish();
     }
@@ -206,27 +191,17 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
             c.isNew = true;
         }
         c.careLevel = (CareLevel) careLevel.getSelectedItem();
-        c.followUp = FollowUp.get(followUp);
-        if(internalReferral != null && internalReferral.isEmpty()){
-            c.internalReferral = InternalReferral.getItem(internalReferral);
-        }
-        if(contactDate != null){
-            c.contactDate = DateUtil.getDateFromString(contactDate);
-        }
-
-        if(externalReferral != null && externalReferral.isEmpty()){
-            c.externalReferral = ExternalReferral.getItem(externalReferral);
-        }
-        c.location = Location.getItem(location);
+        c.followUp = holder.followUp;
+        c.internalReferral = holder.internalReferral;
+        c.contactDate = holder.contactDate;
+        c.externalReferral = holder.externalReferral;
+        c.position = holder.position;
+        c.reason = holder.reason;
+        c.lastClinicAppointmentDate = holder.lastClinicAppointmentDate;
+        c.location = holder.location;
         c.patient =Patient.getById(id);
-        c.position = Position.getItem(position);
-        c.reason = Reason.get(reason);
         c.pushed = false;
-        c.attendedClinicAppointment = YesNo.get(attendedClinicAppointment);
         c.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
-        if(checkDateFormat(lastClinicAppointmentDate)){
-            c.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate);
-        }
         c.save();
         if(itemID != null){
             deleteCareLevelSelections();

@@ -29,9 +29,7 @@ public class PatientContactListActivity extends BaseActivity implements AdapterV
         setContentView(R.layout.generic_list_view);
         Intent intent = getIntent();
         name = intent.getStringExtra(AppUtil.NAME);
-        Log.d("name", name);
         id = intent.getStringExtra(AppUtil.ID);
-        Log.d("id", "id" + id);
         Patient patient = Patient.getById(id);
         ContactAdapter contactAdapter = (new ContactAdapter(this, new ArrayList<>(Contact.findByPatient(patient))));
         ListView listView = (ListView) findViewById(R.id.list);
