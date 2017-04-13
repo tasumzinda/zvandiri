@@ -81,16 +81,39 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
         secondaryMobileownerRelationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         secondaryMobileownerRelation.setAdapter(secondaryMobileownerRelationArrayAdapter);
         secondaryMobileownerRelationArrayAdapter.notifyDataSetChanged();
-        if(itemID != null){
-            item = Patient.findById(itemID);
-            mobileNumber.setText(item.mobileNumber);
-            ownerName.setText(item.ownerName);
-            email.setText(item.email);
-            secondaryMobileNumber.setText(item.secondaryMobileNumber != null ? item.secondaryMobileNumber : "");
-            secondaryMobileOwnerName.setText(item.secondaryMobileOwnerName != null ? item.secondaryMobileOwnerName : "");
+        if(holder.firstName != null){
+            //item = Patient.findById(itemID);
+            mobileNumber.setText(holder.mobileNumber);
+            ownerName.setText(holder.ownerName);
+            email.setText(holder.email);
+            secondaryMobileNumber.setText(holder.secondaryMobileNumber);
+            secondaryMobileOwnerName.setText(holder.secondaryMobileOwnerName);
+            if(holder.mobileOwner != null){
+                if(holder.mobileOwner.equals(YesNo.NO)){
+                    ownerName.setVisibility(View.VISIBLE);
+                    relationshipLabel.setVisibility(View.VISIBLE);
+                    mobileOwnerRelation.setVisibility(View.VISIBLE);
+                }else{
+                    ownerName.setVisibility(View.GONE);
+                    relationshipLabel.setVisibility(View.GONE);
+                    mobileOwnerRelation.setVisibility(View.GONE);
+                }
+            }
+            if(holder.ownSecondaryMobile != null){
+                if(holder.ownSecondaryMobile.equals(YesNo.NO)){
+                    secondaryMobileOwnerName.setVisibility(View.VISIBLE);
+                    secondaryRelationshipLabel.setVisibility(View.VISIBLE);
+                    secondaryMobileownerRelation.setVisibility(View.VISIBLE);
+                }else{
+                    secondaryMobileOwnerName.setVisibility(View.GONE);
+                    secondaryRelationshipLabel.setVisibility(View.GONE);
+                    secondaryMobileownerRelation.setVisibility(View.GONE);
+                }
+            }
+
             int i = 0;
             for(YesNo m : YesNo.values()){
-                if(item.mobileOwner != null  && item.mobileOwner.equals(mobileOwner.getItemAtPosition(i))){
+                if(holder.mobileOwner != null  && holder.mobileOwner.equals(mobileOwner.getItemAtPosition(i))){
                     mobileOwner.setSelection(i, true);
                     break;
                 }
@@ -98,7 +121,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             }
             i = 0;
             for(Relationship m : Relationship.getAll()){
-                if(item.mobileOwnerRelation != null  && item.mobileOwnerRelation.equals(mobileOwnerRelation.getItemAtPosition(i))){
+                if(holder.mobileOwnerRelation != null  && holder.mobileOwnerRelation.equals(mobileOwnerRelation.getItemAtPosition(i))){
                     mobileOwnerRelation.setSelection(i, true);
                     break;
                 }
@@ -106,7 +129,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             }
             i = 0;
             for(YesNo m : YesNo.values()){
-                if(item.ownSecondaryMobile != null  && item.ownSecondaryMobile.equals(ownSecondaryMobile.getItemAtPosition(i))){
+                if(holder.ownSecondaryMobile != null  && holder.ownSecondaryMobile.equals(ownSecondaryMobile.getItemAtPosition(i))){
                     ownSecondaryMobile.setSelection(i, true);
                     break;
                 }
@@ -114,7 +137,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             }
             i = 0;
             for(Relationship m : Relationship.getAll()){
-                if(item.secondaryMobileownerRelation != null  && item.secondaryMobileownerRelation.equals(secondaryMobileownerRelation.getItemAtPosition(i))){
+                if(holder.secondaryMobileownerRelation != null  && holder.secondaryMobileownerRelation.equals(secondaryMobileownerRelation.getItemAtPosition(i))){
                     secondaryMobileownerRelation.setSelection(i, true);
                     break;
                 }
@@ -197,25 +220,35 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             if(validateLocal()){
                 Intent intent = new Intent(PatientRegStep2Activity.this, PatientRegStep3Activity.class);
                 intent.putExtra(AppUtil.DETAILS_ID, itemID);
-                intent.putExtra("dateOfBirth", dateOfBirth);
+                /*intent.putExtra("dateOfBirth", dateOfBirth);
                 intent.putExtra("firstName", firstName);
                 intent.putExtra("lastName", lastName);
                 intent.putExtra("middleName", middleName);
-                intent.putExtra("gender", gender);
-                intent.putExtra("email", email.getText().toString());
+                intent.putExtra("gender", gender);*/
+                holder.email = email.getText().toString();
+                holder.mobileNumber = mobileNumber.getText().toString();
+                holder.ownerName = ownerName.getText().toString();
+                holder.secondaryMobileNumber = secondaryMobileNumber.getText().toString();
+                holder.secondaryMobileOwnerName = secondaryMobileOwnerName.getText().toString();
+                holder.mobileOwner = (YesNo) mobileOwner.getSelectedItem();
+                holder.ownSecondaryMobile = (YesNo) ownSecondaryMobile.getSelectedItem();
+                /*intent.putExtra("email", email.getText().toString());
                 intent.putExtra("mobileNumber", mobileNumber.getText().toString());
                 intent.putExtra("ownerName", ownerName.getText().toString());
                 intent.putExtra("secondaryMobileNumber", secondaryMobileNumber.getText().toString());
                 intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName.getText().toString());
                 intent.putExtra("mobileOwner", ((YesNo) mobileOwner.getSelectedItem()).getCode());
-                intent.putExtra("ownSecondaryMobile", ((YesNo) ownSecondaryMobile.getSelectedItem()).getCode());
+                intent.putExtra("ownSecondaryMobile", ((YesNo) ownSecondaryMobile.getSelectedItem()).getCode());*/
                 if(mobileOwnerRelation.getVisibility() == View.VISIBLE){
-                    intent.putExtra("mobileOwnerRelation", ((Relationship) mobileOwnerRelation.getSelectedItem()).id);
+                    //intent.putExtra("mobileOwnerRelation", ((Relationship) mobileOwnerRelation.getSelectedItem()).id);
+                    holder.mobileOwnerRelation = (Relationship) mobileOwnerRelation.getSelectedItem();
                 }
                 if(secondaryMobileownerRelation.getVisibility() == View.VISIBLE){
-                    intent.putExtra("secondaryMobileownerRelation", ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id);
+                    //intent.putExtra("secondaryMobileownerRelation", ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id);
+                    holder.secondaryMobileownerRelation = (Relationship) secondaryMobileownerRelation.getSelectedItem();
                 }
-                intent.putExtra("OINumber", OINumber);
+                //intent.putExtra("OINumber", OINumber);
+                intent.putExtra("patient", holder);
                 startActivity(intent);
                 finish();
             }

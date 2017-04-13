@@ -40,20 +40,22 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     private String secondaryMobileownerRelation;
     private String email;
     private String OINumber;
+    private Patient holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step3);
         Intent intent = getIntent();
-        OINumber = intent.getStringExtra("OINumber");
+        itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
+        holder = (Patient) intent.getSerializableExtra("patient");
+        /*OINumber = intent.getStringExtra("OINumber");
         email = intent.getStringExtra("email");
         firstName = intent.getStringExtra("firstName");
         middleName = intent.getStringExtra("middleName");
         lastName = intent.getStringExtra("lastName");
         dateOfBirth = intent.getStringExtra("dateOfBirth");
         gender = intent.getIntExtra("gender", 0);
-        itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         mobileNumber = intent.getStringExtra("mobileNumber");
         ownerName = intent.getStringExtra("ownerName");
         secondaryMobileNumber = intent.getStringExtra("secondaryMobileNumber");
@@ -61,7 +63,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
         mobileOwner = intent.getIntExtra("mobileOwner", 0);
         ownSecondaryMobile = intent.getIntExtra("ownSecondaryMobile", 0);
         mobileOwnerRelation = intent.getStringExtra("mobileOwnerRelation");
-        secondaryMobileownerRelation = intent.getStringExtra("secondaryMobileownerRelation");
+        secondaryMobileownerRelation = intent.getStringExtra("secondaryMobileownerRelation");*/
         next = (Button) findViewById(R.id.btn_save);
         address = (EditText) findViewById(R.id.address);
         address1 = (EditText) findViewById(R.id.address1);
@@ -168,6 +170,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep2Activity.class);
+        intent.putExtra("patient", holder);
         startActivity(intent);
         finish();
     }
