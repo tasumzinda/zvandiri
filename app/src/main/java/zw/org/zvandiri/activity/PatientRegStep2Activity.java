@@ -38,18 +38,20 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
     private TextView relationshipLabel;
     private TextView secondaryRelationshipLabel;
     private String OINumber;
+    private Patient holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step2);
         Intent intent = getIntent();
-        firstName = intent.getStringExtra("firstName");
+        /*firstName = intent.getStringExtra("firstName");
         middleName = intent.getStringExtra("middleName");
         lastName = intent.getStringExtra("lastName");
         dateOfBirth = intent.getStringExtra("dateOfBirth");
         gender = intent.getIntExtra("gender", 0);
-        OINumber = intent.getStringExtra("OINumber");
+        OINumber = intent.getStringExtra("OINumber");*/
+        holder = (Patient) intent.getSerializableExtra("patient");
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         next = (Button) findViewById(R.id.btn_save);
         mobileNumber = (EditText) findViewById(R.id.mobileNumber);
@@ -184,6 +186,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep2Activity.this, PatientRegStep1Activity.class);
+        intent.putExtra("patient", holder);
         startActivity(intent);
         finish();
     }

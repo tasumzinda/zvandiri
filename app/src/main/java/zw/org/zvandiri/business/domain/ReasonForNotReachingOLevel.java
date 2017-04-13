@@ -16,13 +16,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.annotations.Expose;
 import zw.org.zvandiri.business.util.AppUtil;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by User on 4/5/2017.
  */
 @Table(name = "reason_for_not_reaching_olevel", id = "_id")
-public class ReasonForNotReachingOLevel extends Model {
+public class ReasonForNotReachingOLevel extends Model implements Serializable{
 
     @Expose
     @Column(name = "uuid")

@@ -16,13 +16,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.annotations.Expose;
 import zw.org.zvandiri.business.util.AppUtil;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Tasunungurwa Muzinda on 12/16/2016.
  */
 @Table(name = "referer", id = "_id")
-public class Referer extends Model {
+public class Referer extends Model implements Serializable{
 
     @Expose
     @Column(name = "uuid")

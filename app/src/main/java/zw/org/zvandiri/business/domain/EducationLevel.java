@@ -16,13 +16,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.annotations.Expose;
 import zw.org.zvandiri.business.util.AppUtil;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Tasunungurwa Muzinda on 12/13/2016.
  */
 @Table(name = "education_level", id = "_id")
-public class EducationLevel extends Model {
+public class EducationLevel extends Model implements Serializable{
     @Expose
     @Column(name = "uuid")
     public String uuid;

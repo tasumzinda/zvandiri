@@ -22,13 +22,14 @@ import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
 import zw.org.zvandiri.business.util.UUIDGen;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Tasunungurwa Muzinda on 12/16/2016.
  */
 @Table(name = "patient", id = "_id")
-public class Patient extends Model {
+public class Patient extends Model implements Serializable{
 
 
     @Expose

@@ -32,6 +32,7 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
     private String itemID;
     private Patient item;
     private EditText oiNumber;
+    private Patient holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         gender = (Spinner) findViewById(R.id.gender);
         oiNumber = (EditText) findViewById(R.id.OINumber);
         Intent intent = getIntent();
+        holder = (Patient) intent.getSerializableExtra("patient");
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         fields = new EditText[] {firstName, lastName, dateOfBirth};
         next = (Button) findViewById(R.id.btn_save);
@@ -61,16 +63,15 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
         dateOfBirth.setOnClickListener(this);
-        if(itemID != null){
-            item = Patient.findById(itemID);
-            updateLabel(item.dateOfBirth, dateOfBirth);
-            firstName.setText(item.firstName);
-            lastName.setText(item.lastName);
-            middleName.setText(item.middleName != null ? item.middleName : "");
-            oiNumber.setText(item.oINumber);
+        if(holder != null){
+            updateLabel(holder.dateOfBirth, dateOfBirth);
+            firstName.setText(holder.firstName);
+            lastName.setText(holder.lastName);
+            middleName.setText(holder.middleName);
+            oiNumber.setText(holder.oINumber);
             int i = 0;
             for(Gender m : Gender.values()){
-                if(item.gender != null  && item.gender.equals(gender.getItemAtPosition(i))){
+                if(holder.gender != null  && holder.gender.equals(gender.getItemAtPosition(i))){
                     gender.setSelection(i, true);
                     break;
                 }
@@ -118,12 +119,20 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                 if(validateLocal()){
                     Intent intent = new Intent(PatientRegStep1Activity.this, PatientRegStep2Activity.class);
                     intent.putExtra(AppUtil.DETAILS_ID, itemID);
-                    intent.putExtra("dateOfBirth", dateOfBirth.getText().toString());
+                    /*intent.putExtra("dateOfBirth", dateOfBirth.getText().toString());
                     intent.putExtra("firstName", firstName.getText().toString());
                     intent.putExtra("lastName", lastName.getText().toString());
                     intent.putExtra("middleName", middleName.getText().toString());
                     intent.putExtra("gender", ((Gender) gender.getSelectedItem()).getCode());
-                    intent.putExtra("OINumber", oiNumber.getText().toString());
+                    intent.putExtra("OINumber", oiNumber.getText().toString());*/
+                    holder = new Patient();
+                    holder.dateOfBirth = DateUtil.getDateFromString(dateOfBirth.getText().toString());
+                    holder.firstName = firstName.getText().toString();
+                    holder.lastName = lastName.getText().toString();
+                    holder.middleName = middleName.getText().toString();
+                    holder.gender = (Gender) gender.getSelectedItem();
+                    holder.oINumber = oiNumber.getText().toString();
+                    intent.putExtra("patient", holder);
                     startActivity(intent);
                     finish();
                 }

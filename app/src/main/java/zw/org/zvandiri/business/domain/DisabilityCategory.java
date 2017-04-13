@@ -16,13 +16,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.annotations.Expose;
 import zw.org.zvandiri.business.util.AppUtil;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Tasunungurwa Muzinda on 12/16/2016.
  */
 @Table(name = "disability_category", id = "_id")
-public class DisabilityCategory extends Model {
+public class DisabilityCategory extends Model implements Serializable{
 
     @Expose
     @Column(name = "uuid")

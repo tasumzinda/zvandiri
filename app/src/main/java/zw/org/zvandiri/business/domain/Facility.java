@@ -21,13 +21,14 @@ import org.json.JSONObject;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Tasunungurwa Muzinda on 12/11/2016.
  */
 @Table(name = "facility", id = "_id")
-public class Facility extends Model {
+public class Facility extends Model implements Serializable{
 
     @Expose
     @Column(name = "uuid")
