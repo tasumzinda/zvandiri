@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -30,7 +31,7 @@ import java.util.*;
  * Created by Tasunungurwa Muzinda on 12/11/2016.
  */
 @Table(name = "district", id = "_id")
-public class District extends Model {
+public class District extends Model implements Serializable{
 
     @Expose
     @Column(name = "uuid")

@@ -8,13 +8,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import zw.org.zvandiri.R;
+import zw.org.zvandiri.business.domain.DisabilityCategory;
+import zw.org.zvandiri.business.domain.EducationLevel;
 import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.domain.util.HIVDisclosureLocation;
 import zw.org.zvandiri.business.domain.util.TransmissionMode;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
+import zw.org.zvandiri.toolbox.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,65 +35,22 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
     private Spinner hIVDisclosureLocation;
     private Button next;
     private String itemID;
-    private Patient item;
-    private String dateOfBirth;
-    private String firstName;
-    private String lastName;
-    private String middleName;
-    private Integer gender;
-    private String mobileNumber;
-    private String ownerName;
-    private String secondaryMobileNumber;
-    private String secondaryMobileOwnerName;
-    private Integer mobileOwner;
-    private Integer ownSecondaryMobile;
-    private String mobileOwnerRelation;
-    private String secondaryMobileownerRelation;
-    private String address;
-    private String address1;
-    private String primaryClinic;
-    private String supportGroup;
     private DatePickerDialog dialog;
-    private String dateJoined;
-    private String education;
-    private String educationLevel;
-    private String referer;
-    private String email;
-    private String reasonForNotReachingOLevel;
-    private String refererName;
-    private String OINumber;
+    private Patient holder;
+    private ArrayList<DisabilityCategory> disabilityCategorys;
+    private YesNo disability;
+    YesNo cat;
+    YesNo consentToMHealth;
+    YesNo consentToPhoto;
+    YesNo youngMumGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step5);
         Intent intent = getIntent();
-        OINumber = intent.getStringExtra("OINumber");
-        refererName = intent.getStringExtra("refererName");
-        reasonForNotReachingOLevel = intent.getStringExtra("reasonForNotReachingOLevel");
-        email = intent.getStringExtra("email");
-        dateJoined = intent.getStringExtra("dateJoined");
-        education = intent.getStringExtra("education");
-        educationLevel = intent.getStringExtra("educationLevel");
-        referer = intent.getStringExtra("referer");
-        address = intent.getStringExtra("address");
-        address1 = intent.getStringExtra("address1");
-        primaryClinic = intent.getStringExtra("primaryClinic");
-        supportGroup = intent.getStringExtra("supportGroup");
-        firstName = intent.getStringExtra("firstName");
-        middleName = intent.getStringExtra("middleName");
-        lastName = intent.getStringExtra("lastName");
-        dateOfBirth = intent.getStringExtra("dateOfBirth");
-        gender = intent.getIntExtra("gender", 0);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        mobileNumber = intent.getStringExtra("mobileNumber");
-        ownerName = intent.getStringExtra("ownerName");
-        secondaryMobileNumber = intent.getStringExtra("secondaryMobileNumber");
-        secondaryMobileOwnerName = intent.getStringExtra("secondaryMobileOwnerName");
-        mobileOwner = intent.getIntExtra("mobileOwner", 0);
-        ownSecondaryMobile = intent.getIntExtra("ownSecondaryMobile", 0);
-        mobileOwnerRelation = intent.getStringExtra("mobileOwnerRelation");
-        secondaryMobileownerRelation = intent.getStringExtra("secondaryMobileownerRelation");
+        holder = (Patient) intent.getSerializableExtra("patient");
         next = (Button) findViewById(R.id.btn_save);
         dateTested = (EditText) findViewById(R.id.dateTested);
         hivStatusKnown = (Spinner) findViewById(R.id.hivStatusKnown);
@@ -101,23 +62,24 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
         hivStatusKnownArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hivStatusKnown.setAdapter(hivStatusKnownArrayAdapter);
         hivStatusKnownArrayAdapter.notifyDataSetChanged();
+        ArrayAdapter<TransmissionMode> transmissionModeArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, TransmissionMode.values());
+        transmissionModeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        transmissionMode.setAdapter(transmissionModeArrayAdapter);
+        transmissionModeArrayAdapter.notifyDataSetChanged();
+        ArrayAdapter<HIVDisclosureLocation> hIVDisclosureLocationArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, HIVDisclosureLocation.values());
+        hIVDisclosureLocationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hIVDisclosureLocation.setAdapter(hIVDisclosureLocationArrayAdapter);
+        hIVDisclosureLocationArrayAdapter.notifyDataSetChanged();
         hivStatusKnown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(hivStatusKnown.getSelectedItem().equals(YesNo.YES)){
                     transmissionMode.setVisibility(View.VISIBLE);
-                    ArrayAdapter<TransmissionMode> transmissionModeArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, TransmissionMode.values());
-                    transmissionModeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    transmissionMode.setAdapter(transmissionModeArrayAdapter);
-                    transmissionModeArrayAdapter.notifyDataSetChanged();
                     transmissionLabel.setVisibility(View.VISIBLE);
                     dateTested.setVisibility(View.VISIBLE);
                     locationLabel.setVisibility(View.VISIBLE);
                     hIVDisclosureLocation.setVisibility(View.VISIBLE);
-                    ArrayAdapter<HIVDisclosureLocation> hIVDisclosureLocationArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, HIVDisclosureLocation.values());
-                    hIVDisclosureLocationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    hIVDisclosureLocation.setAdapter(hIVDisclosureLocationArrayAdapter);
-                    hIVDisclosureLocationArrayAdapter.notifyDataSetChanged();
+
                 }else{
                     transmissionMode.setVisibility(View.GONE);
                     transmissionLabel.setVisibility(View.GONE);
@@ -142,33 +104,42 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
         dateTested.setOnClickListener(this);
-        if(itemID != null){
-            item = Patient.findById(itemID);
-            updateLabel(item.dateTested, dateTested);
+        if(holder.hivStatusKnown != null){
+            if(holder.dateTested != null){
+                updateLabel(holder.dateTested, dateTested);
+            }
             int i = 0;
             for(YesNo m : YesNo.values()){
-                if(item.hivStatusKnown != null  && item.hivStatusKnown.equals(hivStatusKnown.getItemAtPosition(i))){
+                if(holder.hivStatusKnown != null  && holder.hivStatusKnown.equals(hivStatusKnown.getItemAtPosition(i))){
                     hivStatusKnown.setSelection(i, true);
                     break;
                 }
                 i++;
             }
+
             i = 0;
             for(TransmissionMode m : TransmissionMode.values()){
-                if(item.transmissionMode != null  && item.transmissionMode.equals(transmissionMode.getItemAtPosition(i))){
-                    transmissionMode.setSelection(i, true);
+                if(holder.transmissionMode != null && holder.transmissionMode.equals(transmissionMode.getItemAtPosition(i))){
+                    transmissionMode.setSelection(i);
                     break;
                 }
                 i++;
             }
+
             i = 0;
             for(HIVDisclosureLocation m : HIVDisclosureLocation.values()){
-                if(item.hIVDisclosureLocation != null  && item.hIVDisclosureLocation.equals(hIVDisclosureLocation.getItemAtPosition(i))){
-                    hIVDisclosureLocation.setSelection(i, true);
+                if(holder.hIVDisclosureLocation != null && holder.hIVDisclosureLocation.equals(hIVDisclosureLocation.getItemAtPosition(i))){
+                    hIVDisclosureLocation.setSelection(i);
                     break;
                 }
                 i++;
             }
+            disabilityCategorys = (ArrayList<DisabilityCategory>) holder.disabilityCategorys;
+            disability = holder.disability;
+            cat = holder.cat;
+            consentToMHealth = holder.consentToMHealth;
+            consentToPhoto = holder.consentToPhoto;
+            youngMumGroup = holder.youngMumGroup;
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add HIV and Health Details Step 5 of 7 "));
@@ -196,7 +167,16 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientRegStep5Activity.this, PatientRegStep1Activity.class);
+        Intent intent = new Intent(PatientRegStep5Activity.this, PatientRegStep4Activity.class);
+        holder.hivStatusKnown = (YesNo) hivStatusKnown.getSelectedItem();
+        holder.transmissionMode = (TransmissionMode) transmissionMode.getSelectedItem();
+        holder.hIVDisclosureLocation = (HIVDisclosureLocation) hIVDisclosureLocation.getSelectedItem();
+        if( ! dateTested.getText().toString().isEmpty()){
+            holder.dateTested = DateUtil.getDateFromString(dateTested.getText().toString());
+        }
+        holder.disabilityCategorys = disabilityCategorys;
+        holder.disability = disability;
+        intent.putExtra("patient", holder);
         startActivity(intent);
         finish();
     }
@@ -209,35 +189,17 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
         if(view.getId() == next.getId()){
             Intent intent = new Intent(PatientRegStep5Activity.this, PatientRegStep5ContActivity.class);
             intent.putExtra(AppUtil.DETAILS_ID, itemID);
-            intent.putExtra("dateOfBirth", dateOfBirth);
-            intent.putExtra("firstName", firstName);
-            intent.putExtra("lastName", lastName);
-            intent.putExtra("middleName", middleName);
-            intent.putExtra("gender", gender);
-            intent.putExtra("email", email);
-            intent.putExtra("mobileNumber", mobileNumber);
-            intent.putExtra("ownerName", ownerName);
-            intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);
-            intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName);
-            intent.putExtra("mobileOwner", mobileOwner);
-            intent.putExtra("ownSecondaryMobile", ownSecondaryMobile);
-            intent.putExtra("mobileOwnerRelation", mobileOwnerRelation);
-            intent.putExtra("secondaryMobileownerRelation", secondaryMobileownerRelation);
-            intent.putExtra("address", address);
-            intent.putExtra("address1", address1);
-            intent.putExtra("primaryClinic", primaryClinic);
-            intent.putExtra("supportGroup", supportGroup);
-            intent.putExtra("dateJoined", dateJoined);
-            intent.putExtra("education", education);
-            intent.putExtra("educationLevel", educationLevel);
-            intent.putExtra("referer", referer);
-            intent.putExtra("hivStatusKnown", ((YesNo) hivStatusKnown.getSelectedItem()).getCode());
-            intent.putExtra("transmissionMode", ((TransmissionMode) transmissionMode.getSelectedItem()).getCode());
-            intent.putExtra("dateTested", dateTested.getText().toString());
-            intent.putExtra("hIVDisclosureLocation", ((HIVDisclosureLocation) hIVDisclosureLocation.getSelectedItem()).getCode());
-            intent.putExtra("refererName", refererName);
-            intent.putExtra("reasonForNotReachingOLevel", reasonForNotReachingOLevel);
-            intent.putExtra("OINumber", OINumber);
+            holder.hivStatusKnown = (YesNo) hivStatusKnown.getSelectedItem();
+            holder.transmissionMode = (TransmissionMode) transmissionMode.getSelectedItem();
+            holder.hIVDisclosureLocation = (HIVDisclosureLocation) hIVDisclosureLocation.getSelectedItem();
+            if( ! dateTested.getText().toString().isEmpty()){
+                holder.dateTested = DateUtil.getDateFromString(dateTested.getText().toString());
+            }
+            holder.cat = cat;
+            holder.consentToMHealth = consentToMHealth;
+            holder.consentToPhoto = consentToPhoto;
+            holder.youngMumGroup = youngMumGroup;
+            intent.putExtra("patient", holder);
             startActivity(intent);
             finish();
         }

@@ -132,6 +132,57 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 i++;
             }
             setSupportActionBar(createToolBar("Update Contact - Step 2"));
+        }else if(holder.careLevel != null){
+            int i = 0;
+            for (CareLevel m : CareLevel.values()) {
+                if (holder.careLevel != null && holder.careLevel.equals(careLevel.getItemAtPosition(i))) {
+                    careLevel.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            if(holder.stables != null){
+                ArrayList<Stable> stables = (ArrayList<Stable>) holder.stables;
+                ArrayList<String> list = new ArrayList<>();
+                for(Stable s : stables){
+                    list.add(s.name);
+                }
+                int stableCount = stableArrayAdapter.getCount();
+                for(i = 0; i < stableCount; i++){
+                    Stable current = stableArrayAdapter.getItem(i);
+                    if(list.contains(current.name)){
+                        stable.setItemChecked(i, true);
+                    }
+                }
+            }
+
+
+            if(holder.enhanceds != null){
+                ArrayList<Enhanced> enhanceds = (ArrayList<Enhanced>) holder.enhanceds;
+                ArrayList<String> list = new ArrayList<>();
+                for(Enhanced s : enhanceds){
+                    list.add(s.name);
+                }
+                int enhancedCount = enhancedArrayAdapter.getCount();
+                for(i = 0; i < enhancedCount; i++){
+                    Enhanced current = enhancedArrayAdapter.getItem(i);
+                    if(list.contains(current.name)){
+                        enhanced.setItemChecked(i, true);
+                    }
+                }
+            }
+
+
+            i = 0;
+            for (ActionTaken m : ActionTaken.getAll()) {
+                if (holder.actionTaken != null && holder.actionTaken.name.equals(((ActionTaken) actionTaken.getItemAtPosition(i)).name)) {
+                    actionTaken.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            c = new Contact();
+            setSupportActionBar(createToolBar("Add Contact - Step 2"));
         }else{
             c = new Contact();
             setSupportActionBar(createToolBar("Add Contact - Step 2"));
@@ -165,9 +216,14 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        if(itemID == null){
-            intent.putExtra("contact", holder);
+        holder.careLevel = (CareLevel) careLevel.getSelectedItem();
+        holder.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
+        if(careLevel.getSelectedItem().equals(CareLevel.ENHANCED)){
+            holder.enhanceds = getEnhanceds();
+        }else{
+            holder.stables = getStables();
         }
+        intent.putExtra("contact", holder);
         startActivity(intent);
         finish();
     }
@@ -209,7 +265,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         if(careLevel.getSelectedItem().equals(CareLevel.ENHANCED)){
             for(int i = 0; i < getEnhanceds().size(); i++){
                 ContactEnhancedContract contract = new ContactEnhancedContract();
-                contract.enhanced = Enhanced.getItem(getEnhanceds().get(i));
+                contract.enhanced = getEnhanceds().get(i);
                 if(itemID != null){
                     contract.contact = Contact.findById(itemID);
                 }else{
@@ -221,7 +277,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         }else if(careLevel.getSelectedItem().equals(CareLevel.STABLE)){
             for(int i = 0; i <  getStables().size(); i++){
                 ContactStableContract contract = new ContactStableContract();
-                contract.stable = Stable.getItem( getStables().get(i));
+                contract.stable = getStables().get(i);
                 if(itemID != null){
                     contract.contact = Contact.findById(itemID);
                 }else{
@@ -244,24 +300,24 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         finish();
     }
 
-    private ArrayList<String> getEnhanceds(){
-        ArrayList<String> a = new ArrayList<>();
+    private ArrayList<Enhanced> getEnhanceds(){
+        ArrayList<Enhanced> a = new ArrayList<>();
         for(int i = 0; i < enhanced.getCount(); i++){
             if(enhanced.isItemChecked(i)){
-                a.add(enhancedArrayAdapter.getItem(i).id);
+                a.add(enhancedArrayAdapter.getItem(i));
             }else{
-                a.remove(enhancedArrayAdapter.getItem(i).id);
+                a.remove(enhancedArrayAdapter.getItem(i));
             }
         }
         return a;
     }
-    private ArrayList<String> getStables(){
-        ArrayList<String> a = new ArrayList<>();
+    private ArrayList<Stable> getStables(){
+        ArrayList<Stable> a = new ArrayList<>();
         for(int i = 0; i < stable.getCount(); i++){
             if(stable.isItemChecked(i)){
-                a.add(stableArrayAdapter.getItem(i).id);
+                a.add(stableArrayAdapter.getItem(i));
             }else{
-                a.remove(stableArrayAdapter.getItem(i).id);
+                a.remove(stableArrayAdapter.getItem(i));
             }
         }
         return a;

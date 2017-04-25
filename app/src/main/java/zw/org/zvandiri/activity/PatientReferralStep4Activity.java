@@ -38,6 +38,7 @@ public class PatientReferralStep4Activity extends BaseActivity implements View.O
     private ArrayList<String> hivStiServicesReq;
     private ArrayList<String> oiArtReq;
     private TextView label;
+    private Referral holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class PatientReferralStep4Activity extends BaseActivity implements View.O
         label = (TextView) findViewById(R.id.label);
         label.setText("SRH Services");
         Intent intent = getIntent();
+        holder = (Referral) intent.getSerializableExtra("referral");
         hivStiServicesReq = intent.getStringArrayListExtra("hivStiServicesReq");
         oiArtReq = intent.getStringArrayListExtra("oiArtReq");
         id = intent.getStringExtra(AppUtil.ID);
@@ -75,7 +77,22 @@ public class PatientReferralStep4Activity extends BaseActivity implements View.O
                 }
             }
             setSupportActionBar(createToolBar("Update Referrals: Services Referred"));
-        }else{
+        }else if(holder.srhReq != null){
+            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) holder.srhReq;
+            ArrayList<String> list1 = new ArrayList<>();
+            for(ServicesReferred s : list){
+                list1.add(s.name);
+            }
+            int count = servicesReferredArrayAdapter.getCount();
+            for(int i = 0; i < count; i++){
+                ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
+                if(list1.contains(current.name)){
+                    servicesReferred.setItemChecked(i, true);
+                }
+            }
+            setSupportActionBar(createToolBar("Add Referrals: Services Referred"));
+        }
+        else{
             item = new Referral();
             setSupportActionBar(createToolBar("Add Referrals: Services Referred"));
         }
@@ -105,6 +122,8 @@ public class PatientReferralStep4Activity extends BaseActivity implements View.O
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientReferralStep4Activity.this, PatientReferralStep3Activity.class);
+        holder.srhReq = getServicesReferred();
+        intent.putExtra("referral", holder);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
@@ -125,18 +144,20 @@ public class PatientReferralStep4Activity extends BaseActivity implements View.O
         intent.putExtra("actionTaken", actionTaken);
         intent.putExtra("hivStiServicesReq", hivStiServicesReq);
         intent.putExtra("oiArtReq", oiArtReq);
+        holder.srhReq = getServicesReferred();
+        intent.putExtra("referral", holder);
         intent.putExtra("srhReq", getServicesReferred());
         startActivity(intent);
         finish();
     }
 
-    private ArrayList<String> getServicesReferred(){
-        ArrayList<String> a = new ArrayList<>();
+    private ArrayList<ServicesReferred> getServicesReferred(){
+        ArrayList<ServicesReferred> a = new ArrayList<>();
         for(int i = 0; i < servicesReferred.getCount(); i++){
             if(servicesReferred.isItemChecked(i)){
-                a.add(servicesReferredArrayAdapter.getItem(i).id);
+                a.add(servicesReferredArrayAdapter.getItem(i));
             }else{
-                a.remove(servicesReferredArrayAdapter.getItem(i).id);
+                a.remove(servicesReferredArrayAdapter.getItem(i));
             }
         }
         return a;

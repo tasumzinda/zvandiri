@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import zw.org.zvandiri.business.domain.util.ReferralActionTaken;
 import zw.org.zvandiri.business.util.DateUtil;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by jackie muzinda on 10/1/2017.
  */
 @Table(name = "referral", id = "_id")
-public class Referral extends Model {
+public class Referral extends Model implements Serializable{
 
     @Expose
     @Column(name = "uuid")

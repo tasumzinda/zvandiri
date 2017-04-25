@@ -84,6 +84,13 @@ public class Education extends Model implements Serializable{
                 .execute();
     }
 
+    public static Education findByName(String name){
+        return new Select()
+                .from(Education.class)
+                .where("name = ?", name)
+                .executeSingle();
+    }
+
     public static void deleteItem(String id) {
         new Delete().from(Education.class).where("id = ?", id).executeSingle();
     }
@@ -96,6 +103,29 @@ public class Education extends Model implements Serializable{
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (! (obj instanceof Education)) {
+            return false;
+        }
+        if(getId() == null){
+            return false;
+        }
+        return this.id.equals(((Education)obj).id);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 19 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
+
+
 
     public static void fetchRemote(Context context, final String userName, final String password) {
         String URL = AppUtil.getBaseUrl(context) + "/static/education";

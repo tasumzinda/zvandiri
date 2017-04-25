@@ -41,6 +41,7 @@ public class PatientReferralStep7Activity extends BaseActivity implements View.O
     private ArrayList<String> laboratoryReq;
     private ArrayList<String> tbReq;
     private TextView label;
+    private Referral holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class PatientReferralStep7Activity extends BaseActivity implements View.O
         label = (TextView) findViewById(R.id.label);
         label.setText("Psycho-social & Economic Support");
         Intent intent = getIntent();
+        holder = (Referral) intent.getSerializableExtra("referral");
         hivStiServicesReq = intent.getStringArrayListExtra("hivStiServicesReq");
         oiArtReq = intent.getStringArrayListExtra("oiArtReq");
         srhReq = intent.getStringArrayListExtra("srhReq");
@@ -81,7 +83,22 @@ public class PatientReferralStep7Activity extends BaseActivity implements View.O
                 }
             }
             setSupportActionBar(createToolBar("Update Referrals: Services Referred"));
-        }else{
+        }else if(holder.psychReq != null){
+            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) holder.psychReq;
+            ArrayList<String> list1 = new ArrayList<>();
+            for(ServicesReferred s : list){
+                list1.add(s.name);
+            }
+            int count = servicesReferredArrayAdapter.getCount();
+            for(int i = 0; i < count; i++){
+                ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
+                if(list1.contains(current.name)){
+                    servicesReferred.setItemChecked(i, true);
+                }
+            }
+            setSupportActionBar(createToolBar("Add Referrals: Services Referred"));
+        }
+        else{
             item = new Referral();
             setSupportActionBar(createToolBar("Add Referrals: Services Referred"));
         }
@@ -114,6 +131,8 @@ public class PatientReferralStep7Activity extends BaseActivity implements View.O
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
+        holder.psychReq = getServicesReferred();
+        intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
     }
@@ -135,17 +154,19 @@ public class PatientReferralStep7Activity extends BaseActivity implements View.O
         intent.putExtra("laboratoryReq", laboratoryReq);
         intent.putExtra("tbReq", tbReq);
         intent.putExtra("psychReq", getServicesReferred());
+        holder.psychReq = getServicesReferred();
+        intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
     }
 
-    private ArrayList<String> getServicesReferred(){
-        ArrayList<String> a = new ArrayList<>();
+    private ArrayList<ServicesReferred> getServicesReferred(){
+        ArrayList<ServicesReferred> a = new ArrayList<>();
         for(int i = 0; i < servicesReferred.getCount(); i++){
             if(servicesReferred.isItemChecked(i)){
-                a.add(servicesReferredArrayAdapter.getItem(i).id);
+                a.add(servicesReferredArrayAdapter.getItem(i));
             }else{
-                a.remove(servicesReferredArrayAdapter.getItem(i).id);
+                a.remove(servicesReferredArrayAdapter.getItem(i));
             }
         }
         return a;

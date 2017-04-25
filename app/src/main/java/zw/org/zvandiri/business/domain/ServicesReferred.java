@@ -22,13 +22,14 @@ import zw.org.zvandiri.business.domain.util.ReferalType;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Tasunungurwa Muzinda on 12/17/2016.
  */
 @Table(name = "services_referred", id = "_id")
-public class ServicesReferred extends Model {
+public class ServicesReferred extends Model implements Serializable{
 
     @Expose
     @Column(name = "uuid")

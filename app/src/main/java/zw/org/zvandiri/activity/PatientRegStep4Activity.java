@@ -3,15 +3,22 @@ package zw.org.zvandiri.activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.*;
+import zw.org.zvandiri.business.domain.util.Gender;
+import zw.org.zvandiri.business.domain.util.HIVDisclosureLocation;
+import zw.org.zvandiri.business.domain.util.TransmissionMode;
+import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
+import zw.org.zvandiri.toolbox.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,57 +32,29 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
     private EditText dateJoined;
     private Spinner referer;
     private Button next;
-    private String itemID;
-    private Patient item;
-    private String dateOfBirth;
-    private String firstName;
-    private String lastName;
-    private String middleName;
-    private Integer gender;
-    private String mobileNumber;
-    private String ownerName;
-    private String secondaryMobileNumber;
-    private String secondaryMobileOwnerName;
-    private Integer mobileOwner;
-    private Integer ownSecondaryMobile;
-    private String mobileOwnerRelation;
-    private String secondaryMobileownerRelation;
-    private String address;
-    private String address1;
-    private String primaryClinic;
-    private String supportGroup;
     private DatePickerDialog dialog;
-    private String email;
     private TextView reasonLabel;
     private Spinner reasonForNotReachingOLevel;
     private EditText refererName;
-    private String OINumber;
+    private Patient holder;
+    private YesNo hivStatusKnown;
+    private TransmissionMode transmissionMode;
+    private Date dateTested;
+    private HIVDisclosureLocation hIVDisclosureLocation;
+    private ArrayList<DisabilityCategory> disabilityCategorys;
+    private YesNo disability;
+    YesNo cat;
+    YesNo consentToMHealth;
+    YesNo consentToPhoto;
+    YesNo youngMumGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step4);
         Intent intent = getIntent();
-        OINumber = intent.getStringExtra("OINumber");
-        email = intent.getStringExtra("email");
-        address = intent.getStringExtra("address");
-        address1 = intent.getStringExtra("address1");
-        primaryClinic = intent.getStringExtra("primaryClinic");
-        supportGroup = intent.getStringExtra("supportGroup");
-        firstName = intent.getStringExtra("firstName");
-        middleName = intent.getStringExtra("middleName");
-        lastName = intent.getStringExtra("lastName");
-        dateOfBirth = intent.getStringExtra("dateOfBirth");
-        gender = intent.getIntExtra("gender", 0);
-        itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        mobileNumber = intent.getStringExtra("mobileNumber");
-        ownerName = intent.getStringExtra("ownerName");
-        secondaryMobileNumber = intent.getStringExtra("secondaryMobileNumber");
-        secondaryMobileOwnerName = intent.getStringExtra("secondaryMobileOwnerName");
-        mobileOwner = intent.getIntExtra("mobileOwner", 0);
-        ownSecondaryMobile = intent.getIntExtra("ownSecondaryMobile", 0);
-        mobileOwnerRelation = intent.getStringExtra("mobileOwnerRelation");
-        secondaryMobileownerRelation = intent.getStringExtra("secondaryMobileownerRelation");
+        holder = (Patient) intent.getSerializableExtra("patient");
+        Log.d("Size", ReasonForNotReachingOLevel.getAll().size() + "");
         next = (Button) findViewById(R.id.btn_save);
         dateJoined = (EditText) findViewById(R.id.dateJoined);
         education = (Spinner) findViewById(R.id.education);
@@ -127,33 +106,45 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
         dateJoined.setOnClickListener(this);
-        if(itemID != null){
-            item = Patient.findById(itemID);
-            updateLabel(item.dateJoined, dateJoined);
-            int i = 0;
-            for(Education m : Education.getAll()){
-                if(item.education != null  && item.education.equals(education.getItemAtPosition(i))){
-                    education.setSelection(i, true);
+        if(holder.educationLevel != null){
+            if(holder.dateJoined != null){
+                updateLabel(holder.dateJoined, dateJoined);
+            }
+            refererName.setText(holder.refererName);
+            int k = 0;
+            for(Education e : Education.getAll()){
+                if(holder.education != null && holder.education.name.equals(((Education)education.getItemAtPosition(k)).name)){
+                    education.setSelection(k);
                     break;
                 }
-                i++;
+                k++;
             }
-            i = 0;
-            for(EducationLevel m : EducationLevel.getAll()){
-                if(item.educationLevel != null  && item.educationLevel.equals(educationLevel.getItemAtPosition(i))){
-                    educationLevel.setSelection(i, true);
+            k = 0;
+            for(EducationLevel e : EducationLevel.getAll()){
+                if(holder.educationLevel != null && holder.educationLevel.name.equals(((EducationLevel)educationLevel.getItemAtPosition(k)).name)){
+                    educationLevel.setSelection(k);
                     break;
                 }
-                i++;
+                k++;
             }
-            i = 0;
-            for(Referer m : Referer.getAll()){
-                if(item.referer != null  && item.referer.equals(referer.getItemAtPosition(i))){
-                    referer.setSelection(i, true);
+            k = 0;
+            for(Referer r : Referer.getAll()){
+                if(holder.referer != null && holder.referer.name.equals(((Referer)referer.getItemAtPosition(k)).name)){
+                    referer.setSelection(k);
                     break;
                 }
-                i++;
+                k++;
             }
+            hivStatusKnown = holder.hivStatusKnown;
+            transmissionMode = holder.transmissionMode;
+            dateTested = holder.dateTested;
+            hIVDisclosureLocation = holder.hIVDisclosureLocation;
+            disabilityCategorys = (ArrayList<DisabilityCategory>) holder.disabilityCategorys;
+            disability = holder.disability;
+            cat = holder.cat;
+            consentToMHealth = holder.consentToMHealth;
+            consentToPhoto = holder.consentToPhoto;
+            youngMumGroup = holder.youngMumGroup;
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add Education and Other Details Step 4 of 7 "));
@@ -181,7 +172,18 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientRegStep4Activity.this, PatientRegStep1Activity.class);
+        Intent intent = new Intent(PatientRegStep4Activity.this, PatientRegStep3Activity.class);
+        holder.dateJoined = DateUtil.getDateFromString(dateJoined.getText().toString());
+        holder.education = (Education) education.getSelectedItem();
+        holder.educationLevel = (EducationLevel) educationLevel.getSelectedItem();
+        holder.referer = (Referer) referer.getSelectedItem();
+        holder.refererName = refererName.getText().toString();
+        if(reasonForNotReachingOLevel.getVisibility() == View.VISIBLE){
+            holder.reasonForNotReachingOLevel = (ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getSelectedItem();
+        }
+        holder.disabilityCategorys = disabilityCategorys;
+        holder.disability = disability;
+        intent.putExtra("patient", holder);
         startActivity(intent);
         finish();
     }
@@ -194,34 +196,23 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         if(view.getId() == next.getId()){
             if(validateLocal()){
                 Intent intent = new Intent(PatientRegStep4Activity.this, PatientRegStep5Activity.class);
-                intent.putExtra(AppUtil.DETAILS_ID, itemID);
-                intent.putExtra("dateOfBirth", dateOfBirth);
-                intent.putExtra("firstName", firstName);
-                intent.putExtra("lastName", lastName);
-                intent.putExtra("middleName", middleName);
-                intent.putExtra("gender", gender);
-                intent.putExtra("mobileNumber", mobileNumber);
-                intent.putExtra("ownerName", ownerName);
-                intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);
-                intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName);
-                intent.putExtra("mobileOwner", mobileOwner);
-                intent.putExtra("ownSecondaryMobile", ownSecondaryMobile);
-                intent.putExtra("mobileOwnerRelation", mobileOwnerRelation);
-                intent.putExtra("secondaryMobileownerRelation", secondaryMobileownerRelation);
-                intent.putExtra("address", address);
-                intent.putExtra("address1", address1);
-                intent.putExtra("primaryClinic", primaryClinic);
-                intent.putExtra("supportGroup", supportGroup);
-                intent.putExtra("dateJoined", dateJoined.getText().toString());
-                intent.putExtra("education", ((Education) education.getSelectedItem()).id);
-                intent.putExtra("educationLevel", ((EducationLevel) educationLevel.getSelectedItem()).id);
-                intent.putExtra("referer", ((Referer) referer.getSelectedItem()).id);
-                intent.putExtra("email", email);
-                intent.putExtra("refererName", refererName.getText().toString());
-                intent.putExtra("OINumber", OINumber);
+                holder.dateJoined = DateUtil.getDateFromString(dateJoined.getText().toString());
+                holder.education = (Education) education.getSelectedItem();
+                holder.educationLevel = (EducationLevel) educationLevel.getSelectedItem();
+                holder.referer = (Referer) referer.getSelectedItem();
+                holder.refererName = refererName.getText().toString();
                 if(reasonForNotReachingOLevel.getVisibility() == View.VISIBLE){
-                    intent.putExtra("reasonForNotReachingOLevel", ((ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getSelectedItem()).id);
+                    holder.reasonForNotReachingOLevel = (ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getSelectedItem();
                 }
+                holder.hivStatusKnown = hivStatusKnown;
+                holder.transmissionMode = transmissionMode;
+                holder.dateTested = dateTested;
+                holder.hIVDisclosureLocation = hIVDisclosureLocation;
+                holder.cat = cat;
+                holder.consentToMHealth = consentToMHealth;
+                holder.consentToPhoto = consentToPhoto;
+                holder.youngMumGroup = youngMumGroup;
+                intent.putExtra("patient", holder);
                 startActivity(intent);
                 finish();
             }

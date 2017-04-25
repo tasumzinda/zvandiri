@@ -13,10 +13,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.adapter.PatientAdapter;
+import zw.org.zvandiri.business.domain.DisabilityCategory;
 import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.remote.PushPullService;
 import zw.org.zvandiri.remote.SetUpDataDownloadService;
+import zw.org.zvandiri.toolbox.Log;
+
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -39,6 +42,9 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
         setSupportActionBar(createToolBar("Patients"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView.setOnItemClickListener(this);
+        for(DisabilityCategory d : DisabilityCategory.findByPatient(Patient.getById("edb92d5c-5d3d-4e48-9705-d9d12d7315d1"))){
+            Log.d("Name", d.name);
+        }
         ScheduledExecutorService scheduler =
                 Executors.newSingleThreadScheduledExecutor();
 

@@ -15,6 +15,7 @@ import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by User on 4/4/2017.
@@ -25,74 +26,19 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
     private TextView disabilityLabel;
     private ListView disabilityCategorys;
     private Button next;
-    private String itemID;
-    private Patient item;
-    private String dateOfBirth;
-    private String firstName;
-    private String lastName;
-    private String middleName;
-    private Integer gender;
-    private String mobileNumber;
-    private String ownerName;
-    private String secondaryMobileNumber;
-    private String secondaryMobileOwnerName;
-    private Integer mobileOwner;
-    private Integer ownSecondaryMobile;
-    private String mobileOwnerRelation;
-    private String secondaryMobileownerRelation;
-    private String address;
-    private String address1;
-    private String primaryClinic;
-    private String supportGroup;
-    private String dateJoined;
-    private String education;
-    private String educationLevel;
-    private String referer;
-    private Integer hivStatusKnown;
-    private Integer transmissionMode;
-    private String dateTested;
-    private Integer hIVDisclosureLocation;
-    private String email;
     ArrayAdapter<DisabilityCategory> disabilityCategorysArrayAdapter;
-    private String reasonForNotReachingOLevel;
-    private String refererName;
-    private String OINumber;
+    private Patient holder;
+    YesNo cat;
+    YesNo consentToMHealth;
+    YesNo consentToPhoto;
+    YesNo youngMumGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reg_step5_cont);
         Intent intent = getIntent();
-        OINumber = intent.getStringExtra("OINumber");
-        refererName = intent.getStringExtra("refererName");
-        reasonForNotReachingOLevel = intent.getStringExtra("reasonForNotReachingOLevel");
-        email = intent.getStringExtra("email");
-        hivStatusKnown = intent.getIntExtra("hivStatusKnown", 0);
-        transmissionMode = intent.getIntExtra("transmissionMode", 0);
-        hIVDisclosureLocation = intent.getIntExtra("hIVDisclosureLocation", 0);
-        dateTested = intent.getStringExtra("dateTested");
-        dateJoined = intent.getStringExtra("dateJoined");
-        education = intent.getStringExtra("education");
-        educationLevel = intent.getStringExtra("educationLevel");
-        referer = intent.getStringExtra("referer");
-        address = intent.getStringExtra("address");
-        address1 = intent.getStringExtra("address1");
-        primaryClinic = intent.getStringExtra("primaryClinic");
-        supportGroup = intent.getStringExtra("supportGroup");
-        firstName = intent.getStringExtra("firstName");
-        middleName = intent.getStringExtra("middleName");
-        lastName = intent.getStringExtra("lastName");
-        dateOfBirth = intent.getStringExtra("dateOfBirth");
-        gender = intent.getIntExtra("gender", 0);
-        itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        mobileNumber = intent.getStringExtra("mobileNumber");
-        ownerName = intent.getStringExtra("ownerName");
-        secondaryMobileNumber = intent.getStringExtra("secondaryMobileNumber");
-        secondaryMobileOwnerName = intent.getStringExtra("secondaryMobileOwnerName");
-        mobileOwner = intent.getIntExtra("mobileOwner", 0);
-        ownSecondaryMobile = intent.getIntExtra("ownSecondaryMobile", 0);
-        mobileOwnerRelation = intent.getStringExtra("mobileOwnerRelation");
-        secondaryMobileownerRelation = intent.getStringExtra("secondaryMobileownerRelation");
+        holder = (Patient) intent.getSerializableExtra("patient");
         next = (Button) findViewById(R.id.btn_save);
         disability = (Spinner) findViewById(R.id.disability);
         disabilityLabel = (TextView) findViewById(R.id.disabilityLabel);
@@ -101,6 +47,9 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
         disabilityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         disability.setAdapter(disabilityArrayAdapter);
         disabilityArrayAdapter.notifyDataSetChanged();
+        disabilityCategorysArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, DisabilityCategory.getAll());
+        disabilityCategorys.setAdapter(disabilityCategorysArrayAdapter);
+        disabilityCategorysArrayAdapter.notifyDataSetChanged();
         disabilityCategorys.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         disabilityCategorys.setItemsCanFocus(false);
         disability.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -108,9 +57,6 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(disability.getSelectedItem().equals(YesNo.YES)){
                     disabilityCategorys.setVisibility(View.VISIBLE);
-                    disabilityCategorysArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.check_box_item, DisabilityCategory.getAll());
-                    disabilityCategorys.setAdapter(disabilityCategorysArrayAdapter);
-                    disabilityCategorysArrayAdapter.notifyDataSetChanged();
                     disabilityLabel.setVisibility(View.VISIBLE);
                 }else{
                     disabilityLabel.setVisibility(View.GONE);
@@ -123,24 +69,31 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
 
             }
         });
-        if(itemID != null){
-            item = Patient.findById(itemID);
+        if(holder.disability != null){
             int i = 0;
             for(YesNo m : YesNo.values()){
-                if(item.disability != null  && item.disability.equals(disability.getItemAtPosition(i))){
+                if(holder.disability != null  && holder.disability.equals(disability.getItemAtPosition(i))){
                     disability.setSelection(i, true);
                     break;
                 }
                 i++;
             }
-            ArrayList<DisabilityCategory> disabilityCategorysList = (ArrayList<DisabilityCategory>) DisabilityCategory.findByPatient(Patient.findById(itemID));
+            ArrayList<DisabilityCategory> disabilityCategorysList = (ArrayList<DisabilityCategory>) holder.disabilityCategorys;
+            ArrayList<String> list = new ArrayList<>();
+            for(DisabilityCategory d : disabilityCategorysList){
+                list.add(d.name);
+            }
             int disabilityCategorysCount = disabilityCategorysArrayAdapter.getCount();
             for(i = 0; i < disabilityCategorysCount; i++){
                 DisabilityCategory current = disabilityCategorysArrayAdapter.getItem(i);
-                if(disabilityCategorysList.contains(current)){
+                if(list.contains(current.name)){
                     disabilityCategorys.setItemChecked(i, true);
                 }
             }
+            cat = holder.cat;
+            consentToMHealth = holder.consentToMHealth;
+            consentToPhoto = holder.consentToPhoto;
+            youngMumGroup = holder.youngMumGroup;
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add HIV and Health Details Step 5 of 7 "));
@@ -168,7 +121,12 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientRegStep1Activity.class);
+        Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientRegStep5Activity.class);
+        holder.disability = (YesNo) disability.getSelectedItem();
+        if(disability.getSelectedItem().equals(YesNo.YES)){
+            holder.disabilityCategorys = getDisabilityCategorys();
+        }
+        intent.putExtra("patient", holder);
         startActivity(intent);
         finish();
     }
@@ -177,61 +135,27 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
     public void onClick(View view) {
         if(view.getId() == next.getId()){
             Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientRegStep6Activity.class);
-            intent.putExtra(AppUtil.DETAILS_ID, itemID);
-            intent.putExtra("dateOfBirth", dateOfBirth);
-            intent.putExtra("firstName", firstName);
-            intent.putExtra("lastName", lastName);
-            intent.putExtra("middleName", middleName);
-            intent.putExtra("gender", gender);
-            intent.putExtra("email", email);
-            intent.putExtra("mobileNumber", mobileNumber);
-            intent.putExtra("ownerName", ownerName);
-            intent.putExtra("secondaryMobileNumber", secondaryMobileNumber);
-            intent.putExtra("secondaryMobileOwnerName", secondaryMobileOwnerName);
-            intent.putExtra("mobileOwner", mobileOwner);
-            intent.putExtra("ownSecondaryMobile", ownSecondaryMobile);
-            intent.putExtra("mobileOwnerRelation", mobileOwnerRelation);
-            intent.putExtra("secondaryMobileownerRelation", secondaryMobileownerRelation);
-            intent.putExtra("address", address);
-            intent.putExtra("address1", address1);
-            intent.putExtra("primaryClinic", primaryClinic);
-            intent.putExtra("supportGroup", supportGroup);
-            intent.putExtra("dateJoined", dateJoined);
-            intent.putExtra("education", education);
-            intent.putExtra("educationLevel", educationLevel);
-            intent.putExtra("referer", referer);
-            intent.putExtra("hivStatusKnown", hivStatusKnown);
-            intent.putExtra("transmissionMode", transmissionMode);
-            intent.putExtra("dateTested", dateTested);
-            intent.putExtra("hIVDisclosureLocation", hIVDisclosureLocation);
-            intent.putExtra("disability", ((YesNo) disability.getSelectedItem()).getCode());
-            intent.putExtra("disabilityCategorys", getDisabilityCategorys());
-            intent.putExtra("refererName", refererName);
-            intent.putExtra("reasonForNotReachingOLevel", reasonForNotReachingOLevel);
-            intent.putExtra("OINumber", OINumber);
+            holder.disability = (YesNo) disability.getSelectedItem();
+            if(disability.getSelectedItem().equals(YesNo.YES)){
+                holder.disabilityCategorys = getDisabilityCategorys();
+            }
+            holder.cat = cat;
+            holder.consentToMHealth = consentToMHealth;
+            holder.consentToPhoto = consentToPhoto;
+            holder.youngMumGroup = youngMumGroup;
+            intent.putExtra("patient", holder);
             startActivity(intent);
             finish();
         }
     }
 
-    /*public boolean validateLocal(){
-        boolean isValid = true;
-        if( ! checkDateFormat(dateOfBirth.getText().toString())){
-            dateOfBirth.setError(getResources().getString(R.string.date_format_error));
-            isValid = false;
-        }else{
-            dateOfBirth.setError(null);
-        }
-        return isValid;
-    }*/
-
-    private ArrayList<String> getDisabilityCategorys(){
-        ArrayList<String> a = new ArrayList<>();
+    private ArrayList<DisabilityCategory> getDisabilityCategorys(){
+        ArrayList<DisabilityCategory> a = new ArrayList<>();
         for(int i = 0; i < disabilityCategorys.getCount(); i++){
             if(disabilityCategorys.isItemChecked(i)){
-                a.add(disabilityCategorysArrayAdapter.getItem(i).id);
+                a.add(disabilityCategorysArrayAdapter.getItem(i));
             }else{
-                a.remove(disabilityCategorysArrayAdapter.getItem(i).id);
+                a.remove(disabilityCategorysArrayAdapter.getItem(i));
             }
         }
         return a;

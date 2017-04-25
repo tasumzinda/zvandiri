@@ -10,9 +10,14 @@ import android.widget.*;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.domain.util.Gender;
+import zw.org.zvandiri.business.domain.util.HIVDisclosureLocation;
+import zw.org.zvandiri.business.domain.util.TransmissionMode;
+import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
+import zw.org.zvandiri.toolbox.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,10 +34,37 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
     private Button next;
     private DatePickerDialog dialog;
     private EditText[] fields;
-    private String itemID;
-    private Patient item;
     private EditText oiNumber;
     private Patient holder;
+    private String mobileNumber;
+    private String ownerName;
+    private String secondaryMobileNumber;
+    private String secondaryMobileOwnerName;
+    private YesNo mobileOwner;
+    private YesNo ownSecondaryMobile;
+    private Relationship mobileOwnerRelation;
+    private Relationship secondaryMobileownerRelation;
+    private String email;
+    private String address;
+    private String address1;
+    private Facility primaryClinic;
+    private SupportGroup supportGroup;
+    private Date dateJoined;
+    private Education education;
+    private EducationLevel educationLevel;
+    private Referer referer;
+    private ReasonForNotReachingOLevel reasonForNotReachingOLevel;
+    private String refererName;
+    private YesNo hivStatusKnown;
+    private TransmissionMode transmissionMode;
+    private Date dateTested;
+    private HIVDisclosureLocation hIVDisclosureLocation;
+    private ArrayList<DisabilityCategory> disabilityCategorys;
+    private YesNo disability;
+    YesNo cat;
+    YesNo consentToMHealth;
+    YesNo consentToPhoto;
+    YesNo youngMumGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +78,6 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         oiNumber = (EditText) findViewById(R.id.OINumber);
         Intent intent = getIntent();
         holder = (Patient) intent.getSerializableExtra("patient");
-        itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
         fields = new EditText[] {firstName, lastName, dateOfBirth};
         next = (Button) findViewById(R.id.btn_save);
         ArrayAdapter<Gender> genderArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, Gender.values());
@@ -77,6 +108,35 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                 }
                 i++;
             }
+            mobileNumber = holder.mobileNumber;
+            ownerName = holder.ownerName;
+            secondaryMobileNumber = holder.secondaryMobileNumber;
+            secondaryMobileOwnerName = holder.secondaryMobileOwnerName;
+            mobileOwner = holder.mobileOwner;
+            ownSecondaryMobile = holder.ownSecondaryMobile;
+            mobileOwnerRelation = holder.mobileOwnerRelation;
+            secondaryMobileownerRelation = holder.secondaryMobileownerRelation;
+            email = holder.email;
+            address = holder.address;
+            address1 = holder.address1;
+            primaryClinic = holder.primaryClinic;
+            supportGroup = holder.supportGroup;
+            dateJoined = holder.dateJoined;
+            education = holder.education;
+            educationLevel = holder.educationLevel;
+            referer = holder.referer;
+            reasonForNotReachingOLevel = holder.reasonForNotReachingOLevel;
+            refererName = holder.refererName;
+            hivStatusKnown = holder.hivStatusKnown;
+            transmissionMode = holder.transmissionMode;
+            dateTested = holder.dateTested;
+            hIVDisclosureLocation = holder.hIVDisclosureLocation;
+            disabilityCategorys = (ArrayList<DisabilityCategory>) holder.disabilityCategorys;
+            disability = holder.disability;
+            cat = holder.cat;
+            consentToMHealth = holder.consentToMHealth;
+            consentToPhoto = holder.consentToPhoto;
+            youngMumGroup = holder.youngMumGroup;
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add Demographic Details Step 1 of 7 "));
@@ -118,13 +178,6 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
             if(validate(fields)){
                 if(validateLocal()){
                     Intent intent = new Intent(PatientRegStep1Activity.this, PatientRegStep2Activity.class);
-                    intent.putExtra(AppUtil.DETAILS_ID, itemID);
-                    /*intent.putExtra("dateOfBirth", dateOfBirth.getText().toString());
-                    intent.putExtra("firstName", firstName.getText().toString());
-                    intent.putExtra("lastName", lastName.getText().toString());
-                    intent.putExtra("middleName", middleName.getText().toString());
-                    intent.putExtra("gender", ((Gender) gender.getSelectedItem()).getCode());
-                    intent.putExtra("OINumber", oiNumber.getText().toString());*/
                     holder = new Patient();
                     holder.dateOfBirth = DateUtil.getDateFromString(dateOfBirth.getText().toString());
                     holder.firstName = firstName.getText().toString();
@@ -132,6 +185,35 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                     holder.middleName = middleName.getText().toString();
                     holder.gender = (Gender) gender.getSelectedItem();
                     holder.oINumber = oiNumber.getText().toString();
+                    holder.mobileNumber = mobileNumber;
+                    holder.ownerName = ownerName;
+                    holder.secondaryMobileNumber = secondaryMobileNumber;
+                    holder.secondaryMobileOwnerName = secondaryMobileOwnerName;
+                    holder.mobileOwner = mobileOwner;
+                    holder.ownSecondaryMobile = ownSecondaryMobile;
+                    holder.mobileOwnerRelation = mobileOwnerRelation;
+                    holder.secondaryMobileownerRelation = secondaryMobileownerRelation;
+                    holder.email = email;
+                    holder.address = address;
+                    holder.address1 = address1;
+                    holder.primaryClinic = primaryClinic;
+                    holder.supportGroup = supportGroup;
+                    holder.dateJoined = dateJoined;
+                    holder.education = education;
+                    holder.educationLevel = educationLevel;
+                    holder.referer = referer;
+                    holder.reasonForNotReachingOLevel = reasonForNotReachingOLevel;
+                    holder.refererName = refererName;
+                    holder.hivStatusKnown = hivStatusKnown;
+                    holder.transmissionMode = transmissionMode;
+                    holder.dateTested = dateTested;
+                    holder.hIVDisclosureLocation = hIVDisclosureLocation;
+                    holder.disabilityCategorys = disabilityCategorys;
+                    holder.disability = disability;
+                    holder.cat = cat;
+                    holder.consentToMHealth = consentToMHealth;
+                    holder.consentToPhoto = consentToPhoto;
+                    holder.youngMumGroup = youngMumGroup;
                     intent.putExtra("patient", holder);
                     startActivity(intent);
                     finish();
@@ -151,11 +233,13 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
             dateOfBirth.setError(null);
         }
         Date today = new Date();
-        if(DateUtil.getDateFromString(dateOfBirth.getText().toString()).after(today)){
-            dateOfBirth.setError(this.getString(R.string.date_aftertoday));
-            isValid = false;
-        }else{
-            dateOfBirth.setError(null);
+        if(checkDateFormat(dateOfBirth.getText().toString())){
+            if(DateUtil.getDateFromString(dateOfBirth.getText().toString()).after(today)){
+                dateOfBirth.setError(this.getString(R.string.date_aftertoday));
+                isValid = false;
+            }else{
+                dateOfBirth.setError(null);
+            }
         }
         return isValid;
     }

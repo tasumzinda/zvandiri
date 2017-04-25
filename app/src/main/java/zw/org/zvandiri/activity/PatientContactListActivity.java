@@ -19,7 +19,7 @@ import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
 
-public class PatientContactListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class PatientContactListActivity extends BaseActivity /*implements AdapterView.OnItemClickListener*/ {
 
     String name;
     String id;
@@ -37,7 +37,7 @@ public class PatientContactListActivity extends BaseActivity implements AdapterV
         listView.setAdapter(contactAdapter);
         setSupportActionBar(createToolBar("Contacts for " + name));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        listView.setOnItemClickListener(this);
+        //listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class PatientContactListActivity extends BaseActivity implements AdapterV
         finish();
     }
 
-    @Override
+    /*@Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long i) {
         Contact contact = (Contact) parent.getAdapter().getItem(position);
         Intent intent = new Intent(PatientContactListActivity.this, PatientContactActivity.class);
@@ -84,5 +84,5 @@ public class PatientContactListActivity extends BaseActivity implements AdapterV
         intent.putExtra(AppUtil.ID, id);
         startActivity(intent);
         finish();
-    }
+    }*/
 }

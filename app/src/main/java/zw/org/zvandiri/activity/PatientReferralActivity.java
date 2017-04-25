@@ -38,8 +38,9 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
     private String name;
     private String itemID;
     private EditText[] fields;
-    DatePickerDialog referralDateDialog;
-    DatePickerDialog dateAttendedDialog;
+    private DatePickerDialog referralDateDialog;
+    private DatePickerDialog dateAttendedDialog;
+    private Referral holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
         actionTaken = (Spinner) findViewById(R.id.actionTaken);
         next = (Button) findViewById(R.id.btn_next);
         Intent intent = getIntent();
+        holder = (Referral) intent.getSerializableExtra("referral");
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
@@ -91,7 +93,6 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
             attendingOfficer.setText(item.attendingOfficer);
             designation.setText(item.designation);
             int i = 0;
-            i = 0;
             for(ReferralActionTaken m : ReferralActionTaken.values()){
                 if(item.actionTaken != null && item.actionTaken.equals(actionTaken.getItemAtPosition(i))){
                     actionTaken.setSelection(i, true);
@@ -100,8 +101,24 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
                 i++;
             }
             setSupportActionBar(createToolBar("Update Referrals"));
-        }else{
-           item = new Referral();
+        }else if(holder != null){
+            updateLabel(holder.referralDate, referralDate);
+            organisation.setText(holder.organisation);
+            updateLabel(holder.dateAttended, dateAttended);
+            attendingOfficer.setText(holder.attendingOfficer);
+            designation.setText(holder.designation);
+            int i = 0;
+            for(ReferralActionTaken m : ReferralActionTaken.values()){
+                if(holder.actionTaken != null && holder.actionTaken.equals(actionTaken.getItemAtPosition(i))){
+                    actionTaken.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            setSupportActionBar(createToolBar("Add Referrals"));
+        }
+        else{
+            holder = new Referral();
             setSupportActionBar(createToolBar("Add Referrals"));
         }
         next.setOnClickListener(this);
@@ -162,6 +179,15 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
                 intent.putExtra("attendingOfficer", attendingOfficer.getText().toString());
                 intent.putExtra("designation", designation.getText().toString());
                 intent.putExtra("actionTaken", ((ReferralActionTaken) actionTaken.getSelectedItem()).getCode());
+                holder.referralDate = DateUtil.getDateFromString(referralDate.getText().toString());
+                holder.organisation = organisation.getText().toString();
+                if( ! dateAttended.getText().toString().isEmpty()){
+                    holder.dateAttended = DateUtil.getDateFromString(dateAttended.getText().toString());
+                }
+                holder.attendingOfficer = attendingOfficer.getText().toString();
+                holder.designation = designation.getText().toString();
+                holder.actionTaken = (ReferralActionTaken) actionTaken.getSelectedItem();
+                intent.putExtra("referral", holder);
                 startActivity(intent);
                 finish();
             }
