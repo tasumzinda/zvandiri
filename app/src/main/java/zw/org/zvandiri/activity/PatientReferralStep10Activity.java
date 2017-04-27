@@ -29,20 +29,6 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
     private String itemID;
     private String id;
     private String name;
-    private String referralDate;
-    private String organisation;
-    private String dateAttended;
-    private String attendingOfficer;
-    private String designation;
-    private Integer actionTaken;
-    private ArrayList<String> hivStiServicesReq;
-    private ArrayList<String> oiArtReq;
-    private ArrayList<String> srhReq;
-    private ArrayList<String> laboratoryReq;
-    private ArrayList<String> tbReq;
-    private ArrayList<String> psychReq;
-    private ArrayList<String> legalReq;
-    private ArrayList<String> hivStiServicesAvailed;
     private TextView label;
     private Referral holder;
 
@@ -56,23 +42,9 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
         label.setText("OI/ART Services");
         Intent intent = getIntent();
         holder = (Referral) intent.getSerializableExtra("referral");
-        hivStiServicesReq = intent.getStringArrayListExtra("hivStiServicesReq");
-        oiArtReq = intent.getStringArrayListExtra("oiArtReq");
-        srhReq = intent.getStringArrayListExtra("srhReq");
-        laboratoryReq = intent.getStringArrayListExtra("laboratoryReq");
-        tbReq = intent.getStringArrayListExtra("tbReq");
-        psychReq = intent.getStringArrayListExtra("psychReq");
-        legalReq = intent.getStringArrayListExtra("legalReq");
-        hivStiServicesAvailed = intent.getStringArrayListExtra("hivStiServicesAvailed");
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        referralDate = intent.getStringExtra("referralDate");
-        organisation = intent.getStringExtra("organisation");
-        dateAttended = intent.getStringExtra("dateAttended");
-        attendingOfficer = intent.getStringExtra("attendingOfficer");
-        designation = intent.getStringExtra("designation");
-        actionTaken = intent.getIntExtra("actionTaken", 1);
         servicesReferredArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServicesReferred.getByType(ReferalType.OI_ART_SERVICES));
         servicesReferred.setAdapter(servicesReferredArrayAdapter);
         servicesReferredArrayAdapter.notifyDataSetChanged();
@@ -88,7 +60,7 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
                     servicesReferred.setItemChecked(i, true);
                 }
             }
-            setSupportActionBar(createToolBar("Update Referrals: Services Referred/Received"));
+            setSupportActionBar(createToolBar("Update Referrals: Services Provided/Received"));
         }else if(holder.oiArtAvailed != null){
             ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) holder.oiArtAvailed;
             ArrayList<String> list1 = new ArrayList<>();
@@ -106,7 +78,7 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
         }
         else{
             item = new Referral();
-            setSupportActionBar(createToolBar("Add Referrals: Services Referred/Received"));
+            setSupportActionBar(createToolBar("Add Referrals: Services Provided/Received"));
         }
         save.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -148,21 +120,6 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        intent.putExtra("referralDate", referralDate);
-        intent.putExtra("organisation", organisation);
-        intent.putExtra("dateAttended", dateAttended);
-        intent.putExtra("attendingOfficer", attendingOfficer);
-        intent.putExtra("designation", designation);
-        intent.putExtra("actionTaken", actionTaken);
-        intent.putExtra("hivStiServicesReq", hivStiServicesReq);
-        intent.putExtra("oiArtReq", oiArtReq);
-        intent.putExtra("srhReq", srhReq);
-        intent.putExtra("laboratoryReq", laboratoryReq);
-        intent.putExtra("tbReq", tbReq);
-        intent.putExtra("psychReq", psychReq);
-        intent.putExtra("legalReq", legalReq);
-        intent.putExtra("hivStiServicesAvailed", hivStiServicesAvailed);
-        intent.putExtra("oiArtAvailed", getServicesReferred());
         holder.oiArtAvailed = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);

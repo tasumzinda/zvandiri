@@ -173,12 +173,6 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
                 intent.putExtra(AppUtil.NAME, name);
                 intent.putExtra(AppUtil.ID, id);
                 intent.putExtra(AppUtil.DETAILS_ID, itemID);
-                intent.putExtra("referralDate", referralDate.getText().toString());
-                intent.putExtra("organisation", organisation.getText().toString());
-                intent.putExtra("dateAttended", dateAttended.getText().toString());
-                intent.putExtra("attendingOfficer", attendingOfficer.getText().toString());
-                intent.putExtra("designation", designation.getText().toString());
-                intent.putExtra("actionTaken", ((ReferralActionTaken) actionTaken.getSelectedItem()).getCode());
                 holder.referralDate = DateUtil.getDateFromString(referralDate.getText().toString());
                 holder.organisation = organisation.getText().toString();
                 if( ! dateAttended.getText().toString().isEmpty()){

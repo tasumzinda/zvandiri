@@ -30,13 +30,6 @@ public class PatientReferralStep3Activity extends BaseActivity implements View.O
     private String itemID;
     private String id;
     private String name;
-    private String referralDate;
-    private String organisation;
-    private String dateAttended;
-    private String attendingOfficer;
-    private String designation;
-    private Integer actionTaken;
-    private ArrayList<String> hivStiServicesReq;
     private TextView label;
     private Referral holder;
 
@@ -50,16 +43,9 @@ public class PatientReferralStep3Activity extends BaseActivity implements View.O
         label.setText("OI/ART Services");
         Intent intent = getIntent();
         holder = (Referral) intent.getSerializableExtra("referral");
-        hivStiServicesReq = intent.getStringArrayListExtra("hivStiServicesReq");
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        referralDate = intent.getStringExtra("referralDate");
-        organisation = intent.getStringExtra("organisation");
-        dateAttended = intent.getStringExtra("dateAttended");
-        attendingOfficer = intent.getStringExtra("attendingOfficer");
-        designation = intent.getStringExtra("designation");
-        actionTaken = intent.getIntExtra("actionTaken", 1);
         servicesReferredArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServicesReferred.getByType(ReferalType.OI_ART_SERVICES));
         servicesReferred.setAdapter(servicesReferredArrayAdapter);
         servicesReferredArrayAdapter.notifyDataSetChanged();
@@ -69,7 +55,6 @@ public class PatientReferralStep3Activity extends BaseActivity implements View.O
             item = Referral.findById(itemID);
             ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) ServicesReferred.OIArtReq(Referral.findById(itemID));
             int count = servicesReferredArrayAdapter.getCount();
-            Log.d("Count", "size: " + list.size());
             for(int i = 0; i < count; i++){
                 ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
                 if(list.contains(current)){
@@ -136,14 +121,6 @@ public class PatientReferralStep3Activity extends BaseActivity implements View.O
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        intent.putExtra("referralDate", referralDate);
-        intent.putExtra("organisation", organisation);
-        intent.putExtra("dateAttended", dateAttended);
-        intent.putExtra("attendingOfficer", attendingOfficer);
-        intent.putExtra("designation", designation);
-        intent.putExtra("actionTaken", actionTaken);
-        intent.putExtra("hivStiServicesReq", hivStiServicesReq);
-        intent.putExtra("oiArtReq", getServicesReferred());
         holder.oiArtReq = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);

@@ -29,12 +29,6 @@ public class PatientRefferalStep2Activity extends BaseActivity implements View.O
     private String itemID;
     private String id;
     private String name;
-    private String referralDate;
-    private String organisation;
-    private String dateAttended;
-    private String attendingOfficer;
-    private String designation;
-    private Integer actionTaken;
     private Referral holder;
 
     @Override
@@ -48,12 +42,6 @@ public class PatientRefferalStep2Activity extends BaseActivity implements View.O
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        referralDate = intent.getStringExtra("referralDate");
-        organisation = intent.getStringExtra("organisation");
-        dateAttended = intent.getStringExtra("dateAttended");
-        attendingOfficer = intent.getStringExtra("attendingOfficer");
-        designation = intent.getStringExtra("designation");
-        actionTaken = intent.getIntExtra("actionTaken", 1);
         servicesReferredArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServicesReferred.getByType(ReferalType.HIV_STI_PREVENTION));
         servicesReferred.setAdapter(servicesReferredArrayAdapter);
         servicesReferredArrayAdapter.notifyDataSetChanged();
@@ -129,13 +117,6 @@ public class PatientRefferalStep2Activity extends BaseActivity implements View.O
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        intent.putExtra("referralDate", referralDate);
-        intent.putExtra("organisation", organisation);
-        intent.putExtra("dateAttended", dateAttended);
-        intent.putExtra("attendingOfficer", attendingOfficer);
-        intent.putExtra("designation", designation);
-        intent.putExtra("actionTaken", actionTaken);
-        intent.putExtra("hivStiServicesReq", getServicesReferred());
         holder.hivStiServicesReq = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);

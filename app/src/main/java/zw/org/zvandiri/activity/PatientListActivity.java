@@ -42,9 +42,6 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
         setSupportActionBar(createToolBar("Patients"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView.setOnItemClickListener(this);
-        for(DisabilityCategory d : DisabilityCategory.findByPatient(Patient.getById("edb92d5c-5d3d-4e48-9705-d9d12d7315d1"))){
-            Log.d("Name", d.name);
-        }
         ScheduledExecutorService scheduler =
                 Executors.newSingleThreadScheduledExecutor();
 

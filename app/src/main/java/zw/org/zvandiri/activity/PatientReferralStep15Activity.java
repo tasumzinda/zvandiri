@@ -16,6 +16,7 @@ import zw.org.zvandiri.business.domain.util.*;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
 import zw.org.zvandiri.business.util.UUIDGen;
+import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,25 +33,6 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
     private String itemID;
     private String id;
     private String name;
-    private String referralDate;
-    private String organisation;
-    private String dateAttended;
-    private String attendingOfficer;
-    private String designation;
-    private Integer actionTaken;
-    private ArrayList<String> hivStiServicesReq;
-    private ArrayList<String> oiArtReq;
-    private ArrayList<String> srhReq;
-    private ArrayList<String> laboratoryReq;
-    private ArrayList<String> tbReq;
-    private ArrayList<String> psychReq;
-    private ArrayList<String> legalReq;
-    private ArrayList<String> hivStiServicesAvailed;
-    private ArrayList<String> oiArtAvailed;
-    private ArrayList<String> srhAvailed;
-    private ArrayList<String> laboratoryAvailed;
-    private ArrayList<String> tbAvailed;
-    private ArrayList<String> psychAvailed;
     private TextView label;
     private Referral holder;
 
@@ -65,28 +47,9 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
         label.setText("Legal Services");
         Intent intent = getIntent();
         holder = (Referral) intent.getSerializableExtra("referral");
-        hivStiServicesReq = intent.getStringArrayListExtra("hivStiServicesReq");
-        oiArtReq = intent.getStringArrayListExtra("oiArtReq");
-        srhReq = intent.getStringArrayListExtra("srhReq");
-        laboratoryReq = intent.getStringArrayListExtra("laboratoryReq");
-        tbReq = intent.getStringArrayListExtra("tbReq");
-        psychReq = intent.getStringArrayListExtra("psychReq");
-        legalReq = intent.getStringArrayListExtra("legalReq");
-        hivStiServicesAvailed = intent.getStringArrayListExtra("hivStiServicesAvailed");
-        oiArtAvailed = intent.getStringArrayListExtra("oiArtAvailed");
-        srhAvailed = intent.getStringArrayListExtra("srhAvailed");
-        laboratoryAvailed = intent.getStringArrayListExtra("laboratoryAvailed");
-        tbAvailed = intent.getStringArrayListExtra("tbAvailed");
-        psychAvailed = intent.getStringArrayListExtra("psychAvailed");
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        referralDate = intent.getStringExtra("referralDate");
-        organisation = intent.getStringExtra("organisation");
-        dateAttended = intent.getStringExtra("dateAttended");
-        attendingOfficer = intent.getStringExtra("attendingOfficer");
-        designation = intent.getStringExtra("designation");
-        actionTaken = intent.getIntExtra("actionTaken", 1);
         servicesReferredArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServicesReferred.getByType(ReferalType.LEGAL_SUPPORT));
         servicesReferred.setAdapter(servicesReferredArrayAdapter);
         servicesReferredArrayAdapter.notifyDataSetChanged();
@@ -158,7 +121,14 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
     }
 
     public void onClick(View v){
-        save();
+        int size = holder.hivStiServicesReq.size() + holder.oiArtReq.size() + holder.srhReq.size() + holder.laboratoryReq.size()
+                + holder.tbReq.size() + holder.psychReq.size() + holder.legalReq.size();
+         if(size > 0){
+             save();
+         }else{
+             AppUtil.createShortNotification(getApplicationContext(), "Please select at least one service referred");
+         }
+
     }
 
     private ArrayList<ServicesReferred> getServicesReferred(){
