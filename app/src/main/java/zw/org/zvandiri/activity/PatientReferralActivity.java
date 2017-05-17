@@ -31,6 +31,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
     private EditText dateAttended;
     private EditText attendingOfficer;
     private EditText designation;
+    private EditText expectedVisitDate;
     private Spinner actionTaken;
     private Button next;
     private Referral item;
@@ -40,6 +41,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
     private EditText[] fields;
     private DatePickerDialog referralDateDialog;
     private DatePickerDialog dateAttendedDialog;
+    private DatePickerDialog expectedVisitDateDialog;
     private Referral holder;
 
     @Override
@@ -52,13 +54,14 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
         attendingOfficer = (EditText) findViewById(R.id.attendingOfficer);
         designation = (EditText) findViewById(R.id.designation);
         actionTaken = (Spinner) findViewById(R.id.actionTaken);
+        expectedVisitDate = (EditText) findViewById(R.id.expectedVisitDate);
         next = (Button) findViewById(R.id.btn_next);
         Intent intent = getIntent();
         holder = (Referral) intent.getSerializableExtra("referral");
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        fields = new EditText[] {referralDate, organisation, attendingOfficer, designation};
+        fields = new EditText[] {referralDate, organisation, attendingOfficer, designation, expectedVisitDate};
         referralDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
@@ -77,8 +80,18 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
             }
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
+        expectedVisitDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                updateLabel(newDate.getTime(), expectedVisitDate);
+            }
+        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        );
         referralDate.setOnClickListener(this);
         dateAttended.setOnClickListener(this);
+        expectedVisitDate.setOnClickListener(this);
         ArrayAdapter<ReferralActionTaken> referralActionTakenArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, ReferralActionTaken.values());
         referralActionTakenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         actionTaken.setAdapter(referralActionTakenArrayAdapter);
@@ -86,6 +99,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
         if(itemID != null){
             item = Referral.findById(itemID);
             updateLabel(item.referralDate, referralDate);
+            updateLabel(item.expectedVisitDate, expectedVisitDate);
             organisation.setText(item.organisation);
             if(item.dateAttended != null){
                 updateLabel(item.dateAttended, dateAttended);
@@ -103,6 +117,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
             setSupportActionBar(createToolBar("Update Referrals"));
         }else if(holder != null){
             updateLabel(holder.referralDate, referralDate);
+            updateLabel(item.expectedVisitDate, expectedVisitDate);
             organisation.setText(holder.organisation);
             updateLabel(holder.dateAttended, dateAttended);
             attendingOfficer.setText(holder.attendingOfficer);
@@ -164,6 +179,9 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
         if(view.getId() == dateAttended.getId()){
             dateAttendedDialog.show();
         }
+        if(view.getId() == expectedVisitDate.getId()){
+            expectedVisitDateDialog.show();
+        }
     }
 
     public void save(){
@@ -174,6 +192,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
                 intent.putExtra(AppUtil.ID, id);
                 intent.putExtra(AppUtil.DETAILS_ID, itemID);
                 holder.referralDate = DateUtil.getDateFromString(referralDate.getText().toString());
+                holder.expectedVisitDate = DateUtil.getDateFromString(expectedVisitDate.getText().toString());
                 holder.organisation = organisation.getText().toString();
                 if( ! dateAttended.getText().toString().isEmpty()){
                     holder.dateAttended = DateUtil.getDateFromString(dateAttended.getText().toString());
@@ -202,6 +221,12 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
             isValid = false;
         }else{
             dateAttended.setError(null);
+        }
+        if( ! checkDateFormat(expectedVisitDate.getText().toString())){
+            expectedVisitDate.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else {
+            expectedVisitDate.setError(null);
         }
         return isValid;
     }
