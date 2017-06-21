@@ -11,10 +11,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.android.volley.*;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
+import zw.org.zvandiri.remote.LoginWebService;
 import zw.org.zvandiri.remote.SetUpDataDownloadService;
 
 import java.util.*;
@@ -37,6 +44,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         passwordField = (EditText) findViewById(R.id.password);
         urlField = (EditText) findViewById(R.id.url);
         urlField.setText(AppUtil.getBaseUrl(this));
+        urlField.setEnabled(false);
         button = (Button) findViewById(R.id.btn_login);
         button.setOnClickListener(this);
         progressDialog = new ProgressDialog(this);
@@ -55,7 +63,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             AppUtil.savePreferences(getApplicationContext(), AppUtil.LOGGED_IN, Boolean.TRUE);
                             AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
                             AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
-                            AppUtil.savePreferences(getApplicationContext(), AppUtil.BASE_URL, urlField.getText().toString());
                             syncAppData();
                         }
 
@@ -65,7 +72,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         AppUtil.createShortNotification(getApplicationContext(), "Incorrect username or password");
-                        //Log.d("Error", volleyError.toString());
                     }
                 }
         ){
@@ -85,11 +91,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         AppUtil.getInstance(getApplicationContext()).getRequestQueue().add(stringRequest);
     }
 
+
+
     public void onClick(View view){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if(view.getId() == button.getId()){
             if(validate(fields)){
                 if(AppUtil.isNetworkAvailable(getApplicationContext())){
+                    //loginAsyncTask();
                     loginRemote();
                 }else if(sharedPreferences.contains("USERNAME")){
                     if(AppUtil.getUsername(this).equals(userNameField.getText().toString()) && AppUtil.getPassword(this).equals(passwordField.getText().toString())){
@@ -104,6 +113,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     AppUtil.createShortNotification(getApplicationContext(), "No internet connection");
                 }
             }
+        }
+    }
+
+    private void loginAsyncTask() {
+        lockScreenOrientation();
+        progressDialog = ProgressDialog.show(this, "Please wait", "Signing In...", true);
+        progressDialog.setCancelable(true);
+        AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
+        AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
+        new LoginWebService(context).execute();
+        progressDialog.hide();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean hasLoggedIn = sharedPreferences.contains(AppUtil.LOGGED_IN);
+        if( ! hasLoggedIn){
+            syncAppData();
         }
     }
 
@@ -165,6 +189,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onStop(){
         super.onStop();
     }
+
+
 
 }
 

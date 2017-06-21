@@ -28,10 +28,6 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
     private Button next;
     ArrayAdapter<DisabilityCategory> disabilityCategorysArrayAdapter;
     private Patient holder;
-    YesNo cat;
-    YesNo consentToMHealth;
-    YesNo consentToPhoto;
-    YesNo youngMumGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,22 +74,15 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
                 }
                 i++;
             }
-            ArrayList<DisabilityCategory> disabilityCategorysList = (ArrayList<DisabilityCategory>) holder.disabilityCategorys;
-            ArrayList<String> list = new ArrayList<>();
-            for(DisabilityCategory d : disabilityCategorysList){
-                list.add(d.name);
-            }
+
+            ArrayList<String> list = holder.disabilityCategorysId;
             int disabilityCategorysCount = disabilityCategorysArrayAdapter.getCount();
             for(i = 0; i < disabilityCategorysCount; i++){
                 DisabilityCategory current = disabilityCategorysArrayAdapter.getItem(i);
-                if(list.contains(current.name)){
+                if(list.contains(current.id)){
                     disabilityCategorys.setItemChecked(i, true);
                 }
             }
-            cat = holder.cat;
-            consentToMHealth = holder.consentToMHealth;
-            consentToPhoto = holder.consentToPhoto;
-            youngMumGroup = holder.youngMumGroup;
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add HIV and Health Details Step 5 of 7 "));
@@ -124,7 +113,7 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
         Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientRegStep5Activity.class);
         holder.disability = (YesNo) disability.getSelectedItem();
         if(disability.getSelectedItem().equals(YesNo.YES)){
-            holder.disabilityCategorys = getDisabilityCategorys();
+            holder.disabilityCategorysId = getDisabilityCategorys();
         }
         intent.putExtra("patient", holder);
         startActivity(intent);
@@ -137,25 +126,21 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
             Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientRegStep6Activity.class);
             holder.disability = (YesNo) disability.getSelectedItem();
             if(disability.getSelectedItem().equals(YesNo.YES)){
-                holder.disabilityCategorys = getDisabilityCategorys();
+                holder.disabilityCategorysId = getDisabilityCategorys();
             }
-            holder.cat = cat;
-            holder.consentToMHealth = consentToMHealth;
-            holder.consentToPhoto = consentToPhoto;
-            holder.youngMumGroup = youngMumGroup;
             intent.putExtra("patient", holder);
             startActivity(intent);
             finish();
         }
     }
 
-    private ArrayList<DisabilityCategory> getDisabilityCategorys(){
-        ArrayList<DisabilityCategory> a = new ArrayList<>();
+    private ArrayList<String> getDisabilityCategorys(){
+        ArrayList<String> a = new ArrayList<>();
         for(int i = 0; i < disabilityCategorys.getCount(); i++){
             if(disabilityCategorys.isItemChecked(i)){
-                a.add(disabilityCategorysArrayAdapter.getItem(i));
+                a.add(disabilityCategorysArrayAdapter.getItem(i).id);
             }else{
-                a.remove(disabilityCategorysArrayAdapter.getItem(i));
+                a.remove(disabilityCategorysArrayAdapter.getItem(i).id);
             }
         }
         return a;

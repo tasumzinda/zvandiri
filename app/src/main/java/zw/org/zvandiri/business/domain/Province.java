@@ -121,14 +121,6 @@ public class Province extends Model implements Serializable{
         AppUtil.getInstance(context).addToRequestQueue(stringRequest);
     }
 
-    public List<District> getDistricts() {
-        return getMany(District.class, "province");
-    }
-
-    public List<Facility> getFacilities() {
-        return getMany(Facility.class, "province");
-    }
-
     @Override
     public String toString() {
         return name;

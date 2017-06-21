@@ -172,14 +172,32 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         if(youngMumGroup.getVisibility() == View.VISIBLE){
             holder.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();
         }
-        holder.save();
-        for(int i = 0; i < holder.disabilityCategorys.size(); i++){
-            PatientDisabilityCategoryContract contract = new PatientDisabilityCategoryContract();
-            contract.disabilityCategory = holder.disabilityCategorys.get(i);
-            contract.patient = Patient.findById(patientId);
-            contract.id = UUIDGen.generateUUID();
-            contract.save();
-            Log.d("Saved disability", contract.id);
+        if(holder.primaryClinicId != null){
+            holder.primaryClinic = Facility.getItem(holder.primaryClinicId);
         }
+        if(holder.supportGroupId != null){
+            holder.supportGroup = SupportGroup.getItem(holder.supportGroupId);
+        }
+        if(holder.mobileOwnerRelationId != null){
+            holder.mobileOwnerRelation = Relationship.getItem(holder.mobileOwnerRelationId);
+        }
+        if(holder.secondaryMobileownerRelationId != null){
+            holder.secondaryMobileownerRelation = Relationship.getItem(holder.secondaryMobileownerRelationId);
+        }
+        if(holder.reasonForNotReachingOLevelId != null){
+            holder.reasonForNotReachingOLevel = ReasonForNotReachingOLevel.getItem(holder.reasonForNotReachingOLevelId);
+        }
+        holder.save();
+        if(holder.disabilityCategorysId != null){
+            for(int i = 0; i < holder.disabilityCategorysId.size(); i++){
+                PatientDisabilityCategoryContract contract = new PatientDisabilityCategoryContract();
+                contract.disabilityCategory = DisabilityCategory.getItem(holder.disabilityCategorysId.get(i));
+                contract.patient = Patient.findById(patientId);
+                contract.id = UUIDGen.generateUUID();
+                contract.save();
+                Log.d("Saved disability", contract.id);
+            }
+        }
+
     }
 }

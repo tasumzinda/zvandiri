@@ -36,26 +36,6 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
     private TextView relationshipLabel;
     private TextView secondaryRelationshipLabel;
     private Patient holder;
-    private String address;
-    private String address1;
-    private Facility primaryClinic;
-    private SupportGroup supportGroup;
-    private Date dateJoined;
-    private Education education;
-    private EducationLevel educationLevel;
-    private Referer referer;
-    private ReasonForNotReachingOLevel reasonForNotReachingOLevel;
-    private String refererName;
-    private YesNo hivStatusKnown;
-    private TransmissionMode transmissionMode;
-    private Date dateTested;
-    private HIVDisclosureLocation hIVDisclosureLocation;
-    private ArrayList<DisabilityCategory> disabilityCategorys;
-    private YesNo disability;
-    YesNo cat;
-    YesNo consentToMHealth;
-    YesNo consentToPhoto;
-    YesNo youngMumGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +111,7 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             }
             i = 0;
             for(Relationship m : Relationship.getAll()){
-                if(holder.mobileOwnerRelation != null  && holder.mobileOwnerRelation.name.equals(((Relationship)mobileOwnerRelation.getItemAtPosition(i)).name)){
+                if(holder.mobileOwnerRelationId != null  && holder.mobileOwnerRelationId.equals(((Relationship)mobileOwnerRelation.getItemAtPosition(i)).id)){
                     mobileOwnerRelation.setSelection(i, true);
                     break;
                 }
@@ -147,32 +127,12 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             }
             i = 0;
             for(Relationship m : Relationship.getAll()){
-                if(holder.secondaryMobileownerRelation != null  && holder.secondaryMobileownerRelation.name.equals(((Relationship)secondaryMobileownerRelation.getItemAtPosition(i)).name)){
+                if(holder.secondaryMobileownerRelationId != null  && holder.secondaryMobileownerRelationId.equals(((Relationship)secondaryMobileownerRelation.getItemAtPosition(i)).id)){
                     secondaryMobileownerRelation.setSelection(i, true);
                     break;
                 }
                 i++;
             }
-            address = holder.address;
-            address1 = holder.address1;
-            primaryClinic = holder.primaryClinic;
-            supportGroup = holder.supportGroup;
-            dateJoined = holder.dateJoined;
-            education = holder.education;
-            educationLevel = holder.educationLevel;
-            referer = holder.referer;
-            reasonForNotReachingOLevel = holder.reasonForNotReachingOLevel;
-            refererName = holder.refererName;
-            hivStatusKnown = holder.hivStatusKnown;
-            transmissionMode = holder.transmissionMode;
-            dateTested = holder.dateTested;
-            hIVDisclosureLocation = holder.hIVDisclosureLocation;
-            disabilityCategorys = (ArrayList<DisabilityCategory>) holder.disabilityCategorys;
-            disability = holder.disability;
-            cat = holder.cat;
-            consentToMHealth = holder.consentToMHealth;
-            consentToPhoto = holder.consentToPhoto;
-            youngMumGroup = holder.youngMumGroup;
         }
         mobileOwner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -247,10 +207,10 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
         holder.mobileOwner = (YesNo) mobileOwner.getSelectedItem();
         holder.ownSecondaryMobile = (YesNo) ownSecondaryMobile.getSelectedItem();
         if(mobileOwnerRelation.getVisibility() == View.VISIBLE){
-            holder.mobileOwnerRelation = (Relationship) mobileOwnerRelation.getSelectedItem();
+            holder.mobileOwnerRelationId = ((Relationship) mobileOwnerRelation.getSelectedItem()).id;
         }
         if(secondaryMobileownerRelation.getVisibility() == View.VISIBLE){
-            holder.secondaryMobileownerRelation = (Relationship) secondaryMobileownerRelation.getSelectedItem();
+            holder.secondaryMobileownerRelationId = ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id;
         }
         intent.putExtra("patient", holder);
         startActivity(intent);
@@ -271,27 +231,11 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
                 holder.mobileOwner = (YesNo) mobileOwner.getSelectedItem();
                 holder.ownSecondaryMobile = (YesNo) ownSecondaryMobile.getSelectedItem();
                 if(mobileOwnerRelation.getVisibility() == View.VISIBLE){
-                    holder.mobileOwnerRelation = (Relationship) mobileOwnerRelation.getSelectedItem();
+                    holder.mobileOwnerRelationId = ((Relationship) mobileOwnerRelation.getSelectedItem()).id;
                 }
                 if(secondaryMobileownerRelation.getVisibility() == View.VISIBLE){
-                    holder.secondaryMobileownerRelation = (Relationship) secondaryMobileownerRelation.getSelectedItem();
+                    holder.secondaryMobileownerRelationId = ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id;
                 }
-                holder.address = address;
-                holder.address1 = address1;
-                holder.primaryClinic = primaryClinic;
-                holder.supportGroup = supportGroup;
-                holder.dateJoined = dateJoined;
-                holder.education = education;
-                holder.educationLevel = educationLevel;
-                holder.referer = referer;
-                holder.reasonForNotReachingOLevel = reasonForNotReachingOLevel;
-                holder.refererName = refererName;
-                holder.disabilityCategorys = disabilityCategorys;
-                holder.disability = disability;
-                holder.cat = cat;
-                holder.consentToMHealth = consentToMHealth;
-                holder.consentToPhoto = consentToPhoto;
-                holder.youngMumGroup = youngMumGroup;
                 intent.putExtra("patient", holder);
                 startActivity(intent);
                 finish();

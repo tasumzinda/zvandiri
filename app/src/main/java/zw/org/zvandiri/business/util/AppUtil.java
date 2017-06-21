@@ -35,7 +35,7 @@ public class AppUtil {
     public static String LOGGED_IN = "LOGGED_IN";
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";
-    public static String BASE_URL = "URL";
+    public static String BASE_URL = "http://db-test.zvandiri.org:8080/zvandiri-mobile/rest/mobile";
     public static String NAME = "NAME";
     public static String ID = "ID";
     public static String DETAILS_ID = "DETAILS_ID";
@@ -130,8 +130,7 @@ public class AppUtil {
     }
 
     public static String getBaseUrl(Context context){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString(BASE_URL, "URL");
+        return BASE_URL;
     }
 
     public RequestQueue getRequestQueue() {
@@ -206,9 +205,7 @@ public class AppUtil {
     }
 
     public static HttpUrl getLoginUrl(Context context) {
-        return HttpUrl.parse(getBaseUrl(context).concat("/static/patient/get-cats" + getUsername(context))).newBuilder()
-                //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))
-                .build();
+        return HttpUrl.parse(getBaseUrl(context).concat("/patient/get-cats"));
     }
 
     public static HttpUrl getPushContactUrl(Context context) {

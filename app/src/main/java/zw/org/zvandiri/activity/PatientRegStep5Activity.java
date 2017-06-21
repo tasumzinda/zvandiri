@@ -37,12 +37,6 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
     private String itemID;
     private DatePickerDialog dialog;
     private Patient holder;
-    private ArrayList<DisabilityCategory> disabilityCategorys;
-    private YesNo disability;
-    YesNo cat;
-    YesNo consentToMHealth;
-    YesNo consentToPhoto;
-    YesNo youngMumGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,12 +128,6 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
                 }
                 i++;
             }
-            disabilityCategorys = (ArrayList<DisabilityCategory>) holder.disabilityCategorys;
-            disability = holder.disability;
-            cat = holder.cat;
-            consentToMHealth = holder.consentToMHealth;
-            consentToPhoto = holder.consentToPhoto;
-            youngMumGroup = holder.youngMumGroup;
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add HIV and Health Details Step 5 of 7 "));
@@ -174,8 +162,6 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
         if( ! dateTested.getText().toString().isEmpty()){
             holder.dateTested = DateUtil.getDateFromString(dateTested.getText().toString());
         }
-        holder.disabilityCategorys = disabilityCategorys;
-        holder.disability = disability;
         intent.putExtra("patient", holder);
         startActivity(intent);
         finish();
@@ -195,10 +181,6 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
             if( ! dateTested.getText().toString().isEmpty()){
                 holder.dateTested = DateUtil.getDateFromString(dateTested.getText().toString());
             }
-            holder.cat = cat;
-            holder.consentToMHealth = consentToMHealth;
-            holder.consentToPhoto = consentToPhoto;
-            holder.youngMumGroup = youngMumGroup;
             intent.putExtra("patient", holder);
             startActivity(intent);
             finish();

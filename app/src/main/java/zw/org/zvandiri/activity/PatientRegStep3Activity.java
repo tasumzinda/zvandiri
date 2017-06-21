@@ -12,6 +12,7 @@ import zw.org.zvandiri.business.domain.util.HIVDisclosureLocation;
 import zw.org.zvandiri.business.domain.util.TransmissionMode;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,22 +31,6 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     private Spinner supportGroup;
     private Button next;
     private Patient holder;
-    private Date dateJoined;
-    private Education education;
-    private EducationLevel educationLevel;
-    private Referer referer;
-    private ReasonForNotReachingOLevel reasonForNotReachingOLevel;
-    private String refererName;
-    private YesNo hivStatusKnown;
-    private TransmissionMode transmissionMode;
-    private Date dateTested;
-    private HIVDisclosureLocation hIVDisclosureLocation;
-    private ArrayList<DisabilityCategory> disabilityCategorys;
-    private YesNo disability;
-    YesNo cat;
-    YesNo consentToMHealth;
-    YesNo consentToPhoto;
-    YesNo youngMumGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +101,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
             address1.setText(holder.address1);
             int i = 0;
             for(Facility m : Facility.getAll()){
-                if(holder.primaryClinic != null  && holder.primaryClinic.equals(primaryClinic.getItemAtPosition(i))){
+                if(holder.primaryClinicId != null  && holder.primaryClinicId.equals(((Facility)primaryClinic.getItemAtPosition(i)).id)){
                     primaryClinic.setSelection(i, true);
                     break;
                 }
@@ -124,28 +109,12 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
             }
             i = 0;
             for(SupportGroup m : SupportGroup.getAll()){
-                if(holder.supportGroup != null  && holder.supportGroup.equals(supportGroup.getItemAtPosition(i))){
+                if(holder.supportGroupId != null  && holder.supportGroupId.equals(((SupportGroup)supportGroup.getItemAtPosition(i)).id)){
                     supportGroup.setSelection(i, true);
                     break;
                 }
                 i++;
             }
-            dateJoined = holder.dateJoined;
-            education = holder.education;
-            educationLevel = holder.educationLevel;
-            referer = holder.referer;
-            reasonForNotReachingOLevel = holder.reasonForNotReachingOLevel;
-            refererName = holder.refererName;
-            hivStatusKnown = holder.hivStatusKnown;
-            transmissionMode = holder.transmissionMode;
-            dateTested = holder.dateTested;
-            hIVDisclosureLocation = holder.hIVDisclosureLocation;
-            disabilityCategorys = (ArrayList<DisabilityCategory>) holder.disabilityCategorys;
-            disability = holder.disability;
-            cat = holder.cat;
-            consentToMHealth = holder.consentToMHealth;
-            consentToPhoto = holder.consentToPhoto;
-            youngMumGroup = holder.youngMumGroup;
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add Address Details Step 3 of 7 "));
@@ -182,12 +151,6 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
         if(supportGroup.getSelectedItem() != null){
             holder.supportGroup = (SupportGroup) supportGroup.getSelectedItem();
         }
-        holder.hivStatusKnown = hivStatusKnown;
-        holder.transmissionMode = transmissionMode;
-        holder.dateTested = dateTested;
-        holder.hIVDisclosureLocation = hIVDisclosureLocation;
-        holder.disabilityCategorys = disabilityCategorys;
-        holder.disability = disability;
         intent.putExtra("patient", holder);
         startActivity(intent);
         finish();
@@ -201,21 +164,11 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
                 holder.address = address.getText().toString();
                 holder.address1 = address1.getText().toString();
                 if(primaryClinic.getSelectedItem() != null){
-                    holder.primaryClinic = (Facility) primaryClinic.getSelectedItem();
+                    holder.primaryClinicId = ((Facility) primaryClinic.getSelectedItem()).id;
                 }
                 if(supportGroup.getSelectedItem() != null){
-                    holder.supportGroup = (SupportGroup) supportGroup.getSelectedItem();
+                    holder.supportGroupId = ((SupportGroup) supportGroup.getSelectedItem()).id;
                 }
-                holder.dateJoined = dateJoined;
-                holder.education = education;
-                holder.educationLevel = educationLevel;
-                holder.referer = referer;
-                holder.reasonForNotReachingOLevel = reasonForNotReachingOLevel;
-                holder.refererName = refererName;
-                holder.cat = cat;
-                holder.consentToMHealth = consentToMHealth;
-                holder.consentToPhoto = consentToPhoto;
-                holder.youngMumGroup = youngMumGroup;
                 intent.putExtra("patient", holder);
                 startActivity(intent);
                 finish();

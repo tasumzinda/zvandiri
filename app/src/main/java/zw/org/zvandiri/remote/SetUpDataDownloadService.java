@@ -50,7 +50,6 @@ public class SetUpDataDownloadService extends IntentService{
         InternalReferral.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ExternalReferral.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Assessment.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
-        //Intensive.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Location.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Position.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Enhanced.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));

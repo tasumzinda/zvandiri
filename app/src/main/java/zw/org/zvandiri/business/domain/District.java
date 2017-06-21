@@ -73,9 +73,6 @@ public class District extends Model implements Serializable{
     @Column(name = "province")
     public Province province;
 
-
-    private static final Type type = new TypeToken<List<District>>(){}.getType();
-
     public District() {
         super();
     }

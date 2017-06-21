@@ -102,21 +102,26 @@ public class Patient extends Model implements Serializable{
     @Expose
     @Column(name = "education")
     public Education education;
+    public String educationId;
     @Expose
     @Column(name = "education_level")
     public EducationLevel educationLevel;
+    public String educationLevelId;
     @Expose
     @Column(name = "date_joined")
     public Date dateJoined;
     @Expose
     @Column(name = "referer")
     public Referer referer;
+    public String referrerId;
     @Expose
     @Column(name = "primary_clinic")
     public Facility primaryClinic;
+    public String primaryClinicId;
     @Expose
     @Column(name = "support_group")
     public SupportGroup supportGroup;
+    public String supportGroupId;
     @Expose
     @Column(name = "date_tested")
     public Date dateTested;
@@ -147,6 +152,7 @@ public class Patient extends Model implements Serializable{
     @Expose
     @Column(name = "relationship")
     public Relationship relationship;
+    public String relationshipId;
     @Expose
     @Column(name = "secondary_mobile_number")
     public String secondaryMobileNumber;
@@ -159,6 +165,7 @@ public class Patient extends Model implements Serializable{
     @Expose
     @Column(name = "mobile_owner_relation")
     public Relationship mobileOwnerRelation;
+    public String mobileOwnerRelationId;
     @Expose
     @Column(name = "own_secondary_mobile")
     public YesNo ownSecondaryMobile;
@@ -168,6 +175,7 @@ public class Patient extends Model implements Serializable{
     @Expose
     @Column(name = "secondary_mobile_owner_relation")
     public Relationship secondaryMobileownerRelation;
+    public String secondaryMobileownerRelationId;
     @Expose
     @Column(name = "transmission_mode")
     public TransmissionMode transmissionMode;
@@ -219,6 +227,7 @@ public class Patient extends Model implements Serializable{
     @Expose
     public List<ViralLoad> viralLoads;*/
     public List<DisabilityCategory> disabilityCategorys;
+    public ArrayList<String> disabilityCategorysId;
     @Expose
     @Column(name = "refererName")
     public String refererName;
@@ -228,6 +237,7 @@ public class Patient extends Model implements Serializable{
     @Expose
     @Column(name = "reasonForNotReachingOLevel")
     public ReasonForNotReachingOLevel reasonForNotReachingOLevel;
+    public String reasonForNotReachingOLevelId;
     @Expose
     public Long version = 0L;
 

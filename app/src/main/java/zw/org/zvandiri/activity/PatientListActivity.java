@@ -11,12 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Trigger;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.adapter.PatientAdapter;
 import zw.org.zvandiri.business.domain.DisabilityCategory;
 import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.remote.PushPullService;
+import zw.org.zvandiri.remote.RemoteJobService;
 import zw.org.zvandiri.remote.SetUpDataDownloadService;
 import zw.org.zvandiri.toolbox.Log;
 
@@ -51,23 +56,15 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
                         if(AppUtil.isNetworkAvailable(getApplicationContext())){
                             Intent intent = new Intent(getApplicationContext(), PushPullService.class);
                             startService(intent);
+                            Intent intent1 = new Intent(getApplicationContext(), SetUpDataDownloadService.class);
+                            startService(intent1);
                         }
 
                     }
-                }, 5, 30, TimeUnit.MINUTES);
-        ScheduledExecutorService scheduler1 =
-                Executors.newSingleThreadScheduledExecutor();
-
-        scheduler1.scheduleAtFixedRate
-                (new Runnable() {
-                    public void run() {
-                        if(AppUtil.isNetworkAvailable(getApplicationContext())){
-                            Intent intent = new Intent(getApplicationContext(), SetUpDataDownloadService.class);
-                            startService(intent);
-                        }
-
-                    }
-                }, 30, 60, TimeUnit.MINUTES);
+                }, 1, 2, TimeUnit.HOURS);
+        for(Patient p : Patient.findByPushed()){
+            Log.d("Patient", AppUtil.createGson().toJson(p));
+        }
     }
 
     @Override

@@ -47,8 +47,8 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
     private String email;
     private String address;
     private String address1;
-    private Facility primaryClinic;
-    private SupportGroup supportGroup;
+    private String primaryClinicId;
+    private String supportGroupId;
     private Date dateJoined;
     private Education education;
     private EducationLevel educationLevel;
@@ -119,8 +119,8 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
             email = holder.email;
             address = holder.address;
             address1 = holder.address1;
-            primaryClinic = holder.primaryClinic;
-            supportGroup = holder.supportGroup;
+            primaryClinicId = holder.primaryClinicId;
+            supportGroupId = holder.supportGroupId;
             dateJoined = holder.dateJoined;
             education = holder.education;
             educationLevel = holder.educationLevel;
@@ -196,8 +196,8 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                     holder.email = email;
                     holder.address = address;
                     holder.address1 = address1;
-                    holder.primaryClinic = primaryClinic;
-                    holder.supportGroup = supportGroup;
+                    holder.primaryClinicId = primaryClinicId;
+                    holder.supportGroupId = supportGroupId;
                     holder.dateJoined = dateJoined;
                     holder.education = education;
                     holder.educationLevel = educationLevel;

@@ -272,6 +272,13 @@
         <service
                 android:name=".remote.PushPullService"
                 android:exported="true" />
+        <service
+                android:name=".remote.RemoteJobService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
 
 
         <activity
