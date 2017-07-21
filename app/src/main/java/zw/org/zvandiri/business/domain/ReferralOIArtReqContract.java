@@ -34,4 +34,10 @@ public class ReferralOIArtReqContract extends Model{
                 .where("referral_id = ?", r.getId())
                 .execute();
     }
+
+    public static List<ReferralOIArtReqContract> getAll(){
+        return new Select()
+                .from(ReferralOIArtReqContract.class)
+                .execute();
+    }
 }

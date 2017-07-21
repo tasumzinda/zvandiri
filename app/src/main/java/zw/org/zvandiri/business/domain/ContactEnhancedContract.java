@@ -36,4 +36,10 @@ public class ContactEnhancedContract extends Model {
                 .where("contact_id = ?", c.getId())
                 .execute();
     }
+
+    public static List<ContactEnhancedContract> getAll(){
+        return new Select()
+                .from(ContactEnhancedContract.class)
+                .execute();
+    }
 }

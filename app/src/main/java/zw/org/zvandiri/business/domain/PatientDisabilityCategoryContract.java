@@ -36,4 +36,10 @@ public class PatientDisabilityCategoryContract extends Model {
                 .where("patient_id = ?", c.getId())
                 .execute();
     }
+
+    public static List<PatientDisabilityCategoryContract> getAll(){
+        return new Select()
+                .from(PatientDisabilityCategoryContract.class)
+                .execute();
+    }
 }

@@ -60,10 +60,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         boolean hasLoggedIn = sharedPreferences.contains(AppUtil.LOGGED_IN);
                         if(! hasLoggedIn){
-                            AppUtil.savePreferences(getApplicationContext(), AppUtil.LOGGED_IN, Boolean.TRUE);
-                            AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
-                            AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
-                            syncAppData();
+                            String username = AppUtil.getUsername(context);
+                            String password = AppUtil.getPassword(context);
+                            if(username.equals(userNameField.getText().toString()) && password.equals(passwordField.getText().toString())){
+                                AppUtil.savePreferences(getApplicationContext(), AppUtil.LOGGED_IN, Boolean.TRUE);
+                                AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
+                                AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
+                                syncAppData();
+                            }else{
+                                delete();
+                                AppUtil.savePreferences(getApplicationContext(), AppUtil.LOGGED_IN, Boolean.TRUE);
+                                AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
+                                AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
+                                syncAppData();
+                            }
+
                         }
 
                     }
@@ -116,24 +127,80 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    private void loginAsyncTask() {
-        lockScreenOrientation();
-        progressDialog = ProgressDialog.show(this, "Please wait", "Signing In...", true);
-        progressDialog.setCancelable(true);
-        AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
-        AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
-        new LoginWebService(context).execute();
-        progressDialog.hide();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean hasLoggedIn = sharedPreferences.contains(AppUtil.LOGGED_IN);
-        if( ! hasLoggedIn){
-            syncAppData();
-        }
-    }
-
     @Override
     public void onDestroy(){
         super.onDestroy();
+    }
+
+    public void delete(){
+        for(ContactEnhancedContract c : ContactEnhancedContract.getAll()){
+            c.delete();
+            Log.d("Deletec enhanced", c.enhanced.name);
+        }
+        for(ContactStableContract c: ContactStableContract.getAll()){
+            c.delete();
+            Log.d("Deleted stable", c.stable.name);
+        }
+        for(Contact c : Contact.getAll()){
+            c.delete();
+            Log.d("Deleted contact", c.contactDate + "");
+        }
+        for(PatientDisabilityCategoryContract p : PatientDisabilityCategoryContract.getAll()){
+            p.delete();
+            Log.d("Deleted disability", p.disabilityCategory.name);
+        }
+        for(ReferralHivStiServicesReqContract c : ReferralHivStiServicesReqContract.getAll()){
+            c.delete();
+        }
+        for(ReferralHivStiServicesAvailedContract c : ReferralHivStiServicesAvailedContract.getAll()){
+            c.delete();
+        }
+        for(ReferralLaboratoryAvailedContract c : ReferralLaboratoryAvailedContract.getAll()){
+            c.delete();
+        }
+        for(ReferralLaboratoryReqContract c : ReferralLaboratoryReqContract.getAll()){
+            c.delete();
+        }
+        for(ReferralLegalAvailedContract c : ReferralLegalAvailedContract.getAll()){
+            c.delete();
+        }
+        for(ReferralLegalReqContract c : ReferralLegalReqContract.getAll()){
+            c.delete();
+        }
+        for(ReferralOIArtAvailedContract c : ReferralOIArtAvailedContract.getAll()){
+            if(c != null)
+                c.delete();
+        }
+        for(ReferralOIArtReqContract c : ReferralOIArtReqContract.getAll()){
+            c.delete();
+        }
+        for(ReferralPsychAvailedContract c : ReferralPsychAvailedContract.getAll()){
+            c.delete();
+        }
+        for(ReferralPsychReqContract c : ReferralPsychReqContract.getAll()){
+            c.delete();
+        }
+        for(ReferralSrhAvailedContract c : ReferralSrhAvailedContract.getAll()){
+            c.delete();
+        }
+        for(ReferralSrhReqContract c : ReferralSrhReqContract.getAll()){
+            if(c != null)
+                c.delete();
+        }
+        for(ReferralTbAvailedContract c : ReferralTbAvailedContract.getAll()){
+            c.delete();
+        }
+        for(ReferralTbReqContact c : ReferralTbReqContact.getAll()){
+            c.delete();
+        }
+        for(Referral r : Referral.getAll()){
+            r.delete();
+            Log.d("Deleted referral", r.id);
+        }
+        for(Patient p : Patient.getAll()){
+            p.delete();
+            Log.d("Deleted patient", p.name);
+        }
     }
 
     @Override

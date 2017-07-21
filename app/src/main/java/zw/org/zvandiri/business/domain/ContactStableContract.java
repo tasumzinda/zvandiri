@@ -36,4 +36,10 @@ public class ContactStableContract extends Model {
                 .where("contact_id = ?", c.getId())
                 .execute();
     }
+
+    public static List<ContactStableContract> getAll(){
+        return new Select()
+                .from(ContactStableContract.class)
+                .execute();
+    }
 }

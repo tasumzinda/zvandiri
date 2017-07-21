@@ -34,4 +34,10 @@ public class ReferralTbReqContact extends Model {
                 .where("referral_id = ?", r.getId())
                 .execute();
     }
+
+    public static List<ReferralTbReqContact> getAll(){
+        return new Select()
+                .from(ReferralTbReqContact.class)
+                .execute();
+    }
 }

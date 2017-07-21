@@ -34,4 +34,10 @@ public class ReferralPsychReqContract extends Model {
                 .where("referral_id = ?", r.getId())
                 .execute();
     }
+
+    public static List<ReferralPsychReqContract> getAll(){
+        return new Select()
+                .from(ReferralPsychReqContract.class)
+                .execute();
+    }
 }

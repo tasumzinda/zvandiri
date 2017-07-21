@@ -34,4 +34,10 @@ public class ReferralLaboratoryReqContract extends Model {
                 .where("referral_id = ?", r.getId())
                 .execute();
     }
+
+    public static List<ReferralLaboratoryReqContract> getAll(){
+        return new Select()
+                .from(ReferralLaboratoryReqContract.class)
+                .execute();
+    }
 }
