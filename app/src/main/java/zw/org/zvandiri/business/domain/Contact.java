@@ -70,9 +70,11 @@ public class Contact extends Model implements Serializable{
     @Expose
     @Column(name = "location")
     public Location location;
+    public String locationId;
     @Expose
     @Column(name = "position")
     public Position position;
+    public String positionId;
     @Expose
     @Column(name = "reason")
     public Reason reason;
@@ -82,9 +84,11 @@ public class Contact extends Model implements Serializable{
     @Expose
     @Column(name = "internal_referral")
     public InternalReferral internalReferral;
+    public String internalReferralId;
     @Expose
     @Column(name = "external_referral")
     public ExternalReferral externalReferral;
+    public String externalReferralId;
     @Expose
     @Column(name = "follow_up")
     public FollowUp followUp;
@@ -117,12 +121,16 @@ public class Contact extends Model implements Serializable{
 
     @Expose
     public List<Assessment> assessments;
+    public List<String> assessmentId;
     @Expose
     public List<Stable> stables;
+    public List<String> stableId;
     @Expose
     public List<Enhanced> enhanceds;
+    public List<String> enhancedId;
     @Expose
     public zw.org.zvandiri.business.domain.ActionTaken actionTaken;
+    public String actionTakenId;
 
     public Contact() {
         super();

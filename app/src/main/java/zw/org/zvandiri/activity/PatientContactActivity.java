@@ -39,10 +39,10 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     DatePickerDialog dialog;
     DatePickerDialog dialog1;
     Contact holder;
-    ArrayList<Stable> stables;
-    ArrayList<Enhanced> enhanceds;
+    ArrayList<String> stableId;
+    ArrayList<String> enhancedId;
     CareLevel careLevel;
-    ActionTaken actionTaken;
+    String actionTakenId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,7 +210,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             }
             int i = 0;
             for(Location m : Location.getAll()){
-                if(holder.location != null && holder.location.name.equals(((Location) location.getItemAtPosition(i)).name)){
+                if(holder.locationId != null && holder.locationId.equals(((Location) location.getItemAtPosition(i)).id)){
                     location.setSelection(i, true);
                     break;
                 }
@@ -218,7 +218,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             }
             i = 0;
             for(Position m : Position.getAll()){
-                if(holder.position != null && holder.position.name.equals(((Position) position.getItemAtPosition(i)).name)){
+                if(holder.positionId != null && holder.positionId.equals(((Position) position.getItemAtPosition(i)).id)){
                     position.setSelection(i, true);
                     break;
                 }
@@ -234,7 +234,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             }
             i = 0;
             for(ExternalReferral m : ExternalReferral.getAll()){
-                if(holder.externalReferral != null && holder.externalReferral.name.equals(((ExternalReferral) externalReferral.getItemAtPosition(i)).name)){
+                if(holder.externalReferralId != null && holder.externalReferralId.equals(((ExternalReferral) externalReferral.getItemAtPosition(i)).id)){
                     externalReferral.setSelection(i, true);
                     break;
                 }
@@ -242,7 +242,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             }
             i = 0;
             for(InternalReferral m : InternalReferral.getAll()){
-                if(holder.internalReferral != null && holder.internalReferral.name.equals(((InternalReferral) internalReferral.getItemAtPosition(i)).name)){
+                if(holder.internalReferralId != null && holder.internalReferralId.equals(((InternalReferral) internalReferral.getItemAtPosition(i)).id)){
                     internalReferral.setSelection(i, true);
                     break;
                 }
@@ -264,10 +264,10 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 }
                 i++;
             }
-            stables = (ArrayList<Stable>) holder.stables;
-            enhanceds = (ArrayList<Enhanced>) holder.enhanceds;
+            stableId = (ArrayList<String>) holder.stableId;
+            enhancedId = (ArrayList<String>) holder.enhancedId;
             careLevel = holder.careLevel;
-            actionTaken = holder.actionTaken;
+            actionTakenId = holder.actionTakenId;
             setSupportActionBar(createToolBar("Add Contact - Step 1"));
         }else{
             holder = new Contact();
@@ -346,13 +346,13 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 intent.putExtra(AppUtil.ID, id);
                 intent.putExtra(AppUtil.DETAILS_ID, itemID);
                 holder.contactDate = DateUtil.getDateFromString(contactDate.getText().toString());
-                holder.location = (Location) location.getSelectedItem();
-                holder.position = (Position) position.getSelectedItem();
+                holder.locationId = ((Location) location.getSelectedItem()).id;
+                holder.positionId = ((Position) position.getSelectedItem()).id;
                 if(externalReferral.getVisibility() == View.VISIBLE){
-                    holder.externalReferral = (ExternalReferral) externalReferral.getSelectedItem();
+                    holder.externalReferralId = ((ExternalReferral) externalReferral.getSelectedItem()).id;
                 }
                 if(internalReferral.getVisibility() == View.VISIBLE){
-                    holder.internalReferral = (InternalReferral) internalReferral.getSelectedItem();
+                    holder.internalReferralId = ((InternalReferral) internalReferral.getSelectedItem()).id;
                 }
                 holder.reason = (Reason) reason.getSelectedItem();
                 holder.followUp = (FollowUp) followUp.getSelectedItem();
@@ -360,9 +360,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 if(checkDateFormat(lastClinicAppointmentDate.getText().toString())){
                     holder.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate.getText().toString());
                 }
-                holder.actionTaken = actionTaken;
-                holder.enhanceds = enhanceds;
-                holder.stables = stables;
+                holder.actionTakenId = actionTakenId;
+                holder.enhancedId = enhancedId;
+                holder.stableId = stableId;
                 holder.careLevel = careLevel;
                 intent.putExtra("contact", holder);
                 startActivity(intent);

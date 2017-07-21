@@ -175,7 +175,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
 
             i = 0;
             for (ActionTaken m : ActionTaken.getAll()) {
-                if (holder.actionTaken != null && holder.actionTaken.name.equals(((ActionTaken) actionTaken.getItemAtPosition(i)).name)) {
+                if (holder.actionTakenId != null && holder.actionTakenId.equals(((ActionTaken) actionTaken.getItemAtPosition(i)).id)) {
                     actionTaken.setSelection(i, true);
                     break;
                 }
@@ -217,11 +217,11 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
         holder.careLevel = (CareLevel) careLevel.getSelectedItem();
-        holder.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
+        holder.actionTakenId = ((ActionTaken) actionTaken.getSelectedItem()).id;
         if(careLevel.getSelectedItem().equals(CareLevel.ENHANCED)){
-            holder.enhanceds = getEnhanceds();
+            holder.enhancedId = getEnhanceds();
         }else{
-            holder.stables = getStables();
+            holder.stableId = getStables();
         }
         intent.putExtra("contact", holder);
         startActivity(intent);
@@ -265,7 +265,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         if(careLevel.getSelectedItem().equals(CareLevel.ENHANCED)){
             for(int i = 0; i < getEnhanceds().size(); i++){
                 ContactEnhancedContract contract = new ContactEnhancedContract();
-                contract.enhanced = getEnhanceds().get(i);
+                contract.enhanced = Enhanced.getItem(getEnhanceds().get(i));
                 if(itemID != null){
                     contract.contact = Contact.findById(itemID);
                 }else{
@@ -277,7 +277,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         }else if(careLevel.getSelectedItem().equals(CareLevel.STABLE)){
             for(int i = 0; i <  getStables().size(); i++){
                 ContactStableContract contract = new ContactStableContract();
-                contract.stable = getStables().get(i);
+                contract.stable = Stable.getItem(getStables().get(i));
                 if(itemID != null){
                     contract.contact = Contact.findById(itemID);
                 }else{
@@ -300,24 +300,24 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         finish();
     }
 
-    private ArrayList<Enhanced> getEnhanceds(){
-        ArrayList<Enhanced> a = new ArrayList<>();
+    private ArrayList<String> getEnhanceds(){
+        ArrayList<String> a = new ArrayList<>();
         for(int i = 0; i < enhanced.getCount(); i++){
             if(enhanced.isItemChecked(i)){
-                a.add(enhancedArrayAdapter.getItem(i));
+                a.add(enhancedArrayAdapter.getItem(i).id);
             }else{
-                a.remove(enhancedArrayAdapter.getItem(i));
+                a.remove(enhancedArrayAdapter.getItem(i).id);
             }
         }
         return a;
     }
-    private ArrayList<Stable> getStables(){
-        ArrayList<Stable> a = new ArrayList<>();
+    private ArrayList<String> getStables(){
+        ArrayList<String> a = new ArrayList<>();
         for(int i = 0; i < stable.getCount(); i++){
             if(stable.isItemChecked(i)){
-                a.add(stableArrayAdapter.getItem(i));
+                a.add(stableArrayAdapter.getItem(i).id);
             }else{
-                a.remove(stableArrayAdapter.getItem(i));
+                a.remove(stableArrayAdapter.getItem(i).id);
             }
         }
         return a;
