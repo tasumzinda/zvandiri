@@ -188,6 +188,7 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
             holder.reasonForNotReachingOLevel = ReasonForNotReachingOLevel.getItem(holder.reasonForNotReachingOLevelId);
         }
         holder.save();
+        Log.d("Created patient", AppUtil.createGson().toJson(holder));
         if(holder.disabilityCategorysId != null){
             for(int i = 0; i < holder.disabilityCategorysId.size(); i++){
                 PatientDisabilityCategoryContract contract = new PatientDisabilityCategoryContract();

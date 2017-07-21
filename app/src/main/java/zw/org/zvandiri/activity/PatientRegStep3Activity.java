@@ -185,6 +185,10 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
         }else{
             address.setError(null);
         }
+        if(primaryClinic.getSelectedItem() == null){
+            isValid = false;
+            AppUtil.createShortNotification(this, "Please select a primary clinic before proceeding!");
+        }
         return isValid;
     }
 }
