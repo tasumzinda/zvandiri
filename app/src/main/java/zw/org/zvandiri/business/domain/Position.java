@@ -95,7 +95,6 @@ public class Position extends Model implements Serializable{
                         for (Position position: positionList) {
                             Position checkDuplicate = Position.getItem(position.id);
                             if(checkDuplicate == null){
-                                Log.d("Getting  position", position.name);
                                 position.save();
                             }
 

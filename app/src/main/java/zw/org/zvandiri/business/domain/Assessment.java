@@ -104,7 +104,6 @@ public class Assessment extends Model {
                         for (Assessment assessment : assessmentList) {
                             Assessment checkDuplicate = Assessment.getItem(assessment.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving Assessment", assessment.name);
                                 assessment.save();
                             }
 

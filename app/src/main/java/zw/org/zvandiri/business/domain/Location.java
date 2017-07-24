@@ -92,7 +92,6 @@ public class Location extends Model implements Serializable{
                         for(Location location : locationList){
                             Location checkDuplicate = Location.getItem(location.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving Location", location.name);
                                 location.save();
                             }
 

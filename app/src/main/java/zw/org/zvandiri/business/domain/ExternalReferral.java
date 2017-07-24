@@ -98,7 +98,6 @@ public class ExternalReferral extends Model implements Serializable{
                         for(ExternalReferral externalReferral : externalReferralList){
                             ExternalReferral checkDuplicate = ExternalReferral.getItem(externalReferral.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving extReferral", externalReferral.name);
                                 externalReferral.save();
                             }
 

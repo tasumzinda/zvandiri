@@ -99,7 +99,6 @@ public class InternalReferral extends Model implements Serializable{
                         for(InternalReferral internalReferral : internalReferralList){
                             InternalReferral checkDuplicate = InternalReferral.getItem(internalReferral.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving InternalReferral", internalReferral.name);
                                 internalReferral.save();
                             }
 

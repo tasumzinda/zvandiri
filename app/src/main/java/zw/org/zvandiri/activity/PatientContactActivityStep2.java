@@ -141,32 +141,24 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 }
                 i++;
             }
-            if(holder.stables != null){
-                ArrayList<Stable> stables = (ArrayList<Stable>) holder.stables;
-                ArrayList<String> list = new ArrayList<>();
-                for(Stable s : stables){
-                    list.add(s.name);
-                }
+            if(holder.stableId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.stableId;
                 int stableCount = stableArrayAdapter.getCount();
                 for(i = 0; i < stableCount; i++){
                     Stable current = stableArrayAdapter.getItem(i);
-                    if(list.contains(current.name)){
+                    if(list.contains(current.id)){
                         stable.setItemChecked(i, true);
                     }
                 }
             }
 
 
-            if(holder.enhanceds != null){
-                ArrayList<Enhanced> enhanceds = (ArrayList<Enhanced>) holder.enhanceds;
-                ArrayList<String> list = new ArrayList<>();
-                for(Enhanced s : enhanceds){
-                    list.add(s.name);
-                }
+            if(holder.enhancedId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.enhancedId;
                 int enhancedCount = enhancedArrayAdapter.getCount();
                 for(i = 0; i < enhancedCount; i++){
                     Enhanced current = enhancedArrayAdapter.getItem(i);
-                    if(list.contains(current.name)){
+                    if(list.contains(current.id)){
                         enhanced.setItemChecked(i, true);
                     }
                 }
@@ -248,13 +240,21 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         }
         c.careLevel = (CareLevel) careLevel.getSelectedItem();
         c.followUp = holder.followUp;
-        c.internalReferral = holder.internalReferral;
+        if(holder.internalReferralId != null){
+            c.internalReferral = InternalReferral.getItem(holder.internalReferralId);
+        }
         c.contactDate = holder.contactDate;
-        c.externalReferral = holder.externalReferral;
-        c.position = holder.position;
+        if(holder.externalReferralId != null){
+            c.externalReferral = ExternalReferral.getItem(holder.externalReferralId);
+        }
+        if(holder.positionId != null){
+            c.position = Position.getItem(holder.positionId);
+        }
         c.reason = holder.reason;
         c.lastClinicAppointmentDate = holder.lastClinicAppointmentDate;
-        c.location = holder.location;
+        if(holder.locationId != null){
+            c.location = Location.getItem(holder.locationId);
+        }
         c.patient =Patient.getById(id);
         c.pushed = false;
         c.actionTaken = (ActionTaken) actionTaken.getSelectedItem();

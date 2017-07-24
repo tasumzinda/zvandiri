@@ -62,9 +62,6 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
 
                     }
                 }, 1, 2, TimeUnit.HOURS);
-        for(Patient p : Patient.findByPushed()){
-            Log.d("Patient", AppUtil.createGson().toJson(p));
-        }
     }
 
     @Override
