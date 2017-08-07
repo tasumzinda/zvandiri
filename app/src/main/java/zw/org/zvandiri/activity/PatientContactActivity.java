@@ -17,6 +17,7 @@ import zw.org.zvandiri.business.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class PatientContactActivity extends BaseActivity implements View.OnClickListener {
 
@@ -374,11 +375,22 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
 
     public boolean validateLocal(){
         boolean isValid = true;
-        if( ! checkDateFormat(contactDate.getText().toString())){
+        String date = contactDate.getText().toString();
+        if( ! checkDateFormat(date)){
             contactDate.setError(getResources().getString(R.string.date_format_error));
             isValid = false;
         }else{
             contactDate.setError(null);
+        }
+        if(checkDateFormat(date)){
+            Date today = new Date();
+            Date dateofContact = DateUtil.getDateFromString(date);
+            if(dateofContact.after(today)){
+                contactDate.setError(getResources().getString(R.string.date_aftertoday));
+                isValid = false;
+            }else{
+                contactDate.setError(null);
+            }
         }
         if( ! lastClinicAppointmentDate.getText().toString().isEmpty()){
             if( ! checkDateFormat(lastClinicAppointmentDate.getText().toString())){
