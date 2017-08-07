@@ -400,6 +400,16 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 lastClinicAppointmentDate.setError(null);
             }
         }
+        if(checkDateFormat(lastClinicAppointmentDate.getText().toString())){
+            Date today = new Date();
+            Date dateofContact = DateUtil.getDateFromString(lastClinicAppointmentDate.getText().toString());
+            if(dateofContact.after(today)){
+                lastClinicAppointmentDate.setError(getResources().getString(R.string.date_aftertoday));
+                isValid = false;
+            }else{
+                lastClinicAppointmentDate.setError(null);
+            }
+        }
         return isValid;
     }
 }
