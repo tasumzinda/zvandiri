@@ -357,7 +357,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 holder.reason = (Reason) reason.getSelectedItem();
                 holder.followUp = (FollowUp) followUp.getSelectedItem();
                 holder.attendedClinicAppointment = (YesNo) attendedClinicAppointment.getSelectedItem();
-                if(checkDateFormat(lastClinicAppointmentDate.getText().toString())){
+                if( ! lastClinicAppointmentDate.getText().toString().isEmpty()){
                     holder.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate.getText().toString());
                 }
                 holder.actionTakenId = actionTakenId;
@@ -379,6 +379,14 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             isValid = false;
         }else{
             contactDate.setError(null);
+        }
+        if( ! lastClinicAppointmentDate.getText().toString().isEmpty()){
+            if( ! checkDateFormat(lastClinicAppointmentDate.getText().toString())){
+                lastClinicAppointmentDate.setError(getResources().getString(R.string.date_format_error));
+                isValid = false;
+            }else{
+                lastClinicAppointmentDate.setError(null);
+            }
         }
         return isValid;
     }

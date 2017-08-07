@@ -35,8 +35,8 @@ public class AppUtil {
     public static String LOGGED_IN = "LOGGED_IN";
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";
-    public static String BASE_URL = "http://db.zvandiri.org:8080/zvandiri-mobile/rest/mobile";
-    //public static String BASE_URL = "http://192.168.20.245:8084/zvandiri-mobile/rest/mobile";
+    //public static String BASE_URL = "http://db.zvandiri.org:8080/zvandiri-mobile/rest/mobile";
+    public static String BASE_URL = "http://192.168.1.196:8084/zvandiri-mobile/rest/mobile";
     public static String NAME = "NAME";
     public static String ID = "ID";
     public static String DETAILS_ID = "DETAILS_ID";
@@ -210,7 +210,7 @@ public class AppUtil {
     }
 
     public static HttpUrl getPushContactUrl(Context context) {
-        return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-contact")).newBuilder()
+        return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-contact-new")).newBuilder()
                 //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))
                 .build();
     }

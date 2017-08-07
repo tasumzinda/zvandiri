@@ -100,7 +100,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
             address.setText(holder.address);
             address1.setText(holder.address1);
             int i = 0;
-            for(Facility m : Facility.getAll()){
+            /*for(Facility m : Facility.getAll()){
                 if(holder.primaryClinicId != null  && holder.primaryClinicId.equals(((Facility)primaryClinic.getItemAtPosition(i)).id)){
                     primaryClinic.setSelection(i, true);
                     break;
@@ -114,7 +114,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
                     break;
                 }
                 i++;
-            }
+            }*/
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add Address Details Step 3 of 7 "));
@@ -146,7 +146,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
         holder.address = address.getText().toString();
         holder.address1 = address1.getText().toString();
         if(primaryClinic.getSelectedItem() != null){
-            holder.primaryClinic = (Facility) primaryClinic.getSelectedItem();
+            holder.primaryClinicId = ((Facility) primaryClinic.getSelectedItem()).id;
         }
         if(supportGroup.getSelectedItem() != null){
             holder.supportGroup = (SupportGroup) supportGroup.getSelectedItem();

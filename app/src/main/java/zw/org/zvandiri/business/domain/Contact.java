@@ -129,6 +129,7 @@ public class Contact extends Model implements Serializable{
     public List<Enhanced> enhanceds;
     public List<String> enhancedId;
     @Expose
+    @Column
     public zw.org.zvandiri.business.domain.ActionTaken actionTaken;
     public String actionTakenId;
 

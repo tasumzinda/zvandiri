@@ -51,6 +51,7 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         referer = (Spinner) findViewById(R.id.referer);
         refererName = (EditText) findViewById(R.id.refererName);
         reasonForNotReachingOLevel = (Spinner) findViewById(R.id.reasonForNotReachingOLevel);
+        Log.d("Primary clinic", holder.primaryClinicId);
         reasonLabel = (TextView) findViewById(R.id.reasonLabel);
         ArrayAdapter<Education> educationArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, Education.getAll());
         educationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -95,7 +96,7 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
         dateJoined.setOnClickListener(this);
-        if(holder.educationLevel != null){
+        if(holder.educationLevelId != null){
             if(holder.dateJoined != null){
                 updateLabel(holder.dateJoined, dateJoined);
             }
@@ -124,6 +125,14 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
                 }
                 k++;
             }
+            k = 0;
+            /*for(ReasonForNotReachingOLevel r : ReasonForNotReachingOLevel.getAll()){
+                if(holder.reasonForNotReachingOLevelId != null && holder.reasonForNotReachingOLevelId.equals(((ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getItemAtPosition(k)).id)){
+                    reasonForNotReachingOLevel.setSelection(k);
+                    break;
+                }
+                k++;
+            }*/
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add Education and Other Details Step 4 of 7 "));
@@ -152,7 +161,9 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep4Activity.this, PatientRegStep3Activity.class);
-        holder.dateJoined = DateUtil.getDateFromString(dateJoined.getText().toString());
+        if( ! dateJoined.getText().toString().isEmpty()){
+            holder.dateJoined = DateUtil.getDateFromString(dateJoined.getText().toString());
+        }
         holder.educationId = ((Education) education.getSelectedItem()).id;
         holder.educationLevelId = ((EducationLevel) educationLevel.getSelectedItem()).id;
         holder.referrerId = ((Referer) referer.getSelectedItem()).id;
@@ -191,14 +202,21 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
 
     public boolean validateLocal(){
         boolean isValid = true;
-        if(dateJoined.getText().toString().isEmpty()){
+        String date = dateJoined.getText().toString();
+        if(date.isEmpty()){
             dateJoined.setError(getResources().getString(R.string.required_field_error));
             isValid = false;
         }else{
             dateJoined.setError(null);
         }
+        if( ! checkDateFormat(date)){
+            dateJoined.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else{
+            dateJoined.setError(null);
+        }
         Date today = new Date();
-        if( ! dateJoined.getText().toString().isEmpty()){
+        if( checkDateFormat(date)){
             if(DateUtil.getDateFromString(dateJoined.getText().toString()).after(today)){
                 dateJoined.setError(this.getString(R.string.date_aftertoday));
                 isValid = false;

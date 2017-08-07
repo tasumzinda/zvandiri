@@ -258,7 +258,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         c.patient =Patient.getById(id);
         c.pushed = false;
         c.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
+        c.attendedClinicAppointment = holder.attendedClinicAppointment;
         c.save();
+        Log.d("Json", AppUtil.createGson().toJson(c));
         if(itemID != null){
             deleteCareLevelSelections();
         }

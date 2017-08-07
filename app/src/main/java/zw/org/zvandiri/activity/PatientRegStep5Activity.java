@@ -173,24 +173,36 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
             dialog.show();
         }
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep5Activity.this, PatientRegStep5ContActivity.class);
-            intent.putExtra(AppUtil.DETAILS_ID, itemID);
-            holder.hivStatusKnown = (YesNo) hivStatusKnown.getSelectedItem();
-            holder.transmissionMode = (TransmissionMode) transmissionMode.getSelectedItem();
-            holder.hIVDisclosureLocation = (HIVDisclosureLocation) hIVDisclosureLocation.getSelectedItem();
-            if( ! dateTested.getText().toString().isEmpty()){
-                holder.dateTested = DateUtil.getDateFromString(dateTested.getText().toString());
+            if(validateLocal()){
+                Intent intent = new Intent(PatientRegStep5Activity.this, PatientRegStep5ContActivity.class);
+                intent.putExtra(AppUtil.DETAILS_ID, itemID);
+                holder.hivStatusKnown = (YesNo) hivStatusKnown.getSelectedItem();
+                holder.transmissionMode = (TransmissionMode) transmissionMode.getSelectedItem();
+                holder.hIVDisclosureLocation = (HIVDisclosureLocation) hIVDisclosureLocation.getSelectedItem();
+                if( ! dateTested.getText().toString().isEmpty()){
+                    holder.dateTested = DateUtil.getDateFromString(dateTested.getText().toString());
+                }
+                intent.putExtra("patient", holder);
+                startActivity(intent);
+                finish();
             }
-            intent.putExtra("patient", holder);
-            startActivity(intent);
-            finish();
+
         }
     }
 
     public boolean validateLocal(){
         boolean isValid = true;
+        String date = dateTested.getText().toString();
+        if( ! date.isEmpty()){
+            if( ! checkDateFormat(date)){
+                dateTested.setError(getResources().getString(R.string.date_format_error));
+                isValid = false;
+            }else{
+                dateTested.setError(null);
+            }
+        }
         Date today = new Date();
-        if( ! dateTested.getText().toString().isEmpty()){
+        if(checkDateFormat(date)){
             if(DateUtil.getDateFromString(dateTested.getText().toString()).after(today)){
                 dateTested.setError(this.getString(R.string.date_aftertoday));
                 isValid = false;

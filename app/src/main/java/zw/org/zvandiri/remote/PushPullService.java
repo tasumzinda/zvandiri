@@ -8,6 +8,8 @@ import android.util.Log;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.util.AppUtil;
 
@@ -35,8 +37,16 @@ public class PushPullService extends IntentService {
         int result = Activity.RESULT_OK;
         try{
             for(Contact item : getAllContacts()){
-                int res = Integer.parseInt(run(AppUtil.getPushContactUrl(context), item));
-                if(res == 1){
+                String res = run(AppUtil.getPushContactUrl(context), item);
+                String code = "";
+                try{
+                    JSONObject object = new JSONObject(res);
+                    code = object.getString("statusCode");
+                    Log.d("Response", object.toString());
+                }catch (JSONException ex){
+                    ex.printStackTrace();
+                }
+                if(code.equals("OK")){
                     for(ContactStableContract c : ContactStableContract.findByContact(item)){
                         if(c != null)
                             c.delete();

@@ -117,7 +117,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
             setSupportActionBar(createToolBar("Update Referrals"));
         }else if(holder != null){
             updateLabel(holder.referralDate, referralDate);
-            updateLabel(item.expectedVisitDate, expectedVisitDate);
+            updateLabel(holder.expectedVisitDate, expectedVisitDate);
             organisation.setText(holder.organisation);
             updateLabel(holder.dateAttended, dateAttended);
             attendingOfficer.setText(holder.attendingOfficer);

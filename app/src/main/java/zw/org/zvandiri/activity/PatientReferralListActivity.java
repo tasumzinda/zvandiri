@@ -16,7 +16,7 @@ import zw.org.zvandiri.business.util.AppUtil;
 
 import java.util.ArrayList;
 
-public class PatientReferralListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class PatientReferralListActivity extends BaseActivity /*implements AdapterView.OnItemClickListener*/ {
 
     String name;
     String id;
@@ -34,7 +34,7 @@ public class PatientReferralListActivity extends BaseActivity implements Adapter
         listView.setAdapter(referralAdapter);
         setSupportActionBar(createToolBar("Referral History for " + name));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        listView.setOnItemClickListener(this);
+        //listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class PatientReferralListActivity extends BaseActivity implements Adapter
         finish();
     }
 
-    @Override
+    /*@Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long i) {
         Referral Referral = (Referral) parent.getAdapter().getItem(position);
         Intent intent = new Intent(PatientReferralListActivity.this, PatientReferralActivity.class);
@@ -81,5 +81,5 @@ public class PatientReferralListActivity extends BaseActivity implements Adapter
         intent.putExtra(AppUtil.ID, id);
         startActivity(intent);
         finish();
-    }
+    }*/
 }
