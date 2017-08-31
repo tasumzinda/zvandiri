@@ -72,9 +72,9 @@ public class Referral extends Model implements Serializable{
     @Column(name = "action_taken")
     public ReferralActionTaken actionTaken;
     @Column(name = "pushed")
-    public boolean pushed = true;
+    public int pushed = 0;
     @Column(name = "is_new")
-    public boolean isNew = false;
+    public int isNew = 0;
 
     @Expose
     public List<ServicesReferred> hivStiServicesReq;
@@ -139,6 +139,7 @@ public class Referral extends Model implements Serializable{
     public static List<Referral> getAll(){
         return new Select()
                 .from(Referral.class)
+                .where("is_new = ?", 1)
                 .execute();
     }
 
@@ -157,7 +158,7 @@ public class Referral extends Model implements Serializable{
         return new Select()
                 .from(Referral.class)
                 .where("patient = ?", patient.getId())
-                .and("pushed = ?", 0)
+                .and("pushed = ?", 1)
                 .execute();
     }
 }

@@ -19,13 +19,9 @@ import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
 import zw.org.zvandiri.business.util.DbUtil;
 import zw.org.zvandiri.remote.PushPullService;
-import zw.org.zvandiri.remote.PushService;
-import zw.org.zvandiri.remote.SetUpDataDownloadService;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Pattern;
 
 
@@ -71,7 +67,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        registerReceiver(receiver, new IntentFilter(PushService.NOTIFICATION));
+        registerReceiver(receiver, new IntentFilter(PushPullService.NOTIFICATION));
     }
 
     @Override

@@ -206,7 +206,9 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
         holder.secondaryMobileNumber = secondaryMobileNumber.getText().toString();
         holder.secondaryMobileOwnerName = secondaryMobileOwnerName.getText().toString();
         holder.mobileOwner = (YesNo) mobileOwner.getSelectedItem();
-        holder.ownSecondaryMobile = (YesNo) ownSecondaryMobile.getSelectedItem();
+        if( ! secondaryMobileNumber.getText().toString().isEmpty()){
+            holder.ownSecondaryMobile = (YesNo) ownSecondaryMobile.getSelectedItem();
+        }
         if(mobileOwnerRelation.getVisibility() == View.VISIBLE){
             holder.mobileOwnerRelationId = ((Relationship) mobileOwnerRelation.getSelectedItem()).id;
         }
@@ -230,7 +232,9 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
                 holder.secondaryMobileNumber = secondaryMobileNumber.getText().toString();
                 holder.secondaryMobileOwnerName = secondaryMobileOwnerName.getText().toString();
                 holder.mobileOwner = (YesNo) mobileOwner.getSelectedItem();
-                holder.ownSecondaryMobile = (YesNo) ownSecondaryMobile.getSelectedItem();
+                if( ! secondaryMobileNumber.getText().toString().isEmpty()){
+                    holder.ownSecondaryMobile = (YesNo) ownSecondaryMobile.getSelectedItem();
+                }
                 if(mobileOwnerRelation.getVisibility() == View.VISIBLE){
                     holder.mobileOwnerRelationId = ((Relationship) mobileOwnerRelation.getSelectedItem()).id;
                 }

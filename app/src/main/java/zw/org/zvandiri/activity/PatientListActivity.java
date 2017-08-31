@@ -62,8 +62,6 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
                         if(AppUtil.isNetworkAvailable(getApplicationContext())){
                             Intent intent = new Intent(getApplicationContext(), PushPullService.class);
                             startService(intent);
-                            Intent intent1 = new Intent(getApplicationContext(), SetUpDataDownloadService.class);
-                            startService(intent1);
                         }
 
                     }
@@ -142,8 +140,6 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
                 if (resultCode == RESULT_OK) {
                     createNotificationDataSync("Sync Success", "Application Data Updated");
                     AppUtil.createShortNotification(context, "Application Data Updated");
-                    AppUtil.createLongNotification(context, "Contacts saved: " + PushPullService.contactSyncedCount);
-                    AppUtil.createLongNotification(context, "Referrals saved: " + PushPullService.referralSyncedCount);
                 } else {
                     createNotificationDataSync("Sync Fail", "Incomplete Application Data");
                     AppUtil.createShortNotification(context, "Incomplete Application Data");

@@ -156,10 +156,13 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
 
     private boolean validateLocal(){
         boolean isValid = true;
-        if(youngMumGroup.getSelectedItem() != null && youngMumGroup.getSelectedItem().equals(YesNo.YES) && holder.dateOfBirth != null && DateUtil.getAge(holder.dateOfBirth) <= 10){
-            AppUtil.createShortNotification(this, getResources().getString(R.string.female_too_young));
-            isValid = false;
+        if(youngMumGroup.getVisibility() == View.VISIBLE){
+            if(youngMumGroup.getSelectedItem() != null && youngMumGroup.getSelectedItem().equals(YesNo.YES) && holder.dateOfBirth != null && DateUtil.getAge(holder.dateOfBirth) <= 10){
+                AppUtil.createShortNotification(this, getResources().getString(R.string.female_too_young));
+                isValid = false;
+            }
         }
+
         if(cat.getSelectedItem() != null && cat.getSelectedItem().equals(YesNo.YES) && holder.dateOfBirth != null && DateUtil.getAge(holder.dateOfBirth) <= 10){
             AppUtil.createShortNotification(this, getResources().getString(R.string.cat_too_young));
             isValid = false;

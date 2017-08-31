@@ -75,14 +75,18 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
                 i++;
             }
 
-            ArrayList<String> list = holder.disabilityCategorysId;
-            int disabilityCategorysCount = disabilityCategorysArrayAdapter.getCount();
-            for(i = 0; i < disabilityCategorysCount; i++){
-                DisabilityCategory current = disabilityCategorysArrayAdapter.getItem(i);
-                if(list.contains(current.id)){
-                    disabilityCategorys.setItemChecked(i, true);
+            if(disabilityCategorys.getVisibility() == View.VISIBLE){
+                ArrayList<String> list = holder.disabilityCategorysId;
+                int disabilityCategorysCount = disabilityCategorysArrayAdapter.getCount();
+                for(i = 0; i < disabilityCategorysCount; i++){
+                    DisabilityCategory current = disabilityCategorysArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        disabilityCategorys.setItemChecked(i, true);
+                    }
                 }
+
             }
+
         }
         next.setOnClickListener(this);
         setSupportActionBar(createToolBar("Create Patient Add HIV and Health Details Step 5 of 7 "));

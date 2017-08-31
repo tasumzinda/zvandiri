@@ -26,8 +26,6 @@ public class PushPullService extends IntentService {
     private Context context = this;
     public static final String RESULT = "result";
     private int result = Activity.RESULT_CANCELED;
-    public static int contactSyncedCount = 0;
-    public static int referralSyncedCount = 0;
 
     public PushPullService() {
         super("PushPullService");
@@ -58,8 +56,12 @@ public class PushPullService extends IntentService {
                         if(c != null)
                             c.delete();
                     }
-                    item.delete();
-                    contactSyncedCount++;
+                    for(Contact c : Contact.findByPatientAndPushed(item.patient)){
+                        c.delete();
+                    }
+                    item.isNew = 0;
+                    item.pushed = 1;
+                    item.save();
                 }
             }
 
@@ -87,6 +89,7 @@ public class PushPullService extends IntentService {
                     item.delete();
                 }
             }
+            Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         }catch (Exception e) {
             e.printStackTrace();
             result = Activity.RESULT_CANCELED;
@@ -160,8 +163,12 @@ public class PushPullService extends IntentService {
                         if(c != null)
                             c.delete();
                     }
-                    item.delete();
-                    referralSyncedCount++;
+                    for(Referral r : Referral.findByPatientAndPushed(item.patient)){
+                        r.delete();
+                    }
+                    item.pushed = 1;
+                    item.isNew = 0;
+                    item.save();
                 }
             }
         }catch (Exception e) {

@@ -152,6 +152,7 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
         holder.id = contactId;
         Patient p = Patient.findById(id);
         holder.patient = p;
+        holder.isNew = 1;
         holder.save();
         /*if(itemID != null){
             for(ReferralHivStiServicesAvailedContract c : ReferralHivStiServicesAvailedContract.findByReferral(Referral.findById(itemID))){

@@ -68,7 +68,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
                                 syncAppData();
                             }else{
-                                delete();
+                                //delete();
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.LOGGED_IN, Boolean.TRUE);
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
@@ -199,7 +199,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         for(Patient p : Patient.getAll()){
             p.delete();
-            Log.d("Deleted patient", p.name);
         }
     }
 

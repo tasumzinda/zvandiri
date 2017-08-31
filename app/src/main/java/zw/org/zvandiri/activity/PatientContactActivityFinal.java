@@ -102,11 +102,11 @@ public class PatientContactActivityFinal extends BaseActivity implements View.On
         if(itemID != null){
             c.id = itemID;
             c.dateModified = new Date();
-            c.isNew = false;
+            c.isNew = 0;
         }else{
             c.id = contactId;
             c.dateCreated = new Date();
-            c.isNew = true;
+            c.isNew = 1;
         }
         c.careLevel = CareLevel.get(careLevel);
         c.followUp = FollowUp.get(followUp);
@@ -127,7 +127,7 @@ public class PatientContactActivityFinal extends BaseActivity implements View.On
         c.position = Position.getItem(position);
         c.reason = Reason.get(reason);
         c.subjective = subjective;
-        c.pushed = false;
+        c.pushed = 0;
         c.attendedClinicAppointment = YesNo.get(attendedClinicAppointment);
         c.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
        /* if(lastClinicAppointmentDate != null){

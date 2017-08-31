@@ -108,9 +108,9 @@ public class Contact extends Model implements Serializable{
     @Column(name = "referred_person")
     public User referredPerson;
     @Column(name = "pushed")
-    public boolean pushed = true;
+    public int pushed = 0;
     @Column(name = "is_new")
-    public boolean isNew = false;
+    public int isNew = 0;
     @Expose
     @Column(name = "lastClinicAppointmentDate")
     public Date lastClinicAppointmentDate;
@@ -145,8 +145,10 @@ public class Contact extends Model implements Serializable{
     public static List<Contact> getAll() {
         return new Select()
                 .from(Contact.class)
+                .where("is_new = ?", 1)
                 .execute();
     }
+
 
     public static void deleteItem(String id) {
         new Delete().from(Contact.class).where("id = ?", id).executeSingle();
@@ -174,7 +176,7 @@ public class Contact extends Model implements Serializable{
         return new Select()
                 .from(Contact.class)
                 .where("patient = ?", patient.getId())
-                .and("pushed = ?", 0)
+                .and("pushed = ?", 1)
                 .execute();
     }
 

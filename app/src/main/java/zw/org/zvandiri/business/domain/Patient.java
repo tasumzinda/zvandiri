@@ -308,11 +308,11 @@ public class Patient extends Model implements Serializable{
                     public void onResponse(String response) {
                         List<Patient> itemList = Arrays.asList(AppUtil.createGson().fromJson(response, Patient[].class));
                         for(Patient item : itemList){
-                            Log.d("Patient", AppUtil.createGson().toJson(item));
                             Patient checkDuplicate = Patient.getById(item.id);
                             if(checkDuplicate == null){
                                 //item.pushed = true;
                                 item.save();
+                                Log.d("Patient", AppUtil.createGson().toJson(item));
                             }
 
                         }

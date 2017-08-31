@@ -118,13 +118,13 @@ public class PatientReferralActivityFinal extends BaseActivity implements View.O
         if(itemID != null){
             item.id = itemID;
             item.dateModified = new Date();
-            item.isNew = false;
+            //item.isNew = false;
         }else{
             item.id = referralID;
             item.dateCreated = new Date();
-            item.isNew = true;
+            //item.isNew = true;
         }
-        item.pushed = false;
+        //item.pushed = false;
         item.referralDate = DateUtil.getDateFromString(referralDate);
         Patient p = Patient.findById(id);
         item.patient = p;
