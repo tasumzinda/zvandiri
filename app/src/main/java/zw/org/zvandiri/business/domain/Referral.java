@@ -78,32 +78,60 @@ public class Referral extends Model implements Serializable{
 
     @Expose
     public List<ServicesReferred> hivStiServicesReq;
+    public List<String> hivStiServicesReqId;
+
     @Expose
     public List<ServicesReferred> hivStiServicesAvailed;
+    public List<String> hivStiServicesAvailedId;
+
     @Expose
     public List<ServicesReferred> oiArtReq;
+    public List<String> oiArtReqId;
+
     @Expose
     public List<ServicesReferred> oiArtAvailed;
+    public List<String> oiArtAvailedId;
+
     @Expose
     public List<ServicesReferred> srhReq;
+    public List<String> srhReqId;
+
     @Expose
     public List<ServicesReferred> srhAvailed;
+    public List<String> srhAvailedId;
+
     @Expose
     public List<ServicesReferred> laboratoryReq;
+    public List<String> laboratoryReqId;
+
     @Expose
     public List<ServicesReferred> laboratoryAvailed;
+    public List<String> laboratoryAvailedId;
+
     @Expose
     public List<ServicesReferred> tbReq;
+    public List<String> tbReqId;
+
     @Expose
     public List<ServicesReferred> tbAvailed;
+    public List<String> tbAvailedId;
+
     @Expose
     public List<ServicesReferred> psychReq;
+    public List<String> psychReqId;
+
     @Expose
     public List<ServicesReferred> psychAvailed;
+    public List<String> psychAvailedId;
+
     @Expose
     public List<ServicesReferred> legalReq;
+    public List<String> legalReqId;
+
     @Expose
     public List<ServicesReferred> legalAvailed;
+    public List<String> legalAvailedId;
+
     public static Referral findById(String id){
         return new Select().from(Referral.class).where("id = ?", id).executeSingle();
     }

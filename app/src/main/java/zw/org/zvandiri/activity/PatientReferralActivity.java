@@ -61,7 +61,7 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         itemID = intent.getStringExtra(AppUtil.DETAILS_ID);
-        fields = new EditText[] {referralDate, organisation, attendingOfficer, designation, expectedVisitDate};
+        fields = new EditText[] {referralDate, organisation};
         referralDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
@@ -117,9 +117,13 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
             setSupportActionBar(createToolBar("Update Referrals"));
         }else if(holder != null){
             updateLabel(holder.referralDate, referralDate);
-            updateLabel(holder.expectedVisitDate, expectedVisitDate);
+            if(holder.expectedVisitDate != null){
+                updateLabel(holder.expectedVisitDate, expectedVisitDate);
+            }
             organisation.setText(holder.organisation);
-            updateLabel(holder.dateAttended, dateAttended);
+            if(holder.dateAttended != null){
+                updateLabel(holder.dateAttended, dateAttended);
+            }
             attendingOfficer.setText(holder.attendingOfficer);
             designation.setText(holder.designation);
             int i = 0;
@@ -192,13 +196,19 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
                 intent.putExtra(AppUtil.ID, id);
                 intent.putExtra(AppUtil.DETAILS_ID, itemID);
                 holder.referralDate = DateUtil.getDateFromString(referralDate.getText().toString());
-                holder.expectedVisitDate = DateUtil.getDateFromString(expectedVisitDate.getText().toString());
+                if( ! expectedVisitDate.getText().toString().isEmpty()){
+                    holder.expectedVisitDate = DateUtil.getDateFromString(expectedVisitDate.getText().toString());
+                }
                 holder.organisation = organisation.getText().toString();
                 if( ! dateAttended.getText().toString().isEmpty()){
                     holder.dateAttended = DateUtil.getDateFromString(dateAttended.getText().toString());
                 }
-                holder.attendingOfficer = attendingOfficer.getText().toString();
-                holder.designation = designation.getText().toString();
+                if( ! attendingOfficer.getText().toString().isEmpty()){
+                    holder.attendingOfficer = attendingOfficer.getText().toString();
+                }
+                if( ! designation.getText().toString().isEmpty()){
+                    holder.designation = designation.getText().toString();
+                }
                 holder.actionTaken = (ReferralActionTaken) actionTaken.getSelectedItem();
                 intent.putExtra("referral", holder);
                 startActivity(intent);
@@ -210,18 +220,53 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
 
     public boolean validateLocal(){
         boolean isValid = true;
-        if( ! checkDateFormat(referralDate.getText().toString())){
+        Patient patient = Patient.findById(id);
+        String referral = referralDate.getText().toString();
+        if( ! checkDateFormat(referral)){
             referralDate.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else if( ! referral.isEmpty() && DateUtil.getDateFromString(referral).after(new Date())){
+            referralDate.setError(getResources().getString(R.string.date_aftertoday));
+            isValid = false;
+        }else if( ! referral.isEmpty() && patient.dateOfBirth != null && DateUtil.getDateFromString(referral).before(patient.dateOfBirth)){
+            referralDate.setError(getResources().getString(R.string.date_before_birth));
             isValid = false;
         }else{
             referralDate.setError(null);
         }
-        if( ! checkDateFormat(dateAttended.getText().toString())){
+
+
+        String attended = dateAttended.getText().toString();
+        if( ! attended.isEmpty() && attendingOfficer.getText().toString().isEmpty()){
+            attendingOfficer.setError(getResources().getString(R.string.required_field_error));
+            isValid = false;
+        }else{
+            attendingOfficer.setError(null);
+        }
+        if( ! attended.isEmpty() && designation.getText().toString().isEmpty()){
+            designation.setError(getResources().getString(R.string.required_field_error));
+            isValid = false;
+        }else{
+            designation.setError(null);
+        }
+        if( ! checkDateFormat(attended)){
             dateAttended.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else if( ! attended.isEmpty() && DateUtil.getDateFromString(attended).after(new Date())){
+            dateAttended.setError(getResources().getString(R.string.date_aftertoday));
+            isValid = false;
+        }else if( ! attended.isEmpty() && patient.dateOfBirth != null && DateUtil.getDateFromString(attended).before(patient.dateOfBirth)){
+            dateAttended.setError(getResources().getString(R.string.date_aftertoday));
+            isValid = false;
+        }else if(( ! attended.isEmpty() && ! referral.isEmpty()) && DateUtil.getDateFromString(attended).before(DateUtil.getDateFromString(referral))){
+            dateAttended.setError(getResources().getString(R.string.referral_date_after_date_attended));
             isValid = false;
         }else{
             dateAttended.setError(null);
         }
+
+
+
         if( ! checkDateFormat(expectedVisitDate.getText().toString())){
             expectedVisitDate.setError(getResources().getString(R.string.date_format_error));
             isValid = false;

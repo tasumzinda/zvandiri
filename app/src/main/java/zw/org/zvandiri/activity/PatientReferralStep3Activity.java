@@ -62,17 +62,15 @@ public class PatientReferralStep3Activity extends BaseActivity implements View.O
                 }
             }
             setSupportActionBar(createToolBar("Update Referrals: Services Referred"));
-        }else if(holder.oiArtReq != null){
-            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) holder.oiArtReq;
-            ArrayList<String> list1 = new ArrayList<>();
-            for(ServicesReferred s : list){
-                list1.add(s.name);
-            }
-            int count = servicesReferredArrayAdapter.getCount();
-            for(int i = 0; i < count; i++){
-                ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
-                if(list1.contains(current.name)){
-                    servicesReferred.setItemChecked(i, true);
+        }else if(holder.oiArtReqId != null){
+            if(holder.oiArtReqId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.oiArtReqId;
+                int stableCount = servicesReferredArrayAdapter.getCount();
+                for(int i = 0; i < stableCount; i++){
+                    ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        servicesReferred.setItemChecked(i, true);
+                    }
                 }
             }
             setSupportActionBar(createToolBar("Add Referrals: Services Referred"));
@@ -107,7 +105,7 @@ public class PatientReferralStep3Activity extends BaseActivity implements View.O
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientReferralStep3Activity.this, PatientRefferalStep2Activity.class);
-        holder.oiArtReq = getServicesReferred();
+        holder.oiArtReqId = getServicesReferred();
         intent.putExtra("referral", holder);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
@@ -121,17 +119,17 @@ public class PatientReferralStep3Activity extends BaseActivity implements View.O
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        holder.oiArtReq = getServicesReferred();
+        holder.oiArtReqId = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
     }
 
-    private ArrayList<ServicesReferred> getServicesReferred(){
-        ArrayList<ServicesReferred> a = new ArrayList<>();
+    private ArrayList<String> getServicesReferred(){
+        ArrayList<String> a = new ArrayList<>();
         for(int i = 0; i < servicesReferred.getCount(); i++){
             if(servicesReferred.isItemChecked(i)){
-                a.add(servicesReferredArrayAdapter.getItem(i));
+                a.add(servicesReferredArrayAdapter.getItem(i).id);
             }else{
                 a.remove(servicesReferredArrayAdapter.getItem(i));
             }

@@ -20,6 +20,7 @@ import zw.org.zvandiri.toolbox.Log;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by User on 4/3/2017.
@@ -226,21 +227,50 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
 
     public boolean validateLocal(){
         boolean isValid = true;
-        if( ! checkDateFormat(dateOfBirth.getText().toString())){
+        String birth = dateOfBirth.getText().toString();
+        Date today = new Date();
+        if( ! checkDateFormat(birth)){
             dateOfBirth.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else  if(checkDateFormat(birth) && DateUtil.getDateFromString(birth).after(today)){
+            dateOfBirth.setError(getResources().getString(R.string.date_aftertoday));
+            isValid = false;
+        }else if(checkDateFormat(birth) && ! DateUtil.getDateFromString(birth).after(today) && DateUtil.getDateFromString(birth).before(DateUtil.getDateFromAge(30))){
+            dateOfBirth.setError(getResources().getString(R.string.date_too_early));
             isValid = false;
         }else{
             dateOfBirth.setError(null);
         }
-        Date today = new Date();
-        if(checkDateFormat(dateOfBirth.getText().toString())){
-            if(DateUtil.getDateFromString(dateOfBirth.getText().toString()).after(today)){
-                dateOfBirth.setError(this.getString(R.string.date_aftertoday));
+
+
+        String name = firstName.getText().toString();
+        if( ! name.isEmpty()){
+            if( ! validateStrings(name)){
+                firstName.setError(getResources().getString(R.string.name_format_error));
                 isValid = false;
             }else{
-                dateOfBirth.setError(null);
+                firstName.setError(null);
+            }
+        }
+        name = lastName.getText().toString();
+        if( ! name.isEmpty()){
+            if( ! validateStrings(name)){
+                lastName.setError(getResources().getString(R.string.name_format_error));
+                isValid = false;
+            }else{
+                lastName.setError(null);
+            }
+        }
+        name = middleName.getText().toString();
+        if( ! name.isEmpty()){
+            if( ! validateStrings(name)){
+                middleName.setError(getResources().getString(R.string.name_format_error));
+                isValid = false;
+            }else{
+                middleName.setError(null);
             }
         }
         return isValid;
     }
+
 }

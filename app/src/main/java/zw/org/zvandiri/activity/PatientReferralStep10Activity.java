@@ -61,17 +61,15 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
                 }
             }
             setSupportActionBar(createToolBar("Update Referrals: Services Provided/Received"));
-        }else if(holder.oiArtAvailed != null){
-            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) holder.oiArtAvailed;
-            ArrayList<String> list1 = new ArrayList<>();
-            for(ServicesReferred s : list){
-                list1.add(s.name);
-            }
-            int count = servicesReferredArrayAdapter.getCount();
-            for(int i = 0; i < count; i++){
-                ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
-                if(list1.contains(current.name)){
-                    servicesReferred.setItemChecked(i, true);
+        }else if(holder.oiArtAvailedId != null){
+            if(holder.oiArtAvailedId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.oiArtAvailedId;
+                int stableCount = servicesReferredArrayAdapter.getCount();
+                for(int i = 0; i < stableCount; i++){
+                    ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        servicesReferred.setItemChecked(i, true);
+                    }
                 }
             }
             setSupportActionBar(createToolBar("Add Referrals: Services Provided/Received"));
@@ -109,7 +107,7 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        holder.oiArtAvailed = getServicesReferred();
+        holder.oiArtAvailedId = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
@@ -120,17 +118,17 @@ public class PatientReferralStep10Activity extends BaseActivity implements View.
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        holder.oiArtAvailed = getServicesReferred();
+        holder.oiArtAvailedId = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
     }
 
-    private ArrayList<ServicesReferred> getServicesReferred(){
-        ArrayList<ServicesReferred> a = new ArrayList<>();
+    private ArrayList<String> getServicesReferred(){
+        ArrayList<String> a = new ArrayList<>();
         for(int i = 0; i < servicesReferred.getCount(); i++){
             if(servicesReferred.isItemChecked(i)){
-                a.add(servicesReferredArrayAdapter.getItem(i));
+                a.add(servicesReferredArrayAdapter.getItem(i).id);
             }else{
                 a.remove(servicesReferredArrayAdapter.getItem(i));
             }

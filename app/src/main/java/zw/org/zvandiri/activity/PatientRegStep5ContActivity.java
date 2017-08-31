@@ -123,14 +123,17 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientRegStep6Activity.class);
-            holder.disability = (YesNo) disability.getSelectedItem();
-            if(disability.getSelectedItem().equals(YesNo.YES)){
-                holder.disabilityCategorysId = getDisabilityCategorys();
+            if(validate()){
+                Intent intent = new Intent(PatientRegStep5ContActivity.this, PatientRegStep6Activity.class);
+                holder.disability = (YesNo) disability.getSelectedItem();
+                if(disability.getSelectedItem().equals(YesNo.YES)){
+                    holder.disabilityCategorysId = getDisabilityCategorys();
+                }
+                intent.putExtra("patient", holder);
+                startActivity(intent);
+                finish();
             }
-            intent.putExtra("patient", holder);
-            startActivity(intent);
-            finish();
+
         }
     }
 
@@ -144,5 +147,14 @@ public class PatientRegStep5ContActivity extends BaseActivity implements View.On
             }
         }
         return a;
+    }
+
+    private boolean validate(){
+        boolean isValid = true;
+        if(disability.getSelectedItem() != null && disability.getSelectedItem().equals(YesNo.YES) && getDisabilityCategorys().size() < 1){
+            AppUtil.createShortNotification(this, "Please select at least one disability category");
+            isValid = false;
+        }
+        return isValid;
     }
 }

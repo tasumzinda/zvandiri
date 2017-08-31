@@ -193,22 +193,18 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
     public boolean validateLocal(){
         boolean isValid = true;
         String date = dateTested.getText().toString();
-        if( ! date.isEmpty()){
-            if( ! checkDateFormat(date)){
-                dateTested.setError(getResources().getString(R.string.date_format_error));
-                isValid = false;
-            }else{
-                dateTested.setError(null);
-            }
-        }
         Date today = new Date();
-        if(checkDateFormat(date)){
-            if(DateUtil.getDateFromString(dateTested.getText().toString()).after(today)){
-                dateTested.setError(this.getString(R.string.date_aftertoday));
-                isValid = false;
-            }else{
-                dateTested.setError(null);
-            }
+        if( ! date.isEmpty() && ! checkDateFormat(date)){
+            dateTested.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else if(checkDateFormat(date) && DateUtil.getDateFromString(date).after(today)){
+            dateTested.setError(this.getString(R.string.date_aftertoday));
+            isValid = false;
+        }else if(checkDateFormat(date) &&holder.dateOfBirth != null && DateUtil.getDateFromString(date).before(holder.dateOfBirth)){
+            dateTested.setError(this.getString(R.string.date_before_birth));
+            isValid = false;
+        }else{
+            dateTested.setError(null);
         }
         return isValid;
     }

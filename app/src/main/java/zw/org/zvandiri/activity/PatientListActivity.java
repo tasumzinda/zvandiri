@@ -38,6 +38,12 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generic_list_view);
+        WVersionManager versionManager = new WVersionManager(this);
+        versionManager.setVersionContentUrl("http://db.zvandiri.org/version.txt"); // your update content url, see the response format below
+        versionManager.setUpdateUrl("http://db.zvandiri.org/zvandiri.apk");
+        versionManager.setIgnoreThisVersionLabel(" ");
+        versionManager.setRemindMeLaterLabel("");
+        versionManager.checkVersion();
         final ArrayList<Patient> list = (ArrayList<Patient>) Patient.getAll();
         patientAdapter = (new PatientAdapter(this, list));
         ListView listView = (ListView) findViewById(R.id.list);
@@ -74,6 +80,7 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
             intent = new Intent(PatientListActivity.this, SelectionActivity.class);
             intent.putExtra(AppUtil.ID, patient.id);
             String name = patient.name != null ? patient.name : patient.firstName + " " + patient.lastName;
+            Log.d("Patient", AppUtil.createGson().toJson(patient));
             intent.putExtra(AppUtil.NAME, name);
             startActivity(intent);
             finish();
@@ -135,6 +142,8 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
                 if (resultCode == RESULT_OK) {
                     createNotificationDataSync("Sync Success", "Application Data Updated");
                     AppUtil.createShortNotification(context, "Application Data Updated");
+                    AppUtil.createLongNotification(context, "Contacts saved: " + PushPullService.contactSyncedCount);
+                    AppUtil.createLongNotification(context, "Referrals saved: " + PushPullService.referralSyncedCount);
                 } else {
                     createNotificationDataSync("Sync Fail", "Incomplete Application Data");
                     AppUtil.createShortNotification(context, "Incomplete Application Data");

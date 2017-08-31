@@ -64,17 +64,20 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         educationLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(((EducationLevel)educationLevel.getSelectedItem()).name.equals("Primary School") || ((EducationLevel)educationLevel.getSelectedItem()).name.equals("N/A")){
-                    reasonForNotReachingOLevel.setVisibility(View.VISIBLE);
-                    reasonLabel.setVisibility(View.VISIBLE);
-                    ArrayAdapter<ReasonForNotReachingOLevel> reasonForNotReachingOLevelArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, ReasonForNotReachingOLevel.getAll());
-                    reasonForNotReachingOLevelArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    reasonForNotReachingOLevel.setAdapter(reasonForNotReachingOLevelArrayAdapter);
-                    reasonForNotReachingOLevelArrayAdapter.notifyDataSetChanged();
-                }else{
-                    reasonForNotReachingOLevel.setVisibility(View.GONE);
-                    reasonLabel.setVisibility(View.GONE);
+                if(((Education) education.getSelectedItem()).name.equals("Out of School")){
+                    if(((EducationLevel)educationLevel.getSelectedItem()).name.equals("Primary School") || ((EducationLevel)educationLevel.getSelectedItem()).name.equals("N/A")){
+                        reasonForNotReachingOLevel.setVisibility(View.VISIBLE);
+                        reasonLabel.setVisibility(View.VISIBLE);
+                        ArrayAdapter<ReasonForNotReachingOLevel> reasonForNotReachingOLevelArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, ReasonForNotReachingOLevel.getAll());
+                        reasonForNotReachingOLevelArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        reasonForNotReachingOLevel.setAdapter(reasonForNotReachingOLevelArrayAdapter);
+                        reasonForNotReachingOLevelArrayAdapter.notifyDataSetChanged();
+                    }else{
+                        reasonForNotReachingOLevel.setVisibility(View.GONE);
+                        reasonLabel.setVisibility(View.GONE);
+                    }
                 }
+
             }
 
             @Override
@@ -203,28 +206,29 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
     public boolean validateLocal(){
         boolean isValid = true;
         String date = dateJoined.getText().toString();
+        Date today = new Date();
         if(date.isEmpty()){
             dateJoined.setError(getResources().getString(R.string.required_field_error));
             isValid = false;
-        }else{
-            dateJoined.setError(null);
-        }
-        if( ! checkDateFormat(date)){
+        }else if( ! checkDateFormat(date)){
             dateJoined.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else if( checkDateFormat(date) && DateUtil.getDateFromString(date).after(today)) {
+            dateJoined.setError(this.getString(R.string.date_aftertoday));
+            isValid = false;
+        }else if( checkDateFormat(date) && holder.dateOfBirth != null && DateUtil.getDateFromString(date).before(holder.dateOfBirth)){
+            dateJoined.setError(this.getString(R.string.date_before_birth));
             isValid = false;
         }else{
             dateJoined.setError(null);
         }
-        Date today = new Date();
-        if( checkDateFormat(date)){
-            if(DateUtil.getDateFromString(dateJoined.getText().toString()).after(today)){
-                dateJoined.setError(this.getString(R.string.date_aftertoday));
-                isValid = false;
-            }else{
-                dateJoined.setError(null);
-            }
-        }
 
+        if(refererName.getText().toString().isEmpty()){
+            refererName.setError(getResources().getString(R.string.required_field_error));
+            isValid = false;
+        }else{
+            refererName.setError(null);
+        }
         return isValid;
     }
 }

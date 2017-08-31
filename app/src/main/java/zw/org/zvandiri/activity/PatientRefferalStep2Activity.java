@@ -58,17 +58,15 @@ public class PatientRefferalStep2Activity extends BaseActivity implements View.O
                 }
             }
             setSupportActionBar(createToolBar("Update Referrals: Services Referred"));
-        }else if(holder.hivStiServicesReq != null){
-            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) holder.hivStiServicesReq;
-            ArrayList<String> list1 = new ArrayList<>();
-            for(ServicesReferred s : list){
-                list1.add(s.name);
-            }
-            int count = servicesReferredArrayAdapter.getCount();
-            for(int i = 0; i < count; i++){
-                ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
-                if(list1.contains(current.name)){
-                    servicesReferred.setItemChecked(i, true);
+        }else if(holder.hivStiServicesReqId != null){
+            if(holder.hivStiServicesReqId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.hivStiServicesReqId;
+                int stableCount = servicesReferredArrayAdapter.getCount();
+                for(int i = 0; i < stableCount; i++){
+                    ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        servicesReferred.setItemChecked(i, true);
+                    }
                 }
             }
             setSupportActionBar(createToolBar("Add Referrals: Services Referred"));
@@ -103,7 +101,7 @@ public class PatientRefferalStep2Activity extends BaseActivity implements View.O
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientRefferalStep2Activity.this, PatientReferralActivity.class);
-        holder.hivStiServicesReq = getServicesReferred();
+        holder.hivStiServicesReqId = getServicesReferred();
         intent.putExtra("referral", holder);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
@@ -117,17 +115,17 @@ public class PatientRefferalStep2Activity extends BaseActivity implements View.O
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        holder.hivStiServicesReq = getServicesReferred();
+        holder.hivStiServicesReqId = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
     }
 
-    private ArrayList<ServicesReferred> getServicesReferred(){
-        ArrayList<ServicesReferred> a = new ArrayList<>();
+    private ArrayList<String> getServicesReferred(){
+        ArrayList<String> a = new ArrayList<>();
         for(int i = 0; i < servicesReferred.getCount(); i++){
             if(servicesReferred.isItemChecked(i)){
-                a.add(servicesReferredArrayAdapter.getItem(i));
+                a.add(servicesReferredArrayAdapter.getItem(i).id);
             }else{
                 a.remove(servicesReferredArrayAdapter.getItem(i));
             }

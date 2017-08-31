@@ -26,6 +26,8 @@ public class PushPullService extends IntentService {
     private Context context = this;
     public static final String RESULT = "result";
     private int result = Activity.RESULT_CANCELED;
+    public static int contactSyncedCount = 0;
+    public static int referralSyncedCount = 0;
 
     public PushPullService() {
         super("PushPullService");
@@ -45,6 +47,7 @@ public class PushPullService extends IntentService {
                     Log.d("Response", object.toString());
                 }catch (JSONException ex){
                     ex.printStackTrace();
+                    result = Activity.RESULT_CANCELED;
                 }
                 if(code.equals("OK")){
                     for(ContactStableContract c : ContactStableContract.findByContact(item)){
@@ -56,16 +59,27 @@ public class PushPullService extends IntentService {
                             c.delete();
                     }
                     item.delete();
+                    contactSyncedCount++;
                 }
             }
+
         }catch (Exception e) {
             e.printStackTrace();
             result = Activity.RESULT_CANCELED;
         }
         try{
             for(Patient item : getAllPatients()){
-                int res = Integer.parseInt(run(AppUtil.getPushPatientUrl(context), item));
-                if(res == 1){
+                String res = run(AppUtil.getPushPatientUrl(context), item);
+                String code = "";
+                try{
+                    JSONObject object = new JSONObject(res);
+                    code = object.getString("statusCode");
+                    Log.d("Response", object.toString());
+                }catch (JSONException ex){
+                    ex.printStackTrace();
+                    result = Activity.RESULT_CANCELED;
+                }
+                if(code.equals("OK")){
                     for(PatientDisabilityCategoryContract c : PatientDisabilityCategoryContract.findByPatient(item)){
                         if(c != null)
                             c.delete();
@@ -79,8 +93,17 @@ public class PushPullService extends IntentService {
         }
         try{
             for(Referral item : getAllReferrals()){
-                int res = Integer.parseInt(run(AppUtil.getPushReferralUrl(context), item));
-                if(res == 1){
+                String res = run(AppUtil.getPushReferralUrl(context), item);
+                String code = "";
+                try{
+                    JSONObject object = new JSONObject(res);
+                    code = object.getString("statusCode");
+                    Log.d("Response", object.toString());
+                }catch (JSONException ex){
+                    ex.printStackTrace();
+                    result = Activity.RESULT_CANCELED;
+                }
+                if(code.equals("OK")){
                     for(ReferralHivStiServicesReqContract c : ReferralHivStiServicesReqContract.findByReferral(item)){
                         if(c != null)
                             c.delete();
@@ -138,6 +161,7 @@ public class PushPullService extends IntentService {
                             c.delete();
                     }
                     item.delete();
+                    referralSyncedCount++;
                 }
             }
         }catch (Exception e) {

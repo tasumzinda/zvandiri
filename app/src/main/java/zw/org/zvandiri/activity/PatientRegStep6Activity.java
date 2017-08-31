@@ -144,23 +144,28 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if(view.getId() == next.getId()){
-            Intent intent = new Intent(PatientRegStep6Activity.this, PatientListActivity.class);
-            save();
-            startActivity(intent);
-            finish();
+            if(validateLocal()){
+                Intent intent = new Intent(PatientRegStep6Activity.this, PatientListActivity.class);
+                save();
+                startActivity(intent);
+                finish();
+            }
+
         }
     }
 
-    /*public boolean validateLocal(){
+    private boolean validateLocal(){
         boolean isValid = true;
-        if( ! checkDateFormat(dateOfBirth.getText().toString())){
-            dateOfBirth.setError(getResources().getString(R.string.date_format_error));
+        if(youngMumGroup.getSelectedItem() != null && youngMumGroup.getSelectedItem().equals(YesNo.YES) && holder.dateOfBirth != null && DateUtil.getAge(holder.dateOfBirth) <= 10){
+            AppUtil.createShortNotification(this, getResources().getString(R.string.female_too_young));
             isValid = false;
-        }else{
-            dateOfBirth.setError(null);
+        }
+        if(cat.getSelectedItem() != null && cat.getSelectedItem().equals(YesNo.YES) && holder.dateOfBirth != null && DateUtil.getAge(holder.dateOfBirth) <= 10){
+            AppUtil.createShortNotification(this, getResources().getString(R.string.cat_too_young));
+            isValid = false;
         }
         return isValid;
-    }*/
+    }
 
     public void save(){
         String patientId = UUIDGen.generateUUID();
@@ -187,6 +192,15 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         if(holder.reasonForNotReachingOLevelId != null){
             holder.reasonForNotReachingOLevel = ReasonForNotReachingOLevel.getItem(holder.reasonForNotReachingOLevelId);
         }
+        if(holder.educationId != null){
+            holder.education = Education.getItem(holder.educationId);
+        }
+        if(holder.educationLevelId != null){
+            holder.educationLevel = (EducationLevel.getItem(holder.educationLevelId));
+        }
+        if(holder.referrerId != null){
+            holder.referer = Referer.getItem(holder.referrerId);
+        }
         holder.save();
         if(holder.disabilityCategorysId != null){
             for(int i = 0; i < holder.disabilityCategorysId.size(); i++){
@@ -196,6 +210,9 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
                 contract.id = UUIDGen.generateUUID();
                 contract.save();
             }
+        }
+        for(DisabilityCategory i : DisabilityCategory.findByPatient(Patient.findById(patientId))){
+            Log.d("Diasbility category", AppUtil.createGson().toJson(i));
         }
 
     }

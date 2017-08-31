@@ -37,7 +37,7 @@ public class PatientAdapter extends ArrayAdapter<Patient> {
         }
         name = (TextView) newView.findViewById(R.id.adapter_name);
         Patient patient = list.get(pos);
-        name.setText(patient.toString());
+        name.setText(pos + 1 + "." + patient.toString());
         return newView;
     }
 

@@ -120,7 +120,7 @@ public class Patient extends Model implements Serializable{
     public Facility primaryClinic;
     public String primaryClinicId;
     @Expose
-    @Column(name = "support_group")
+    @Column
     public SupportGroup supportGroup;
     public String supportGroupId;
     @Expose
@@ -227,6 +227,7 @@ public class Patient extends Model implements Serializable{
     public List<Cd4Count> cd4Counts;
     @Expose
     public List<ViralLoad> viralLoads;*/
+    @Expose
     public List<DisabilityCategory> disabilityCategorys;
     public ArrayList<String> disabilityCategorysId;
     @Expose
@@ -260,6 +261,12 @@ public class Patient extends Model implements Serializable{
                 .from(Patient.class).where("id = ?", id).executeSingle();
     }
 
+    public static Patient findByEmail(String email){
+        return new Select()
+                .from(Patient.class)
+                .where("email = ?", email)
+                .executeSingle();
+    }
 
     public static Patient getById(String id){
         return new Select()
@@ -282,6 +289,17 @@ public class Patient extends Model implements Serializable{
                 .execute();
     }
 
+    public static List<Patient> checkDuplicate(String firstName, String lastName, Date dateOfBirth, Facility facility){
+        return new Select()
+                .from(Patient.class)
+                .where("first_name LIKE ?", new String[]{'%' + firstName + '%'})
+                .and("last_name LIKE ?", new String[]{'%' + lastName + '%'})
+                .and("date_of_birth > ? and date_of_birth < ?", DateUtil.getDateDiffMonth(dateOfBirth, -6).getTime(), DateUtil.getDateDiffMonth(dateOfBirth, 6).getTime())
+                .and("primary_clinic = ?", facility.getId())
+                .execute();
+
+    }
+
     public static void fetchRemote(Context context, final String userName, final String password){
         String URL = AppUtil.getBaseUrl(context) + "/patient/cats-patients?email=";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL + userName,
@@ -290,6 +308,7 @@ public class Patient extends Model implements Serializable{
                     public void onResponse(String response) {
                         List<Patient> itemList = Arrays.asList(AppUtil.createGson().fromJson(response, Patient[].class));
                         for(Patient item : itemList){
+                            Log.d("Patient", AppUtil.createGson().toJson(item));
                             Patient checkDuplicate = Patient.getById(item.id);
                             if(checkDuplicate == null){
                                 //item.pushed = true;

@@ -376,62 +376,43 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     public boolean validateLocal(){
         boolean isValid = true;
         String date = contactDate.getText().toString();
+        Date today = new Date();
+        Date dateofContact = DateUtil.getDateFromString(date);
+
+        Date dateOfBirth = Patient.findById(id).dateOfBirth;
         if( ! checkDateFormat(date)){
             contactDate.setError(getResources().getString(R.string.date_format_error));
             isValid = false;
+        }else if(checkDateFormat(date) && dateofContact.after(today)){
+                contactDate.setError(getResources().getString(R.string.date_aftertoday));
+                isValid = false;
+        }else if(checkDateFormat(date) && dateofContact.before(dateOfBirth)){
+                contactDate.setError(getResources().getString(R.string.date_before_birth));
+                isValid = false;
         }else{
             contactDate.setError(null);
         }
-        if(checkDateFormat(date)){
-            Date today = new Date();
-            Date dateofContact = DateUtil.getDateFromString(date);
-            if(dateofContact.after(today)){
-                contactDate.setError(getResources().getString(R.string.date_aftertoday));
-                isValid = false;
-            }else{
-                contactDate.setError(null);
-            }
-        }
-        if(checkDateFormat(date)){
-            Date dateOfBirth = Patient.findById(id).dateOfBirth;
-            Log.d("Date", Patient.findById(id).dateOfBirth.toString());
-            Date dateofContact = DateUtil.getDateFromString(date);
-            if(dateofContact.before(dateOfBirth)){
-                contactDate.setError(getResources().getString(R.string.date_before_birth));
-                isValid = false;
-            }else{
-                contactDate.setError(null);
-            }
-        }
+
+
         date = lastClinicAppointmentDate.getText().toString();
+        Date appointmentDate = null;
         if( ! date.isEmpty()){
-            if( ! checkDateFormat(date)){
-                lastClinicAppointmentDate.setError(getResources().getString(R.string.date_format_error));
-                isValid = false;
-            }else{
-                lastClinicAppointmentDate.setError(null);
-            }
+            appointmentDate = DateUtil.getDateFromString(date);
         }
-        if(checkDateFormat(date)){
-            Date today = new Date();
-            Date dateofContact = DateUtil.getDateFromString(date);
-            if(dateofContact.after(today)){
-                lastClinicAppointmentDate.setError(getResources().getString(R.string.date_aftertoday));
-                isValid = false;
-            }else{
-                lastClinicAppointmentDate.setError(null);
-            }
-        }
-        if(checkDateFormat(date)){
-            Date dateOfBirth = Patient.findById(id).dateOfBirth;
-            Date dateofContact = DateUtil.getDateFromString(date);
-            if(dateofContact.before(dateOfBirth)){
+
+        if( ! date.isEmpty() && ! checkDateFormat(date)){
+            lastClinicAppointmentDate.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else if(checkDateFormat(date) && appointmentDate.after(today)){
+            lastClinicAppointmentDate.setError(getResources().getString(R.string.date_aftertoday));
+            isValid = false;
+        }else if(checkDateFormat(date) && appointmentDate.before(dateOfBirth)){
                 lastClinicAppointmentDate.setError(getResources().getString(R.string.date_before_birth));
                 isValid = false;
-            }else{
-                lastClinicAppointmentDate.setError(null);
-            }
-        }
+
+        }else{
+        lastClinicAppointmentDate.setError(null);
+     }
         return isValid;
     }
 }

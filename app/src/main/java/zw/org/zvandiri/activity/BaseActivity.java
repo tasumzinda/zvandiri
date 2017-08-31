@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Patterns;
 import android.view.Menu;
 import android.widget.EditText;
 import zw.org.zvandiri.R;
@@ -25,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -172,6 +174,19 @@ public class BaseActivity extends AppCompatActivity {
 
     public void updateView() {
 
+    }
+
+    public boolean validateEmail(String email){
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
+    }
+
+    public boolean validateStrings(String name){
+        if(name.trim().matches("^([a-zA-Z])+")){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 }

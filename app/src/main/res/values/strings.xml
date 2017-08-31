@@ -5,6 +5,14 @@
     <string name="date_mismatch_error">End date can not be before start date</string>
     <string name="date_aftertoday">Date can not be in the future</string>
     <string name="date_before_birth">Date cannot be before individual was born</string>
+    <string name="referral_date_after_date_attended">Date attended cannot be before referral date</string>
+    <string name="date_too_early">Date too early</string>
+    <string name="mobile_number_format">Mobile number not valid</string>
+    <string name="female_too_young">Too young to be a mom</string>
+    <string name="cat_too_young">Too young to be a CATS</string>
+    <string name="email_exist">Email already in system</string>
+    <string name="patient_exits">Patient already exists</string>
+    <string name="name_format_error">Field can only accept alphabetical characters</string>
     <string name="action_add">Add New Item</string>
     <string name="action_search">Search Patiient</string>
     <string name="action_refresh">Refresh</string>

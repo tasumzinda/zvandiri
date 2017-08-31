@@ -66,17 +66,15 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
                 }
             }
             setSupportActionBar(createToolBar("Update Referrals: Services Provided/Received"));
-        }else if(holder.legalAvailed != null){
-            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) holder.legalAvailed;
-            ArrayList<String> list1 = new ArrayList<>();
-            for(ServicesReferred s : list){
-                list1.add(s.name);
-            }
-            int count = servicesReferredArrayAdapter.getCount();
-            for(int i = 0; i < count; i++){
-                ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
-                if(list1.contains(current.name)){
-                    servicesReferred.setItemChecked(i, true);
+        }else if(holder.legalAvailedId != null){
+            if(holder.legalAvailedId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.legalAvailedId;
+                int stableCount = servicesReferredArrayAdapter.getCount();
+                for(int i = 0; i < stableCount; i++){
+                    ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        servicesReferred.setItemChecked(i, true);
+                    }
                 }
             }
             setSupportActionBar(createToolBar("Add Referrals: Services Provided/Received Final"));
@@ -114,28 +112,34 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        holder.legalAvailed = getServicesReferred();
+        holder.legalAvailedId = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
     }
 
     public void onClick(View v){
-        int size = holder.hivStiServicesReq.size() + holder.oiArtReq.size() + holder.srhReq.size() + holder.laboratoryReq.size()
-                + holder.tbReq.size() + holder.psychReq.size() + holder.legalReq.size();
-         if(size > 0){
-             save();
-         }else{
-             AppUtil.createShortNotification(getApplicationContext(), "Please select at least one service referred");
-         }
-
+        if(validate()){
+            save();
+        }
     }
 
-    private ArrayList<ServicesReferred> getServicesReferred(){
-        ArrayList<ServicesReferred> a = new ArrayList<>();
+    public boolean validate(){
+        boolean isValid = true;
+        int size = holder.hivStiServicesReqId.size() + holder.oiArtReqId.size() + holder.srhReqId.size() + holder.laboratoryReqId.size()
+                + holder.tbReqId.size() + holder.psychReqId.size() + holder.legalReqId.size();
+        if(size == 0){
+            AppUtil.createShortNotification(getApplicationContext(), "Please select at least one service referred");
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    private ArrayList<String> getServicesReferred(){
+        ArrayList<String> a = new ArrayList<>();
         for(int i = 0; i < servicesReferred.getCount(); i++){
             if(servicesReferred.isItemChecked(i)){
-                a.add(servicesReferredArrayAdapter.getItem(i));
+                a.add(servicesReferredArrayAdapter.getItem(i).id);
             }else{
                 a.remove(servicesReferredArrayAdapter.getItem(i));
             }
@@ -193,100 +197,100 @@ public class PatientReferralStep15Activity extends BaseActivity implements View.
                 c.delete();
             }
         }*/
-        for(int i = 0; i < holder.hivStiServicesReq.size(); i++){
+        for(int i = 0; i < holder.hivStiServicesReqId.size(); i++){
             ReferralHivStiServicesReqContract contract = new ReferralHivStiServicesReqContract();
-            contract.hivStiServicesReq = holder.hivStiServicesReq.get(i);
+            contract.hivStiServicesReq = ServicesReferred.getItem(holder.hivStiServicesReqId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.oiArtReq.size(); i++){
+        for(int i = 0; i < holder.oiArtReqId.size(); i++){
             ReferralOIArtReqContract contract = new ReferralOIArtReqContract();
-            contract.oiArtReq = holder.oiArtReq.get(i);
+            contract.oiArtReq = ServicesReferred.getItem(holder.oiArtReqId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.srhReq.size(); i++){
+        for(int i = 0; i < holder.srhReqId.size(); i++){
             ReferralSrhReqContract contract = new ReferralSrhReqContract();
-            contract.srhReq = holder.srhReq.get(i);
+            contract.srhReq = ServicesReferred.getItem(holder.srhReqId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.laboratoryReq.size(); i++){
+        for(int i = 0; i < holder.laboratoryReqId.size(); i++){
             ReferralLaboratoryReqContract contract = new ReferralLaboratoryReqContract();
-            contract.laboratoryReq = holder.laboratoryReq.get(i);
+            contract.laboratoryReq = ServicesReferred.getItem(holder.laboratoryReqId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.tbReq.size(); i++){
+        for(int i = 0; i < holder.tbReqId.size(); i++){
             ReferralTbReqContact contract = new ReferralTbReqContact();
-            contract.tbReq = holder.tbReq.get(i);
+            contract.tbReq = ServicesReferred.getItem(holder.tbReqId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.psychReq.size(); i++){
+        for(int i = 0; i < holder.psychReqId.size(); i++){
             ReferralPsychReqContract contract = new ReferralPsychReqContract();
-            contract.psychReq = holder.psychReq.get(i);
+            contract.psychReq = ServicesReferred.getItem(holder.psychReqId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.legalReq.size(); i++){
+        for(int i = 0; i < holder.legalReqId.size(); i++){
             ReferralLegalReqContract contract = new ReferralLegalReqContract();
-            contract.legalReq = holder.legalReq.get(i);
+            contract.legalReq = ServicesReferred.getItem(holder.legalReqId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.hivStiServicesAvailed.size(); i++){
+        for(int i = 0; i < holder.hivStiServicesAvailedId.size(); i++){
             ReferralHivStiServicesAvailedContract contract = new ReferralHivStiServicesAvailedContract();
-            contract.hivStiServicesAvailed = holder.hivStiServicesAvailed.get(i);
+            contract.hivStiServicesAvailed = ServicesReferred.getItem(holder.hivStiServicesAvailedId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.oiArtAvailed.size(); i++){
+        for(int i = 0; i < holder.oiArtAvailedId.size(); i++){
             ReferralOIArtAvailedContract contract = new ReferralOIArtAvailedContract();
-            contract.oiArtAvailed = holder.oiArtAvailed.get(i);
+            contract.oiArtAvailed = ServicesReferred.getItem(holder.oiArtAvailedId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.srhAvailed.size(); i++){
+        for(int i = 0; i < holder.srhAvailedId.size(); i++){
             ReferralSrhAvailedContract contract = new ReferralSrhAvailedContract();
-            contract.srhAvailed = holder.srhAvailed.get(i);
+            contract.srhAvailed = ServicesReferred.getItem(holder.srhAvailedId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.laboratoryAvailed.size(); i++){
+        for(int i = 0; i < holder.laboratoryAvailedId.size(); i++){
             ReferralLaboratoryAvailedContract contract = new ReferralLaboratoryAvailedContract();
-            contract.laboratoryAvailed = holder.laboratoryAvailed.get(i);
+            contract.laboratoryAvailed = ServicesReferred.getItem(holder.laboratoryAvailedId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.tbAvailed.size(); i++){
+        for(int i = 0; i < holder.tbAvailedId.size(); i++){
             ReferralTbAvailedContract contract = new ReferralTbAvailedContract();
-            contract.tbAvailed = holder.tbAvailed.get(i);
+            contract.tbAvailed = ServicesReferred.getItem(holder.tbAvailedId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
-        for(int i = 0; i < holder.psychAvailed.size(); i++){
+        for(int i = 0; i < holder.psychAvailedId.size(); i++){
             ReferralPsychAvailedContract contract = new ReferralPsychAvailedContract();
-            contract.psychAvailed = holder.psychAvailed.get(i);
+            contract.psychAvailed = ServicesReferred.getItem(holder.psychAvailedId.get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();
         }
         for(int i = 0; i < getServicesReferred().size(); i++){
             ReferralLegalAvailedContract contract = new ReferralLegalAvailedContract();
-            contract.legalAvailed = getServicesReferred().get(i);
+            contract.legalAvailed = ServicesReferred.getItem(getServicesReferred().get(i));
             contract.referral = Referral.findById(contactId);
             contract.id = UUIDGen.generateUUID();
             contract.save();

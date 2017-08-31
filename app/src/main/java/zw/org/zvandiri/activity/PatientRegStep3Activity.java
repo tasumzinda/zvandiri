@@ -149,7 +149,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
             holder.primaryClinicId = ((Facility) primaryClinic.getSelectedItem()).id;
         }
         if(supportGroup.getSelectedItem() != null){
-            holder.supportGroup = (SupportGroup) supportGroup.getSelectedItem();
+            holder.supportGroupId = ((SupportGroup) supportGroup.getSelectedItem()).id;
         }
         intent.putExtra("patient", holder);
         startActivity(intent);
@@ -189,6 +189,17 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
             isValid = false;
             AppUtil.createShortNotification(this, "Please select a primary clinic before proceeding!");
         }
+        if(supportGroup.getSelectedItem() == null){
+            isValid = false;
+            AppUtil.createShortNotification(this, "Please select a support group before proceeding!");
+        }
+        if(primaryClinic.getSelectedItem() != null){
+            if(Patient.checkDuplicate(holder.firstName, holder.lastName, holder.dateOfBirth, (Facility) primaryClinic.getSelectedItem()).size() >= 1){
+                AppUtil.createShortNotification(this, getResources().getString(R.string.patient_exits));
+                isValid = false;
+            }
+        }
+
         return isValid;
     }
 }

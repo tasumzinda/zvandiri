@@ -13,6 +13,7 @@ import zw.org.zvandiri.business.domain.util.HIVDisclosureLocation;
 import zw.org.zvandiri.business.domain.util.TransmissionMode;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.MobileNumberFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -246,7 +247,14 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
 
     public boolean validateLocal(){
         boolean isValid = true;
-        if(mobileOwner.getSelectedItem().equals(YesNo.NO) &&  ! mobileNumber.getText().toString().isEmpty()){
+        String mobile = mobileNumber.getText().toString();
+        if( ! mobile.isEmpty() && ! mobile.matches(MobileNumberFormat.ZIMBABWE)){
+            mobileNumber.setError(getResources().getString(R.string.mobile_number_format));
+            isValid = false;
+        }else{
+            mobileNumber.setError(null);
+        }
+        if(mobileOwner.getSelectedItem().equals(YesNo.NO) &&  ! mobile.isEmpty()){
             if(ownerName.getText().toString().isEmpty()){
                 ownerName.setError(this.getString(R.string.required_field_error));
                 isValid = false;
@@ -254,13 +262,33 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
                 ownerName.setError(null);
             }
         }
-        if(ownSecondaryMobile.getSelectedItem().equals(YesNo.NO) &&  ! secondaryMobileNumber.getText().toString().isEmpty()){
+        mobile = secondaryMobileNumber.getText().toString();
+        if( ! mobile.isEmpty() && mobile.matches(MobileNumberFormat.ZIMBABWE)){
+            secondaryMobileNumber.setError(getResources().getString(R.string.mobile_number_format));
+            isValid = false;
+        }else{
+            secondaryMobileNumber.setError(null);
+        }
+        if(ownSecondaryMobile.getSelectedItem().equals(YesNo.NO) &&  ! mobile.isEmpty()){
             if(secondaryMobileOwnerName.getText().toString().isEmpty()){
                 secondaryMobileOwnerName.setError(this.getString(R.string.required_field_error));
                 isValid = false;
             }else{
                 secondaryMobileOwnerName.setError(null);
             }
+        }
+        String emailAddres = email.getText().toString().trim();
+        if( ! emailAddres.isEmpty() && Patient.findByEmail(emailAddres) != null){
+            email.setError(getResources().getString(R.string.email_exist));
+            isValid = false;
+        }else{
+            email.setError(null);
+        }
+        if( ! emailAddres.isEmpty()  && ! validateEmail(emailAddres)){
+            email.setError(getResources().getString(R.string.email_format_error));
+            isValid = false;
+        }else{
+            email.setError(null);
         }
         return isValid;
     }

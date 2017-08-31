@@ -279,4 +279,21 @@ public class DateUtil {
         cal.add(Calendar.MONTH, factor);
         return cal.getTime();
     }
+
+    public static int getAge(Date date) {
+        if (date == null) {
+            return 0;
+        }
+        Calendar birthCalendar = Calendar.getInstance();
+        birthCalendar.setTime(date);
+        Calendar todayCalendar = Calendar.getInstance();
+        int age = todayCalendar.get(Calendar.YEAR) - birthCalendar.get(Calendar.YEAR);
+        if (todayCalendar.get(Calendar.MONTH) < birthCalendar.get(Calendar.MONTH)) {
+            age--;
+        } else if (todayCalendar.get(Calendar.MONTH) == birthCalendar.get(Calendar.MONTH)
+                && todayCalendar.get(Calendar.DAY_OF_MONTH) < birthCalendar.get(Calendar.DAY_OF_MONTH)) {
+            age--;
+        }
+        return age;
+    }
 }

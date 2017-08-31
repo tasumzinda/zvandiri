@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by User on 4/6/2017.
  */
-public class PatientReferralStep14Activity extends BaseActivity implements View.OnClickListener{
+public class PatientReferralStep14Activity extends BaseActivity implements View.OnClickListener {
 
     private ListView servicesReferred;
     private Referral item;
@@ -50,33 +50,30 @@ public class PatientReferralStep14Activity extends BaseActivity implements View.
         servicesReferredArrayAdapter.notifyDataSetChanged();
         servicesReferred.setItemsCanFocus(false);
         servicesReferred.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        if(itemID != null){
+        if (itemID != null) {
             item = Referral.findById(itemID);
             ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) ServicesReferred.PsychAvailed(Referral.findById(itemID));
             int count = servicesReferredArrayAdapter.getCount();
-            for(int i = 0; i < count; i++){
+            for (int i = 0; i < count; i++) {
                 ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
-                if(list.contains(current)){
+                if (list.contains(current)) {
                     servicesReferred.setItemChecked(i, true);
                 }
             }
             setSupportActionBar(createToolBar("Update Referrals: Services Provided/Received"));
-        }else if(holder.psychAvailed != null){
-            ArrayList<ServicesReferred> list = (ArrayList<ServicesReferred>) holder.psychAvailed;
-            ArrayList<String> list1 = new ArrayList<>();
-            for(ServicesReferred s : list){
-                list1.add(s.name);
-            }
-            int count = servicesReferredArrayAdapter.getCount();
-            for(int i = 0; i < count; i++){
-                ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
-                if(list1.contains(current.name)){
-                    servicesReferred.setItemChecked(i, true);
+        } else if (holder.psychAvailedId != null) {
+            if(holder.psychAvailedId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.psychAvailedId;
+                int stableCount = servicesReferredArrayAdapter.getCount();
+                for(int i = 0; i < stableCount; i++){
+                    ServicesReferred current = servicesReferredArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        servicesReferred.setItemChecked(i, true);
+                    }
                 }
             }
             setSupportActionBar(createToolBar("Add Referrals: Services Provided/Received"));
-        }
-        else{
+        } else {
             item = new Referral();
             setSupportActionBar(createToolBar("Add Referrals: Services Provided/Received"));
         }
@@ -85,8 +82,8 @@ public class PatientReferralStep14Activity extends BaseActivity implements View.
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -99,39 +96,39 @@ public class PatientReferralStep14Activity extends BaseActivity implements View.
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_create, menu);
         return true;
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         Intent intent = new Intent(PatientReferralStep14Activity.this, PatientReferralStep13Activity.class);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        holder.psychAvailed = getServicesReferred();
+        holder.psychAvailedId = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
     }
 
-    public void onClick(View v){
+    public void onClick(View v) {
         Intent intent = new Intent(this, PatientReferralStep15Activity.class);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         intent.putExtra(AppUtil.DETAILS_ID, itemID);
-        holder.psychAvailed = getServicesReferred();
+        holder.psychAvailedId = getServicesReferred();
         intent.putExtra("referral", holder);
         startActivity(intent);
         finish();
     }
 
-    private ArrayList<ServicesReferred> getServicesReferred(){
-        ArrayList<ServicesReferred> a = new ArrayList<>();
-        for(int i = 0; i < servicesReferred.getCount(); i++){
-            if(servicesReferred.isItemChecked(i)){
-                a.add(servicesReferredArrayAdapter.getItem(i));
-            }else{
+    private ArrayList<String> getServicesReferred() {
+        ArrayList<String> a = new ArrayList<>();
+        for (int i = 0; i < servicesReferred.getCount(); i++) {
+            if (servicesReferred.isItemChecked(i)) {
+                a.add(servicesReferredArrayAdapter.getItem(i).id);
+            } else {
                 a.remove(servicesReferredArrayAdapter.getItem(i));
             }
         }
