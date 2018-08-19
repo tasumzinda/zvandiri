@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <include layout="@layout/toolbar"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_top"
+                android:paddingLeft="@dimen/input_side_margin"
+                android:paddingRight="@dimen/input_side_margin"
+                android:paddingTop="@dimen/margin_top">
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Tested At Health Facility Result"
+            />
+            <Spinner
+                    android:id="@+id/testedAtHealthFacilityResult"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Self Test Kit Distributed?"
+            />
+            <Spinner
+                    android:id="@+id/selfTestKitDistributed"
+                    style="@style/SpinnerStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="HIS Self Testing Result"
+            />
+            <Spinner
+                    android:id="@+id/hisSelfTestingResult"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Home Based Testing Result"
+            />
+            <Spinner
+                    android:id="@+id/homeBasedTestingResult"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Confirmatory Testing Result"
+            />
+            <Spinner
+                    android:id="@+id/confirmatoryTestingResult"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="ART Initiation"
+            />
+            <Spinner
+                    android:id="@+id/artInitiation"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+
+            <Button
+                    android:id="@+id/save"
+                    style="@style/ButtonStyle"
+                    android:text="Save" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

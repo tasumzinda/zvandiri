@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +36,46 @@ public class PushPullService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         int result = Activity.RESULT_OK;
+        try{
+            for(Person item : Person.findNew()){
+                String res = run(AppUtil.getPushPersonUrl(context), item);
+                String code = "";
+                try{
+                    JSONObject object = new JSONObject(res);
+                    code = object.getString("statusCode");
+                    if(code.equals("OK")){
+                        JSONObject body = object.getJSONObject("body");
+                        String id = body.getString("message");
+                        item.id = id;
+                        item.pushed = 1;
+                        item.save();
+                    }
+                    Log.d("Response", object.toString());
+                }catch (JSONException ex){
+                    ex.printStackTrace();
+                    result = Activity.RESULT_CANCELED;
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            result = Activity.RESULT_CANCELED;
+        }
+        try{
+            for(HivSelfTesting testing : HivSelfTesting.getAll()){
+                String testingOutcome = run(AppUtil.getPushHivSelfTestingUrl(context), testing);
+                String code = "";
+                JSONObject jsonObject = new JSONObject(testingOutcome);
+                code = jsonObject.getString("statusCode");
+                Log.d("Response", jsonObject.toString());
+                if(code.equals("OK")){
+                    testing.delete();
+                    Log.d("Deleted Testing", AppUtil.createGson().toJson(testing));
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            result = Activity.RESULT_CANCELED;
+        }
         try{
             for(Contact item : getAllContacts()){
                 String res = run(AppUtil.getPushContactUrl(context), item);
@@ -185,6 +226,26 @@ public class PushPullService extends IntentService {
     }
 
     private String run(HttpUrl httpUrl, Contact form) {
+
+        OkHttpClient client = new OkHttpClient();
+        client = AppUtil.connectionSettings(client);
+        client = AppUtil.getUnsafeOkHttpClient(client);
+        client = AppUtil.createAuthenticationData(client, context);
+        String json = AppUtil.createGson().toJson(form);
+        return AppUtil.getResponeBody(client, httpUrl, json);
+    }
+
+    private String run(HttpUrl httpUrl, Person form){
+        OkHttpClient client = new OkHttpClient();
+        client = AppUtil.connectionSettings(client);
+        client = AppUtil.getUnsafeOkHttpClient(client);
+        client = AppUtil.createAuthenticationData(client, context);
+        form.dob = DateUtil.getStringFromDate(form.dateOfBirth);
+        String json = AppUtil.createGson().toJson(form);
+        return AppUtil.getResponeBody(client, httpUrl, json);
+    }
+
+    private String run(HttpUrl httpUrl, HivSelfTesting form) {
 
         OkHttpClient client = new OkHttpClient();
         client = AppUtil.connectionSettings(client);

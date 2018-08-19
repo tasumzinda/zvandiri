@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,7 +38,7 @@ public class AppUtil {
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";
     //public static String BASE_URL = "http://db.zvandiri.org:8080/zvandiri-mobile-test/rest/mobile";
-    public static String BASE_URL = "http://192.168.100.102:8084/zvandiri-mobile/rest/mobile";
+    public static String BASE_URL = "http://192.168.43.102:8084/zvandiri-mobile/rest/mobile";
     public static String NAME = "NAME";
     public static String ID = "ID";
     public static String DETAILS_ID = "DETAILS_ID";
@@ -211,7 +213,16 @@ public class AppUtil {
 
     public static HttpUrl getPushContactUrl(Context context) {
         return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-contact")).newBuilder()
-                //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))
+                .build();
+    }
+
+    public static HttpUrl getPushPersonUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/person/add-person")).newBuilder()
+                .build();
+    }
+
+    public static HttpUrl getPushHivSelfTestingUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/person/add-self-testing")).newBuilder()
                 .build();
     }
 
@@ -368,10 +379,6 @@ public class AppUtil {
     public static RequestBody getPostBody(String json) {
         RequestBody body = RequestBody.create(JSON, json);
         return body;
-    }
-
-    public void loginReset(){
-
     }
 
 }

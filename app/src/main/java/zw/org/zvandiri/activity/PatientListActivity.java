@@ -91,7 +91,7 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
         onExit();
     }
 
-    public boolean onOptionsItemSelected(MenuItem menuItem){
+    /*public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case android.R.id.home:
                 onBackPressed();
@@ -119,7 +119,7 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
+    }*/
     @Override
     public void updateView() {
         patientAdapter.clear();

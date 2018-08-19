@@ -10,4 +10,6 @@
     <color name="notepad_margin">#90FF0000</color>
     <color name="notepad_text">#1b2631</color>
     <color name="buttonColor">#3F51B5</color>
+    <color name="text_bg_grey">#dcdcdc</color>
+    <color name="fabColor">#4E004E</color>
 </resources>

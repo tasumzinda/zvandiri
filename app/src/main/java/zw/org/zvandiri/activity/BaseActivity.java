@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.util.AppUtil;
@@ -183,6 +184,42 @@ public class BaseActivity extends AppCompatActivity {
         }else {
             return false;
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        Intent intent;
+        switch (menuItem.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.action_exit:
+                onExit();
+                return true;
+            case R.id.action_refresh:
+                syncAppData();
+                return true;
+            case R.id.action_add:
+                intent = new Intent(this, PatientRegStep1Activity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_list:
+                intent = new Intent(this, PersonListActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.action_logout:
+                AppUtil.removePreferences(this);
+                intent = new Intent(this, LauncherActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
 }
