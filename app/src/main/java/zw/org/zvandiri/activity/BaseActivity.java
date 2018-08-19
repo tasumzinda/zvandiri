@@ -198,10 +198,6 @@ public class BaseActivity extends AppCompatActivity {
             case R.id.action_refresh:
                 syncAppData();
                 return true;
-            case R.id.action_add:
-                intent = new Intent(this, PatientRegStep1Activity.class);
-                startActivity(intent);
-                return true;
             case R.id.action_list:
                 intent = new Intent(this, PersonListActivity.class);
                 startActivity(intent);

@@ -50,7 +50,6 @@ public class PushPullService extends IntentService {
                         item.pushed = 1;
                         item.save();
                     }
-                    Log.d("Response", object.toString());
                 }catch (JSONException ex){
                     ex.printStackTrace();
                     result = Activity.RESULT_CANCELED;
@@ -66,10 +65,8 @@ public class PushPullService extends IntentService {
                 String code = "";
                 JSONObject jsonObject = new JSONObject(testingOutcome);
                 code = jsonObject.getString("statusCode");
-                Log.d("Response", jsonObject.toString());
                 if(code.equals("OK")){
                     testing.delete();
-                    Log.d("Deleted Testing", AppUtil.createGson().toJson(testing));
                 }
             }
         }catch (Exception e) {

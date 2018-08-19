@@ -1,5 +1,8 @@
 package zw.org.zvandiri.business.util;
 
+import org.joda.time.DateTime;
+import org.joda.time.Months;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -295,5 +298,11 @@ public class DateUtil {
             age--;
         }
         return age;
+    }
+
+    public static int getMonths(Date then){
+        DateTime now = DateTime.now();
+        DateTime past = new DateTime(then.getTime());
+        return Months.monthsBetween(past, now).getMonths();
     }
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +67,14 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
 
                     }
                 }, 1, 2, TimeUnit.HOURS);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PatientRegStep1Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
