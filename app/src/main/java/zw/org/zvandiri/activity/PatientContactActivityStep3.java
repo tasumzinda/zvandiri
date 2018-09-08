@@ -94,7 +94,7 @@ public class PatientContactActivityStep3 extends BaseActivity implements View.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case android.R.id.home:
@@ -106,7 +106,7 @@ public class PatientContactActivityStep3 extends BaseActivity implements View.On
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

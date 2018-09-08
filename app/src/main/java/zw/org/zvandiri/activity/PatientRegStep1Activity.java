@@ -116,7 +116,6 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                 String text = s.toString();
                 Date date = DateUtil.getDateFromString(text);
                 int months = DateUtil.getMonths(date);
-                Log.d("Months", DateUtil.getMonths(date) + "");
                 if(months <= 18){
                     heiLayout.setVisibility(View.VISIBLE);
                 }else{
@@ -186,26 +185,6 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep1Activity.this, PatientListActivity.class);
         startActivity(intent);
@@ -226,7 +205,9 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                     holder.lastName = lastName.getText().toString();
                     holder.middleName = middleName.getText().toString();
                     holder.gender = (Gender) gender.getSelectedItem();
-                    holder.hei = (YesNo) hei.getSelectedItem();
+                    if(heiLayout.getVisibility() == View.VISIBLE){
+                        holder.hei = (YesNo) hei.getSelectedItem();
+                    }
                     holder.oINumber = oiNumber.getText().toString();
                     holder.mobileNumber = mobileNumber;
                     holder.ownerName = ownerName;
@@ -257,9 +238,8 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                     holder.consentToMHealth = consentToMHealth;
                     holder.consentToPhoto = consentToPhoto;
                     holder.youngMumGroup = youngMumGroup;
-                    Date date = DateUtil.getDateFromString(dateOfBirth.getText().toString());
                     Intent intent;
-                    if(DateUtil.getMonths(date) <= 18){
+                    if(DateUtil.getMonths(holder.dateOfBirth) <= 18){
                         intent = new Intent(PatientRegStep1Activity.this, PatientRegStep3Activity.class);
                     }else{
                         intent = new Intent(PatientRegStep1Activity.this, PatientRegStep2Activity.class);

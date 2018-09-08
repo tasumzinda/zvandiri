@@ -33,7 +33,7 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
     private Spinner referer;
     private Button next;
     private DatePickerDialog dialog;
-    private TextView reasonLabel;
+    LinearLayout container;
     private Spinner reasonForNotReachingOLevel;
     private EditText refererName;
     private Patient holder;
@@ -51,8 +51,7 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         referer = (Spinner) findViewById(R.id.referer);
         refererName = (EditText) findViewById(R.id.refererName);
         reasonForNotReachingOLevel = (Spinner) findViewById(R.id.reasonForNotReachingOLevel);
-        Log.d("Primary clinic", holder.primaryClinicId);
-        reasonLabel = (TextView) findViewById(R.id.reasonLabel);
+        container = (LinearLayout) findViewById(R.id.container);
         ArrayAdapter<Education> educationArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, Education.getAll());
         educationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         education.setAdapter(educationArrayAdapter);
@@ -66,15 +65,13 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(((Education) education.getSelectedItem()).name.equals("Out of School")){
                     if(((EducationLevel)educationLevel.getSelectedItem()).name.equals("Primary School") || ((EducationLevel)educationLevel.getSelectedItem()).name.equals("N/A")){
-                        reasonForNotReachingOLevel.setVisibility(View.VISIBLE);
-                        reasonLabel.setVisibility(View.VISIBLE);
+                        container.setVisibility(View.VISIBLE);
                         ArrayAdapter<ReasonForNotReachingOLevel> reasonForNotReachingOLevelArrayAdapter = new ArrayAdapter<>(adapterView.getContext(), R.layout.simple_spinner_item, ReasonForNotReachingOLevel.getAll());
                         reasonForNotReachingOLevelArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         reasonForNotReachingOLevel.setAdapter(reasonForNotReachingOLevelArrayAdapter);
                         reasonForNotReachingOLevelArrayAdapter.notifyDataSetChanged();
                     }else{
-                        reasonForNotReachingOLevel.setVisibility(View.GONE);
-                        reasonLabel.setVisibility(View.GONE);
+                        container.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -142,26 +139,6 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep4Activity.this, PatientRegStep3Activity.class);
         if( ! dateJoined.getText().toString().isEmpty()){
@@ -171,7 +148,7 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
         holder.educationLevelId = ((EducationLevel) educationLevel.getSelectedItem()).id;
         holder.referrerId = ((Referer) referer.getSelectedItem()).id;
         holder.refererName = refererName.getText().toString();
-        if(reasonForNotReachingOLevel.getVisibility() == View.VISIBLE){
+        if(container.getVisibility() == View.VISIBLE){
             holder.reasonForNotReachingOLevelId = ((ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getSelectedItem()).id;
         }
         intent.putExtra("patient", holder);

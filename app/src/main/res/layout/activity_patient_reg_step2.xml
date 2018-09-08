@@ -31,24 +31,32 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Owner Name"
-            />
-            <EditText
-                    android:id="@+id/ownerName"
-                    style="@style/TextBoxStyle"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:id="@+id/relationshipLabel"
-                    android:text="Owner Relationship With Beneficiary"
-            />
-            <Spinner
-                    android:id="@+id/mobileOwnerRelation"
-                    style="@style/SpinnerStyle"
-                    android:prompt="@string/prompt"
-            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ownerLayout"
+                    android:visibility="gone"
+            >
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Owner Name"
+                />
+                <EditText
+                        android:id="@+id/ownerName"
+                        style="@style/TextBoxStyle"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:id="@+id/relationshipLabel"
+                        android:text="Owner Relationship With Beneficiary"
+                />
+                <Spinner
+                        android:id="@+id/mobileOwnerRelation"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+            </LinearLayout>
             <TextView
                     style="@style/TextViewLabel"
                     android:text="Secondary Mobile Number"
@@ -66,24 +74,33 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Secondary Mobile Owner"
-            />
-            <EditText
-                    android:id="@+id/secondaryMobileOwnerName"
-                    style="@style/TextBoxStyle"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:id="@+id/secondaryRelationshipLabel"
-                    android:text="Owner Relationship With Beneficiary"
-            />
-            <Spinner
-                    android:id="@+id/secondaryMobileownerRelation"
-                    style="@style/SpinnerStyle"
-                    android:prompt="@string/prompt"
-            />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/secondaryLayout"
+                    android:visibility="gone"
+            >
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Secondary Mobile Owner"
+                />
+                <EditText
+                        android:id="@+id/secondaryMobileOwnerName"
+                        style="@style/TextBoxStyle"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:id="@+id/secondaryRelationshipLabel"
+                        android:text="Owner Relationship With Beneficiary"
+                />
+                <Spinner
+                        android:id="@+id/secondaryMobileownerRelation"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+            </LinearLayout>
             <TextView
                     style="@style/TextViewLabel"
                     android:text="Email"

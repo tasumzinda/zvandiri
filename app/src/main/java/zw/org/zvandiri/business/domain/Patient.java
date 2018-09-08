@@ -227,6 +227,16 @@ public class Patient extends Model implements Serializable {
     @Column
     public Patient motherOfHei;
 
+    @Column
+    @Expose
+    public YesNo selfPrimaryCareGiver;
+
+    /*
+    Dummy column to save gender as an integer in order to ease database queries where gender is required as a parameter
+     */
+    @Column
+    public Integer sex;
+
 
     public Patient() {
         super();
@@ -239,6 +249,11 @@ public class Patient extends Model implements Serializable {
     public static Patient findById(String id) {
         return new Select()
                 .from(Patient.class).where("id = ?", id).executeSingle();
+    }
+
+    public static Patient get(Long id) {
+        return new Select()
+                .from(Patient.class).where("_id = ?", id).executeSingle();
     }
 
     public static Patient findByEmail(String email) {
@@ -280,19 +295,59 @@ public class Patient extends Model implements Serializable {
 
     }
 
+    public static List<Patient> findYoungMothersByName(String name){
+        return new Select()
+                .from(Patient.class)
+                .where("date_of_birth < ?", DateUtil.getDateFromAge(7).getTime())
+                .and("date_of_birth > ?", DateUtil.getDateFromAge(41).getTime())
+                .and("name LIKE ?", new String[]{'%' + name + '%'})
+                .and("sex = ?", 3)
+                .execute();
+    }
+
+    public static List<Patient> findYoungMothersByName(String firstName, String lastName){
+        return new Select()
+                .from(Patient.class)
+                .where("date_of_birth > ? and date_of_birth < ?", DateUtil.getDateFromAge(7).getTime(), DateUtil.getDateFromAge(41))
+                .and("first_name LIKE ?", new String[]{'%' + firstName + '%'})
+                .and("last_name LIKE ?", new String[]{'%' + lastName + '%'})
+                .and("sex = ?", 3)
+                .execute();
+    }
+
+    public static List<Patient> getYoungMothers(String... exp){
+        if(exp == null){
+            throw new IllegalArgumentException("Provide parameters for search");
+        }else if(exp.length == 1){
+            return findYoungMothersByName(exp[0]);
+        }
+        return findYoungMothersByName(exp[0], exp[1]);
+    }
+
     public static void fetchRemote(Context context, final String userName, final String password) {
         String URL = AppUtil.getBaseUrl(context) + "/patient/cats-patients?email=";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL + userName,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("Response", response);
                         List<Patient> itemList = Arrays.asList(AppUtil.createGson().fromJson(response, Patient[].class));
                         for (Patient item : itemList) {
                             Patient checkDuplicate = Patient.getById(item.id);
                             if (checkDuplicate == null) {
                                 //item.pushed = true;
+                                switch (item.gender){
+                                    case MALE:
+                                        item.sex = 1;
+                                        break;
+                                    case OTHER:
+                                        item.sex = 2;
+                                        break;
+                                    case FEMALE:
+                                        item.sex = 3;
+                                }
                                 item.save();
-                                Log.d("Patient", AppUtil.createGson().toJson(item));
+                                //Log.d("Patient", AppUtil.createGson().toJson(item));
                             }
 
                         }

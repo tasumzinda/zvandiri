@@ -14,85 +14,41 @@
                 android:orientation="vertical"
                 android:layout_marginTop="40dp"
         >
-
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Consent Photo"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/consentToPhoto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Consent M-Health"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/consentToMHealth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="CATS Member"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/cat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Is In Young People's Group"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
+                    style="@style/TextViewLabel"
                     android:id="@+id/label"
-                    android:visibility="gone"
-                    android:textSize="@dimen/text_size"
+                    android:text="Is In Young People's Group"
             />
             <Spinner
                     android:id="@+id/youngMumGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:visibility="gone"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <android.support.v7.widget.AppCompatButton

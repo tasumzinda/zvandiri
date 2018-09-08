@@ -21,17 +21,16 @@
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/activity_horizontal_margin">
-
-            <android.support.v7.widget.AppCompatButton
+            <Button
                     android:id="@+id/contact"
-                    android:text="Contact"
-                    style="@style/ButtonStyle"
-            />
-            <android.support.v7.widget.AppCompatButton
+                    style="@style/ButtonHeaderStyle"
+                    android:drawableEnd="@mipmap/ic_arrow_right_bold_circle_white_24dp"
+                    android:text="Contact"/>
+            <Button
                     android:id="@+id/referral"
-                    android:text="Referral"
-                    style="@style/ButtonStyle"
-            />
+                    style="@style/ButtonHeaderStyle"
+                    android:drawableEnd="@mipmap/ic_arrow_right_bold_circle_white_24dp"
+                    android:text="Referral"/>
 
         </LinearLayout>
     </LinearLayout>

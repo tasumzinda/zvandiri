@@ -134,26 +134,6 @@ public class PatientRegStep5Activity extends BaseActivity implements View.OnClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep5Activity.this, PatientRegStep4Activity.class);
         holder.hivStatusKnown = (YesNo) hivStatusKnown.getSelectedItem();

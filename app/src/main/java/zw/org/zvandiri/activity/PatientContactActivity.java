@@ -50,6 +50,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_contact_first);
         contactDate = (EditText) findViewById(R.id.contactDate);
+        contactDate.setFocusable(false);
         location = (Spinner) findViewById(R.id.location);
         position = (Spinner) findViewById(R.id.position);
         reason = (Spinner) findViewById(R.id.reason);
@@ -57,6 +58,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         externalReferral = (Spinner) findViewById(R.id.externalReferral);
         internalReferral = (Spinner) findViewById(R.id.internalReferral);
         lastClinicAppointmentDate = (EditText) findViewById(R.id.lastClinicAppointmentDate);
+        lastClinicAppointmentDate.setFocusable(false);
         followUp = (Spinner) findViewById(R.id.followUp);
         save = (Button) findViewById(R.id.btn_save);
         externalReferralLabel = (TextView) findViewById(R.id.externalReferralLabel);
@@ -304,7 +306,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case android.R.id.home:
@@ -322,7 +324,7 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_create, menu);
         return true;
-    }
+    }*/
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientContactActivity.this, PatientListActivity.class);

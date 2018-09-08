@@ -15,36 +15,20 @@
                 android:orientation="vertical"
                 android:layout_marginTop="40dp"
         >
-
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Has disability"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
+                    style="@style/TextViewLabel"
+                    android:text="Has Disability"
             />
             <Spinner
                     android:id="@+id/disability"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Disabilities"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
+                    style="@style/TextViewLabel"
                     android:id="@+id/disabilityLabel"
                     android:visibility="gone"
+                    android:text="Disabilities"
             />
             <ListView
                     android:id="@+id/disabilityCategorys"
