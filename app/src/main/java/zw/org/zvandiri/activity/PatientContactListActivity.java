@@ -49,38 +49,10 @@ public class PatientContactListActivity extends BaseActivity /*implements Adapte
                 finish();
             }
         });
-        //listView.setOnItemClickListener(this);
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_add:
-                Intent intent = new Intent(PatientContactListActivity.this, PatientContactActivity.class);
-                intent.putExtra(AppUtil.NAME, name);
-                intent.putExtra(AppUtil.ID, id);
-                startActivity(intent);
-                finish();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientContactListActivity.this, PatientListActivity.class);
+        Intent intent = new Intent(PatientContactListActivity.this, SelectionActivity.class);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         startActivity(intent);

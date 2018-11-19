@@ -107,40 +107,12 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
 
     }
 
-    @Override
-    public void onBackPressed() {
-        onExit();
+    public void onBackPressed(){
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
-    /*public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            case R.id.action_refresh:
-                syncAppData();
-                return true;
-            case R.id.action_add:
-                Intent intent1 = new Intent(this, PatientRegStep1Activity.class);
-                startActivity(intent1);
-                return true;
-            case R.id.action_logout:
-                AppUtil.removePreferences(this);
-                Intent intent2 = new Intent(this, LauncherActivity.class);
-                startActivity(intent2);
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }*/
     @Override
     public void updateView() {
         patientAdapter.clear();

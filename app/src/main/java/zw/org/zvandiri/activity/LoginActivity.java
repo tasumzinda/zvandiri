@@ -3,7 +3,6 @@ package zw.org.zvandiri.activity;
 import android.app.ProgressDialog;
 import android.content.*;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
@@ -11,17 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.android.volley.*;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.util.AppUtil;
-import zw.org.zvandiri.business.util.DateUtil;
-import zw.org.zvandiri.remote.LoginWebService;
 import zw.org.zvandiri.remote.SetUpDataDownloadService;
 
 import java.util.*;
@@ -45,11 +37,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         urlField = (EditText) findViewById(R.id.url);
         urlField.setText(AppUtil.getBaseUrl(this));
         urlField.setEnabled(false);
-        button = (Button) findViewById(R.id.btn_login);
+        button = (Button) findViewById(R.id.login);
         button.setOnClickListener(this);
         progressDialog = new ProgressDialog(this);
         fields = new EditText[] {userNameField, passwordField, urlField};
-        setSupportActionBar(createToolBar("Zvandiri Mobile App: Login"));
     }
     private void loginRemote(){
         String URL = String.format(urlField.getText().toString()+ "/patient/get-cats?email=", userNameField.getText().toString()) ;
@@ -221,7 +212,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                   public void run() {
                       boolean flag = Patient.isFinished;
                       if(flag == false){
-                          Intent intent = new Intent(context, PatientListActivity.class);
+                          Intent intent = new Intent(context, DashboardActivity.class);
                           startActivity(intent);
                           finish();
                           progressDialog.dismiss();

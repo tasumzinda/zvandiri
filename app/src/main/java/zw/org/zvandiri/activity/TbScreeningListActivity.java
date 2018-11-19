@@ -1,25 +1,22 @@
 package zw.org.zvandiri.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import zw.org.zvandiri.R;
-import zw.org.zvandiri.adapter.HivSelfTestingAdapter;
-import zw.org.zvandiri.business.domain.HivSelfTesting;
+import zw.org.zvandiri.adapter.TbScreeningAdapter;
 import zw.org.zvandiri.business.domain.Person;
+import zw.org.zvandiri.business.domain.TbScreening;
 import zw.org.zvandiri.business.util.AppUtil;
 
 import java.util.ArrayList;
 
-/**
- * @uthor Tasu Muzinda
- */
-public class HivSelfTestingListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class TbScreeningListActivity extends BaseActivity implements AdapterView.OnItemClickListener  {
 
-    HivSelfTestingAdapter adapter;
+    TbScreeningAdapter adapter;
     Long id;
 
     @Override
@@ -29,20 +26,20 @@ public class HivSelfTestingListActivity extends BaseActivity implements AdapterV
         Intent intent = getIntent();
         id = intent.getLongExtra(AppUtil.ID, 0L);
         Person person = Person.getItem(id);
-        final ArrayList<HivSelfTesting> list = (ArrayList<HivSelfTesting>) HivSelfTesting.findByPerson(person);
-        adapter = (new HivSelfTestingAdapter(this, list));
+        final ArrayList<TbScreening> list = (ArrayList<TbScreening>) TbScreening.findByPerson(person);
+        adapter = (new TbScreeningAdapter(this, list));
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setEmptyView(findViewById(R.id.empty));
         listView.setAdapter(adapter);
-        adapter.onDataSetChanged((ArrayList<HivSelfTesting>) HivSelfTesting.findByPerson(Person.getItem(id)));
-        setSupportActionBar(createToolBar("HIV Self Testing History For " + person.nameOfClient));
+        adapter.onDataSetChanged((ArrayList<TbScreening>) TbScreening.findByPerson(Person.getItem(id)));
+        setSupportActionBar(createToolBar("TB Screening History For " + person.nameOfClient));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView.setOnItemClickListener(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HivSelfTestingActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TbScreeningActivity.class);
                 intent.putExtra(AppUtil.ID, id);
                 startActivity(intent);
                 finish();
@@ -52,8 +49,8 @@ public class HivSelfTestingListActivity extends BaseActivity implements AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        HivSelfTesting item = (HivSelfTesting) parent.getAdapter().getItem(position);
-        Intent intent = new Intent(HivSelfTestingListActivity.this, HivSelfTestingActivity.class);
+        TbScreening item = (TbScreening) parent.getAdapter().getItem(position);
+        Intent intent = new Intent(this, TbScreeningActivity.class);
         intent.putExtra("itemId", item.getId());
         startActivity(intent);
         finish();

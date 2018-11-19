@@ -73,14 +73,14 @@
         <item name="android:textSize">@dimen/text_size</item>
     </style>
     <style name="SpinnerStyle">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginStart">@dimen/input_side_margin</item>
-    <item name="android:layout_marginEnd">@dimen/input_side_margin</item>
-    <item name="android:layout_marginTop">@dimen/margin_top</item>
-    <item name="android:spinnerMode">dropdown</item>
-    <item name="android:background">@drawable/text_box</item>
-    <item name="android:padding">12dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/input_side_margin</item>
+        <item name="android:layout_marginEnd">@dimen/input_side_margin</item>
+        <item name="android:layout_marginTop">@dimen/margin_top</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:background">@drawable/text_box</item>
+        <item name="android:padding">12dp</item>
     </style>
     <style name="MyAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="MyAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

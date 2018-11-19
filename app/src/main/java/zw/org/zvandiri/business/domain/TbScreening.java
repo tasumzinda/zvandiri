@@ -14,58 +14,67 @@ import java.util.List;
 /**
  * @uthor Tasu Muzinda
  */
-@Table(name = "hiv_self_testing", id = "_id")
-public class HivSelfTesting extends Model {
+@Table(name = "tb_screening", id = "_id")
+public class TbScreening extends Model {
 
-    @Column
-    @Expose
-    public Result testedAtHealthFacilityResult;
-    @Column
-    @Expose
-    public YesNo selfTestKitDistributed;
-    @Column
-    @Expose
-    public Result hisSelfTestingResult;
-    @Column
-    @Expose
-    public Result homeBasedTestingResult;
-    @Column
-    @Expose
-    public Result confirmatoryTestingResult;
-    @Column
-    @Expose
-    public YesNo artInitiation;
     @Column
     @Expose
     public Person person;
     @Expose
     @Column
     public String id;
+    @Expose
+    @Column
+    public YesNo coughing;
+    @Expose
+    @Column
+    public YesNo sweating;
+    @Expose
+    @Column
+    public YesNo weightLoss;
+    @Expose
+    @Column
+    public YesNo fever;
+    @Expose
+    @Column
+    public YesNo currentlyOnTreatment;
+    @Expose
+    @Column
+    public String typeOfDrug;
+    @Expose
+    @Column
+    public Result tbOutcome;
+    @Expose
+    @Column
+    public TbTreatmentStatus tbTreatmentStatus;
+    @Expose
+    @Column
+    public TbTreatmentOutcome tbTreatmentOutcome;
 
-    public static HivSelfTesting getItem(Long id) {
+    public static TbScreening getItem(Long id) {
         return new Select()
-                .from(HivSelfTesting.class).where("_id = ?", id).executeSingle();
+                .from(TbScreening.class).where("_id = ?", id).executeSingle();
     }
 
-    public static List<HivSelfTesting> findByPerson(Person person) {
+    public static List<TbScreening> findByPerson(Person person) {
         return new Select()
-                .from(HivSelfTesting.class)
+                .from(TbScreening.class)
                 .where("person = ?", person.getId())
                 .execute();
     }
 
-    public static List<HivSelfTesting> getAll(){
+    public static List<TbScreening> getAll(){
         return new Select()
-                .from(HivSelfTesting.class)
+                .from(TbScreening.class)
                 .execute();
     }
 
     public static void deleteItem(String id) {
-        new Delete().from(HivSelfTesting.class).where("id = ?", id).executeSingle();
+        new Delete().from(TbScreening.class).where("id = ?", id).executeSingle();
     }
 
     public static void deleteAll() {
-        new Delete().from(HivSelfTesting.class).execute();
+        new Delete().from(TbScreening.class).execute();
     }
 
     @Override

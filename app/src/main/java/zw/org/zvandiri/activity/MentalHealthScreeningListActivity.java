@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import zw.org.zvandiri.R;
-import zw.org.zvandiri.adapter.HivSelfTestingAdapter;
-import zw.org.zvandiri.business.domain.HivSelfTesting;
-import zw.org.zvandiri.business.domain.Person;
+import zw.org.zvandiri.adapter.MentalHealthScreeningAdapter;
+import zw.org.zvandiri.business.domain.MentalHealthScreening;
+import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.util.AppUtil;
 
 import java.util.ArrayList;
@@ -17,32 +17,34 @@ import java.util.ArrayList;
 /**
  * @uthor Tasu Muzinda
  */
-public class HivSelfTestingListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class MentalHealthScreeningListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    HivSelfTestingAdapter adapter;
-    Long id;
+    MentalHealthScreeningAdapter adapter;
+    String name;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generic_list_view);
         Intent intent = getIntent();
-        id = intent.getLongExtra(AppUtil.ID, 0L);
-        Person person = Person.getItem(id);
-        final ArrayList<HivSelfTesting> list = (ArrayList<HivSelfTesting>) HivSelfTesting.findByPerson(person);
-        adapter = (new HivSelfTestingAdapter(this, list));
+        id = intent.getStringExtra(AppUtil.ID);
+        name = intent.getStringExtra(AppUtil.NAME);
+        Patient patient = Patient.getById(id);
+        final ArrayList<MentalHealthScreening> list = (ArrayList<MentalHealthScreening>) MentalHealthScreening.findByPatient(patient);
+        adapter = (new MentalHealthScreeningAdapter(this, list));
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setEmptyView(findViewById(R.id.empty));
         listView.setAdapter(adapter);
-        adapter.onDataSetChanged((ArrayList<HivSelfTesting>) HivSelfTesting.findByPerson(Person.getItem(id)));
-        setSupportActionBar(createToolBar("HIV Self Testing History For " + person.nameOfClient));
+        adapter.onDataSetChanged((ArrayList<MentalHealthScreening>) MentalHealthScreening.findByPatient(patient));
+        setSupportActionBar(createToolBar("Mental Health Screening History For " + patient));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView.setOnItemClickListener(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HivSelfTestingActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MentalHealthScreeningActivity.class);
                 intent.putExtra(AppUtil.ID, id);
                 startActivity(intent);
                 finish();
@@ -52,16 +54,9 @@ public class HivSelfTestingListActivity extends BaseActivity implements AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        HivSelfTesting item = (HivSelfTesting) parent.getAdapter().getItem(position);
-        Intent intent = new Intent(HivSelfTestingListActivity.this, HivSelfTestingActivity.class);
+        MentalHealthScreening item = (MentalHealthScreening) parent.getAdapter().getItem(position);
+        Intent intent = new Intent(this, MentalHealthScreeningActivity.class);
         intent.putExtra("itemId", item.getId());
-        startActivity(intent);
-        finish();
-    }
-
-    public void onBackPressed(){
-        Intent intent = new Intent(this, PersonDashboardActivity.class);
-        intent.putExtra(AppUtil.ID, id);
         startActivity(intent);
         finish();
     }

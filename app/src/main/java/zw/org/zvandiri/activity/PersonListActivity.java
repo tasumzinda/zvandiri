@@ -54,12 +54,18 @@ public class PersonListActivity extends BaseActivity implements AdapterView.OnIt
         if(patient.pushed == 0){
             AppUtil.createShortNotification(this, "Please upload person to server before performing any operation on the person");
         }else{
-            intent = new Intent(PersonListActivity.this, HivSelfTestingListActivity.class);
+            intent = new Intent(PersonListActivity.this, PersonDashboardActivity.class);
             intent.putExtra(AppUtil.ID, patient.getId());
             startActivity(intent);
             finish();
         }
 
+    }
+
+    public void onBackPressed(){
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

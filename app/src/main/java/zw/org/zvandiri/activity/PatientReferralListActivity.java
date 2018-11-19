@@ -46,28 +46,7 @@ public class PatientReferralListActivity extends BaseActivity /*implements Adapt
                 finish();
             }
         });
-        //listView.setOnItemClickListener(this);
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientReferralListActivity.this, SelectionActivity.class);

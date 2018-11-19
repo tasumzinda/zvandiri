@@ -316,6 +316,19 @@
         <activity android:name=".activity.HivSelfTestingListActivity"/>
         <activity android:name=".activity.HivSelfTestingActivity"/>
         <activity android:name=".activity.HeuMotherDetailsActivity"/>
+        <activity
+                android:name=".activity.PersonDashboardActivity"
+                android:label="@string/title_activity_person_dashboard"
+                android:theme="@style/MyAppTheme">
+        </activity>
+        <activity android:name=".activity.TbScreeningListActivity">
+        </activity>
+        <activity android:name=".activity.TbScreeningActivity">
+        </activity>
+        <activity android:name=".activity.DashboardActivity"/>
+        <activity android:name=".activity.MentalHealthScreeningListActivity"/>
+        <activity android:name=".activity.MentalHealthScreeningActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -112,7 +112,6 @@ public class HivSelfTestingActivity extends BaseActivity implements View.OnClick
         }else{
             item = new HivSelfTesting();
             person = Person.getItem(id);
-            Log.d("Person", AppUtil.createGson().toJson(person));
             setSupportActionBar(createToolBar("Add HIV Self Testing History For " + person.nameOfClient));
         }
 

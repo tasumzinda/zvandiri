@@ -1,15 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ScrollView
-        android:fillViewport="true"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <LinearLayout
-            android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <include layout="@layout/toolbar"/>
         <LinearLayout
                 android:id="@+id/dashboard_menu"
@@ -36,7 +35,7 @@
                     android:weightSum="10"
                     android:orientation="vertical">
                 <android.support.v7.widget.CardView
-                        android:id="@+id/card_contact"
+                        android:id="@+id/card_testing"
                         android:layout_width="match_parent"
                         android:layout_weight="5"
                         android:layout_height="190dp"
@@ -64,7 +63,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Contact"
+                                android:text="Self Testing"
                                 android:textStyle="bold" />
 
                         <View
@@ -78,7 +77,7 @@
 
                 </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView
-                        android:id="@+id/card_referral"
+                        android:id="@+id/card_screening"
                         android:layout_width="match_parent"
                         android:layout_weight="5"
                         android:layout_height="190dp"
@@ -106,50 +105,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Referral"
-                                android:textStyle="bold" />
-
-                        <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_margin="10dp"
-                                android:background="@color/colorWhite"
-                                android:padding="5dp" />
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_mental_health"
-                        android:layout_width="match_parent"
-                        android:layout_weight="5"
-                        android:layout_height="190dp"
-                        android:layout_margin="10dp"
-                        android:clickable="true"
-                        app:cardBackgroundColor="@color/colorBlueFade"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                    <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                        <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/circle_background_light"
-                                android:padding="10dp"
-                                app:srcCompat="@drawable/ic_scheduled_visit" />
-
-                        <TextView
-                                android:textSize="30sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="Mental Health Screening"
+                                android:text="TB Screening"
                                 android:textStyle="bold" />
 
                         <View
@@ -169,4 +125,6 @@
 
         </LinearLayout>
     </LinearLayout>
+
+
 </ScrollView>
