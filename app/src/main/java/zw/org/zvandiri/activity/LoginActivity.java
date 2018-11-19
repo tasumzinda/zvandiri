@@ -44,7 +44,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         passwordField = (EditText) findViewById(R.id.password);
         urlField = (EditText) findViewById(R.id.url);
         urlField.setText(AppUtil.getBaseUrl(this));
-        urlField.setEnabled(false);
+        //urlField.setEnabled(false);
         button = (Button) findViewById(R.id.btn_login);
         button.setOnClickListener(this);
         progressDialog = new ProgressDialog(this);
