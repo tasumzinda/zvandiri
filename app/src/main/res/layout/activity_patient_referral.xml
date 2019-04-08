@@ -9,122 +9,61 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
             <include layout="@layout/toolbar"/>
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/referralDate"
-                        android:hint="Referral Date"
-                        android:textSize="@dimen/text_size"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/expectedVisitDate"
-                        android:hint="Expected Visit Date"
-                        android:textSize="@dimen/text_size"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/organisation"
-                        android:hint="Organization Referred"
-                        android:textSize="@dimen/text_size"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/dateAttended"
-                        android:hint="Date Attended To"
-                        android:textSize="@dimen/text_size"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/attendingOfficer"
-                        android:hint="Attending Officer"
-                        android:textSize="@dimen/text_size"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/designation"
-                        android:hint="Officer Designation"
-                        android:textSize="@dimen/text_size"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
-
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
+                    android:text="Referral Date"
+            />
+            <EditText
+                    android:id="@+id/referralDate"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Expected Visit Date"
+            />
+            <EditText
+                    android:id="@+id/expectedVisitDate"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Organization Referred"
+            />
+            <EditText
+                    android:id="@+id/organisation"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Date Attended To"
+            />
+            <EditText
+                    android:id="@+id/dateAttended"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Attending Officer"
+            />
+            <EditText
+                    android:id="@+id/attendingOfficer"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Officer Designation"
+            />
+            <EditText
+                    android:id="@+id/designation"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
                     android:text="Action Taken"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/actionTaken"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <android.support.v7.widget.AppCompatButton

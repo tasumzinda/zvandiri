@@ -182,4 +182,6 @@
     <string name="title_activity_patient_referral_activity_final">PatientReferralActivityFinal</string>
     <string name="title_activity_patient_contact_activity_step2">PatientContactActivityStep2</string>
     <string name="title_activity_patient_contact_activity_step3">PatientContactActivityStep3</string>
+    <string name="title_activity_person">Person</string>
+    <string name="title_activity_person_dashboard">PersonDashboardActivity</string>
 </resources>

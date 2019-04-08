@@ -14,133 +14,66 @@
                 android:orientation="vertical"
                 android:layout_marginTop="40dp"
         >
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginBottom="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/address"
-                        android:textSize="@dimen/text_size"
-                        android:hint="Enter Address 1"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginBottom="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/address1"
-                        android:textSize="@dimen/text_size"
-                        android:hint="Enter Street name"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
+                    android:text="Address 1"
+            />
+            <EditText
+                    android:id="@+id/address"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Street Name"
+            />
+            <EditText
+                    android:id="@+id/address1"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
                     android:text="Province"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/province"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Primary Clinic District"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/district"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
+
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Primary Clinic"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/primaryClinic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Support District"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/supportGroupDistrict"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Support Group"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/supportGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
 

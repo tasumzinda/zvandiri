@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +20,9 @@ import zw.org.zvandiri.R;
 import zw.org.zvandiri.adapter.PatientAdapter;
 import zw.org.zvandiri.business.domain.DisabilityCategory;
 import zw.org.zvandiri.business.domain.Patient;
+import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
 import zw.org.zvandiri.remote.PushPullService;
 import zw.org.zvandiri.remote.RemoteJobService;
 import zw.org.zvandiri.remote.SetUpDataDownloadService;
@@ -30,10 +33,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class PatientListActivity extends BaseActivity implements AdapterView.OnItemClickListener{
+public class PatientListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     PatientAdapter patientAdapter;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,67 +63,56 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
         scheduler.scheduleAtFixedRate
                 (new Runnable() {
                     public void run() {
-                        if(AppUtil.isNetworkAvailable(getApplicationContext())){
+                        if (AppUtil.isNetworkAvailable(getApplicationContext())) {
                             Intent intent = new Intent(getApplicationContext(), PushPullService.class);
                             startService(intent);
                         }
 
                     }
                 }, 1, 2, TimeUnit.HOURS);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PatientRegStep1Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Patient patient = (Patient) parent.getAdapter().getItem(position);
         Intent intent;
-        if(patient.pushed == 1){
-            AppUtil.createShortNotification(this, "Please upload patient to server before performing any operation on the patient");
-        }else{
-            intent = new Intent(PatientListActivity.this, SelectionActivity.class);
-            intent.putExtra(AppUtil.ID, patient.id);
+        if (patient.pushed == 1 && patient.hei.equals(YesNo.YES) && patient.motherOfHei == null) {
+            intent = new Intent(PatientListActivity.this, HeuMotherDetailsActivity.class);
+            intent.putExtra(AppUtil.ID, patient.getId());
             String name = patient.name != null ? patient.name : patient.firstName + " " + patient.lastName;
-            Log.d("Patient", AppUtil.createGson().toJson(patient));
             intent.putExtra(AppUtil.NAME, name);
             startActivity(intent);
             finish();
+        } else {
+            if (patient.pushed == 1) {
+                AppUtil.createShortNotification(this, "Please upload patient to server before performing any operation on the patient");
+            } else {
+                intent = new Intent(PatientListActivity.this, SelectionActivity.class);
+                intent.putExtra(AppUtil.ID, patient.id);
+                String name = patient.name != null ? patient.name : patient.firstName + " " + patient.lastName;
+                intent.putExtra(AppUtil.NAME, name);
+                startActivity(intent);
+                finish();
+            }
+
         }
 
     }
 
-    @Override
     public void onBackPressed(){
-        onExit();
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            case R.id.action_refresh:
-                syncAppData();
-                return true;
-            case R.id.action_add:
-                Intent intent1 = new Intent(this, PatientRegStep1Activity.class);
-                startActivity(intent1);
-                return true;
-            case R.id.action_logout:
-                AppUtil.removePreferences(this);
-                Intent intent2 = new Intent(this, LauncherActivity.class);
-                startActivity(intent2);
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
     @Override
     public void updateView() {
         patientAdapter.clear();
@@ -149,13 +142,13 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
     };
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         registerReceiver(broadcastReceiver, new IntentFilter(PushPullService.NOTIFICATION));
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         unregisterReceiver(broadcastReceiver);
     }

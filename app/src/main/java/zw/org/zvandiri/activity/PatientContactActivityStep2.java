@@ -183,7 +183,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case android.R.id.home:
@@ -201,7 +201,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_create, menu);
         return true;
-    }
+    }*/
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientContactActivityStep2.this, PatientContactActivity.class);

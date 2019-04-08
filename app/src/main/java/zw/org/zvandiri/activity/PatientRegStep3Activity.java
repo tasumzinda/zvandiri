@@ -12,6 +12,7 @@ import zw.org.zvandiri.business.domain.util.HIVDisclosureLocation;
 import zw.org.zvandiri.business.domain.util.TransmissionMode;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
 import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
@@ -121,28 +122,14 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
     public void onBackPressed(){
-        Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep2Activity.class);
+        Intent intent = null;
+        if(DateUtil.getMonths(holder.dateOfBirth) <= 18){
+            intent = new Intent(PatientRegStep3Activity.this, PatientRegStep1Activity.class);
+        }else{
+            intent = new Intent(PatientRegStep3Activity.this, PatientRegStep2Activity.class);
+        }
+
         holder.address = address.getText().toString();
         holder.address1 = address1.getText().toString();
         if(primaryClinic.getSelectedItem() != null){
@@ -160,7 +147,7 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
     public void onClick(View view) {
         if(view.getId() == next.getId()){
             if(validateLocal()){
-                Intent intent = new Intent(PatientRegStep3Activity.this, PatientRegStep4Activity.class);
+                Intent intent;
                 holder.address = address.getText().toString();
                 holder.address1 = address1.getText().toString();
                 if(primaryClinic.getSelectedItem() != null){
@@ -168,6 +155,11 @@ public class PatientRegStep3Activity extends BaseActivity implements View.OnClic
                 }
                 if(supportGroup.getSelectedItem() != null){
                     holder.supportGroupId = ((SupportGroup) supportGroup.getSelectedItem()).id;
+                }
+                if(holder.hei != null && holder.hei.equals(YesNo.YES)){
+                    intent = new Intent(PatientRegStep3Activity.this, PatientRegStep7Activity.class);
+                }else{
+                    intent = new Intent(PatientRegStep3Activity.this, PatientRegStep4Activity.class);
                 }
                 intent.putExtra("patient", holder);
                 startActivity(intent);

@@ -1,0 +1,130 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <include layout="@layout/toolbar"/>
+        <LinearLayout
+                android:id="@+id/dashboard_menu"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="35sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AfricAid Zvandiri"/>
+
+            <!--Start of Card View Dashboard-->
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:weightSum="10"
+                    android:orientation="vertical">
+                <android.support.v7.widget.CardView
+                        android:id="@+id/card_patient"
+                        android:layout_width="match_parent"
+                        android:layout_weight="5"
+                        android:layout_height="190dp"
+                        app:cardElevation="6dp"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackground">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                        <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/circle_background_dark"
+                                android:padding="10dp"
+                                app:srcCompat="@drawable/ic_start_visit" />
+
+                        <TextView
+                                android:textSize="30sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Patient"
+                                android:textStyle="bold" />
+
+                        <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_margin="10dp"
+                                android:background="@color/greyDark"
+                                android:padding="5dp" />
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                        android:id="@+id/card_person"
+                        android:layout_width="match_parent"
+                        android:layout_weight="5"
+                        android:layout_height="190dp"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        app:cardBackgroundColor="@color/colorBlueFade"
+                        android:foreground="?android:attr/selectableItemBackground">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                        <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/circle_background_light"
+                                android:padding="10dp"
+                                app:srcCompat="@drawable/ic_scheduled_visit" />
+
+                        <TextView
+                                android:textSize="30sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Person"
+                                android:textStyle="bold" />
+
+                        <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_margin="10dp"
+                                android:background="@color/colorWhite"
+                                android:padding="5dp" />
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>

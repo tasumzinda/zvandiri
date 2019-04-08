@@ -9,34 +9,19 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/TextViewLabel"
                 android:text="@string/level_of_care_label"
-                android:layout_marginTop="@dimen/margin_top"
-                android:layout_marginStart="@dimen/input_side_margin"
-                android:layout_marginEnd="@dimen/input_side_margin"
-                android:textSize="@dimen/text_size"
         />
         <Spinner
                 android:id="@+id/careLevel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="@dimen/input_side_margin"
-                android:layout_marginEnd="@dimen/input_side_margin"
+                style="@style/SpinnerStyle"
                 android:prompt="@string/prompt"
         />
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/TextViewLabel"
                 android:text="@string/stable_label"
                 android:visibility="gone"
                 android:id="@+id/stableLabel"
-                android:layout_marginTop="@dimen/margin_top"
-                android:layout_marginStart="@dimen/input_side_margin"
-                android:layout_marginEnd="@dimen/input_side_margin"
-                android:textSize="@dimen/text_size"
         />
         <ListView
                 android:id="@+id/stable"
@@ -47,17 +32,12 @@
                 android:layout_marginEnd="@dimen/input_side_margin"
                 android:visibility="gone"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="7.0sp" />
+                android:dividerHeight="7.0sp"/>
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/TextViewLabel"
                 android:text="@string/enhanced_label"
                 android:id="@+id/enhancedLabel"
                 android:visibility="gone"
-                android:layout_marginTop="@dimen/margin_top"
-                android:layout_marginStart="@dimen/input_side_margin"
-                android:layout_marginEnd="@dimen/input_side_margin"
-                android:textSize="@dimen/text_size"
         />
         <ListView
                 android:id="@+id/enhanced"
@@ -68,17 +48,12 @@
                 android:layout_marginEnd="@dimen/input_side_margin"
                 android:visibility="gone"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="7.0sp" />
+                android:dividerHeight="7.0sp"/>
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/TextViewLabel"
                 android:text="@string/intensive_label"
                 android:visibility="gone"
                 android:id="@+id/intensiveLabel"
-                android:layout_marginTop="@dimen/margin_top"
-                android:layout_marginStart="@dimen/input_side_margin"
-                android:layout_marginEnd="@dimen/input_side_margin"
-                android:textSize="@dimen/text_size"
         />
         <ListView
                 android:id="@+id/intensive"
@@ -89,28 +64,18 @@
                 android:layout_marginEnd="@dimen/input_side_margin"
                 android:visibility="gone"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="7.0sp" />
+                android:dividerHeight="7.0sp"/>
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/TextViewLabel"
                 android:text="@string/action_taken_label"
-                android:layout_marginTop="@dimen/margin_top"
-                android:layout_marginStart="@dimen/input_side_margin"
-                android:layout_marginEnd="@dimen/input_side_margin"
-                android:textSize="@dimen/text_size"
         />
         <Spinner
                 android:id="@+id/actionTaken"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="@dimen/input_side_margin"
-                android:layout_marginEnd="@dimen/input_side_margin"
+                style="@style/SpinnerStyle"
                 android:prompt="@string/prompt"
         />
 
-                <android.support.v7.widget.AppCompatButton
+        <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_next"
                 style="@style/ButtonStyle"
                 android:text="@string/btn_save_label"

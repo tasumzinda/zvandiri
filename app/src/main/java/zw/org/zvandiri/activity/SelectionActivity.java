@@ -2,6 +2,7 @@ package zw.org.zvandiri.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +15,9 @@ import zw.org.zvandiri.business.util.AppUtil;
  */
 public class SelectionActivity extends BaseActivity implements View.OnClickListener{
 
-    private Button contact;
-    private Button referral;
+    private CardView contact;
+    private CardView referral;
+    private CardView mentalHealth;
     private String id;
     private String name;
 
@@ -23,35 +25,17 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.selection_activity);
-        contact = (Button) findViewById(R.id.contact);
-        referral = (Button) findViewById(R.id.referral);
+        contact = (CardView) findViewById(R.id.card_contact);
+        referral = (CardView) findViewById(R.id.card_referral);
+        mentalHealth = (CardView) findViewById(R.id.card_mental_health);
         Intent intent = getIntent();
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         contact.setOnClickListener(this);
         referral.setOnClickListener(this);
+        mentalHealth.setOnClickListener(this);
         setSupportActionBar(createToolBar(name + "'s Dashboard"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
     }
 
 
@@ -74,6 +58,14 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
         }
         if(view.getId() == referral.getId()){
             Intent intent = new Intent(this, PatientReferralListActivity.class);
+            intent.putExtra(AppUtil.NAME, name);
+            intent.putExtra(AppUtil.ID, id);
+            startActivity(intent);
+            finish();
+        }
+
+        if(view.getId() == mentalHealth.getId()){
+            Intent intent = new Intent(this, MentalHealthScreeningListActivity.class);
             intent.putExtra(AppUtil.NAME, name);
             intent.putExtra(AppUtil.ID, id);
             startActivity(intent);

@@ -82,26 +82,6 @@ public class PatientReferralStep9Activity extends BaseActivity implements View.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
     public void onBackPressed(){
         Intent intent = new Intent(PatientReferralStep9Activity.this, PatientReferralStep8Activity.class);
         intent.putExtra(AppUtil.NAME, name);

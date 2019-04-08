@@ -36,6 +36,8 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
     private String itemID;
     private TextView relationshipLabel;
     private TextView secondaryRelationshipLabel;
+    private LinearLayout ownerLayout;
+    private LinearLayout secondaryLayout;
     private Patient holder;
 
     @Override
@@ -57,6 +59,8 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
         secondaryMobileownerRelation = (Spinner) findViewById(R.id.secondaryMobileownerRelation);
         relationshipLabel = (TextView) findViewById(R.id.relationshipLabel);
         secondaryRelationshipLabel = (TextView) findViewById(R.id.secondaryRelationshipLabel);
+        ownerLayout = (LinearLayout) findViewById(R.id.ownerLayout);
+        secondaryLayout = (LinearLayout) findViewById(R.id.secondaryLayout);
         ArrayAdapter<YesNo> mobileOwnerArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
         mobileOwnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mobileOwner.setAdapter(mobileOwnerArrayAdapter);
@@ -81,24 +85,16 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             secondaryMobileOwnerName.setText(holder.secondaryMobileOwnerName);
             if(holder.mobileOwner != null){
                 if(holder.mobileOwner.equals(YesNo.NO)){
-                    ownerName.setVisibility(View.VISIBLE);
-                    relationshipLabel.setVisibility(View.VISIBLE);
-                    mobileOwnerRelation.setVisibility(View.VISIBLE);
+                    ownerLayout.setVisibility(View.VISIBLE);
                 }else{
-                    ownerName.setVisibility(View.GONE);
-                    relationshipLabel.setVisibility(View.GONE);
-                    mobileOwnerRelation.setVisibility(View.GONE);
+                    ownerLayout.setVisibility(View.VISIBLE);
                 }
             }
             if(holder.ownSecondaryMobile != null){
                 if(holder.ownSecondaryMobile.equals(YesNo.NO)){
-                    secondaryMobileOwnerName.setVisibility(View.VISIBLE);
-                    secondaryRelationshipLabel.setVisibility(View.VISIBLE);
-                    secondaryMobileownerRelation.setVisibility(View.VISIBLE);
+                    secondaryLayout.setVisibility(View.VISIBLE);
                 }else{
-                    secondaryMobileOwnerName.setVisibility(View.GONE);
-                    secondaryRelationshipLabel.setVisibility(View.GONE);
-                    secondaryMobileownerRelation.setVisibility(View.GONE);
+                    secondaryLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -139,13 +135,9 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(mobileOwner.getSelectedItem().equals(YesNo.NO)){
-                    ownerName.setVisibility(View.VISIBLE);
-                    relationshipLabel.setVisibility(View.VISIBLE);
-                    mobileOwnerRelation.setVisibility(View.VISIBLE);
+                    ownerLayout.setVisibility(View.VISIBLE);
                 }else{
-                    ownerName.setVisibility(View.GONE);
-                    relationshipLabel.setVisibility(View.GONE);
-                    mobileOwnerRelation.setVisibility(View.GONE);
+                    ownerLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -158,13 +150,9 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(ownSecondaryMobile.getSelectedItem().equals(YesNo.NO)){
-                    secondaryMobileOwnerName.setVisibility(View.VISIBLE);
-                    secondaryRelationshipLabel.setVisibility(View.VISIBLE);
-                    secondaryMobileownerRelation.setVisibility(View.VISIBLE);
+                    secondaryLayout.setVisibility(View.VISIBLE);
                 }else{
-                    secondaryMobileOwnerName.setVisibility(View.GONE);
-                    secondaryRelationshipLabel.setVisibility(View.GONE);
-                    secondaryMobileownerRelation.setVisibility(View.GONE);
+                    secondaryLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -178,42 +166,22 @@ public class PatientRegStep2Activity extends BaseActivity implements View.OnClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep2Activity.this, PatientRegStep1Activity.class);
         holder.email = email.getText().toString();
         holder.mobileNumber = mobileNumber.getText().toString();
-        holder.ownerName = ownerName.getText().toString();
         holder.secondaryMobileNumber = secondaryMobileNumber.getText().toString();
-        holder.secondaryMobileOwnerName = secondaryMobileOwnerName.getText().toString();
         holder.mobileOwner = (YesNo) mobileOwner.getSelectedItem();
         if( ! secondaryMobileNumber.getText().toString().isEmpty()){
             holder.ownSecondaryMobile = (YesNo) ownSecondaryMobile.getSelectedItem();
         }
-        if(mobileOwnerRelation.getVisibility() == View.VISIBLE){
+        if(ownerLayout.getVisibility() == View.VISIBLE){
             holder.mobileOwnerRelationId = ((Relationship) mobileOwnerRelation.getSelectedItem()).id;
+            holder.ownerName = ownerName.getText().toString();
         }
-        if(secondaryMobileownerRelation.getVisibility() == View.VISIBLE){
+        if(secondaryLayout.getVisibility() == View.VISIBLE){
             holder.secondaryMobileownerRelationId = ((Relationship) secondaryMobileownerRelation.getSelectedItem()).id;
+            holder.secondaryMobileOwnerName = secondaryMobileOwnerName.getText().toString();
         }
         intent.putExtra("patient", holder);
         startActivity(intent);

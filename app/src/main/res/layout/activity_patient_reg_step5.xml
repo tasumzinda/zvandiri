@@ -15,84 +15,41 @@
                 android:layout_marginTop="40dp"
         >
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="HIV Status Known"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/hivStatusKnown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Mode of Transmission"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
                     android:id="@+id/transmissionLabel"
-                    android:visibility="gone"
             />
             <Spinner
                     android:id="@+id/transmissionMode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
-                    android:visibility="gone"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginBottom="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/dateTested"
-                        android:textSize="@dimen/text_size"
-                        android:hint="Date Tested"
-                        android:visibility="gone"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
+                    android:text="Date Tested"
+            />
+            <EditText
+                    android:id="@+id/dateTested"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
                     android:text="HIV Disclosure Location"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
                     android:visibility="gone"
                     android:id="@+id/locationLabel"
             />
             <Spinner
                     android:id="@+id/hIVDisclosureLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
-                    android:visibility="gone"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <android.support.v7.widget.AppCompatButton

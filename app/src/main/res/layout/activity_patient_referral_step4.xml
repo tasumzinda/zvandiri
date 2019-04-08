@@ -18,6 +18,10 @@
                 android:layout_marginEnd="@dimen/input_side_margin"
                 android:textSize="@dimen/text_size"
         />
+        <TextView
+                style="@style/TextViewLabel"
+                android:text="OI/ART Services"
+        />
         <ListView
                 android:id="@+id/list"
                 android:layout_width="match_parent"

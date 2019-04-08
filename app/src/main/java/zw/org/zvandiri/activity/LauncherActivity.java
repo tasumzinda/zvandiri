@@ -15,7 +15,7 @@ public class LauncherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Intent intent;
         if(AppUtil.isLoggedIn(LauncherActivity.this)){
-            intent = new Intent(this, PatientListActivity.class);
+            intent = new Intent(this, DashboardActivity.class);
             startActivity(intent);
         }else{
             intent = new Intent(this, LoginActivity.class);

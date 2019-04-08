@@ -1,6 +1,7 @@
 package zw.org.zvandiri.activity;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,38 +38,21 @@ public class PatientContactListActivity extends BaseActivity /*implements Adapte
         listView.setAdapter(contactAdapter);
         setSupportActionBar(createToolBar("Contacts for " + name));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //listView.setOnItemClickListener(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_add:
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(PatientContactListActivity.this, PatientContactActivity.class);
                 intent.putExtra(AppUtil.NAME, name);
                 intent.putExtra(AppUtil.ID, id);
                 startActivity(intent);
                 finish();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(PatientContactListActivity.this, PatientListActivity.class);
+        Intent intent = new Intent(PatientContactListActivity.this, SelectionActivity.class);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         startActivity(intent);

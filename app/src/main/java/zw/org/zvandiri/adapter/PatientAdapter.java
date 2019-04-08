@@ -10,6 +10,8 @@ import android.widget.TextView;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.domain.Patient;
+import zw.org.zvandiri.business.domain.util.YesNo;
+import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
 

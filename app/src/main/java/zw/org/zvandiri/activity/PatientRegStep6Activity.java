@@ -108,26 +108,6 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep6Activity.this, PatientRegStep5ContActivity.class);
         holder.cat = (YesNo) cat.getSelectedItem();
@@ -145,8 +125,16 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     public void onClick(View view) {
         if(view.getId() == next.getId()){
             if(validateLocal()){
-                Intent intent = new Intent(PatientRegStep6Activity.this, PatientListActivity.class);
-                save();
+                Intent intent = new Intent(PatientRegStep6Activity.this, PatientRegStep7Activity.class);
+                //save();
+                holder.cat = (YesNo) cat.getSelectedItem();
+                holder.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
+                holder.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();
+                holder.pushed = 1;
+                if(youngMumGroup.getVisibility() == View.VISIBLE){
+                    holder.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();
+                }
+                intent.putExtra("patient", holder);
                 startActivity(intent);
                 finish();
             }
@@ -171,8 +159,6 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     }
 
     public void save(){
-        String patientId = UUIDGen.generateUUID();
-        holder.id = patientId;
         holder.cat = (YesNo) cat.getSelectedItem();
         holder.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
         holder.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();
@@ -180,7 +166,7 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         if(youngMumGroup.getVisibility() == View.VISIBLE){
             holder.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();
         }
-        if(holder.primaryClinicId != null){
+        /*if(holder.primaryClinicId != null){
             holder.primaryClinic = Facility.getItem(holder.primaryClinicId);
         }
         if(holder.supportGroupId != null){
@@ -216,7 +202,7 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
         }
         for(DisabilityCategory i : DisabilityCategory.findByPatient(Patient.findById(patientId))){
             Log.d("Diasbility category", AppUtil.createGson().toJson(i));
-        }
+        }*/
 
     }
 }

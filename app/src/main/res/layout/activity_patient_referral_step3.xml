@@ -8,16 +8,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="OI/ART Services"
-                android:layout_marginTop="@dimen/margin_top"
-                android:layout_marginStart="@dimen/input_side_margin"
-                android:layout_marginEnd="@dimen/input_side_margin"
-                android:textSize="@dimen/text_size"
+                style="@style/TextViewLabel"
                 android:id="@+id/label"
+                android:text="OI/ART Services"
         />
         <ListView
                 android:id="@+id/list"

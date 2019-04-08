@@ -15,118 +15,66 @@
                 android:layout_marginTop="40dp"
         >
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Education"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/education"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
                     android:text="Highest / Current Education Level"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/educationLevel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Reason For Not Reaching O'Level"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
+                    android:id="@+id/container"
                     android:visibility="gone"
-                    android:id="@+id/reasonLabel"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
-            />
-            <Spinner
-                    android:id="@+id/reasonForNotReachingOLevel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:visibility="gone"
-                    android:layout_marginTop="12dp"
-                    android:prompt="@string/prompt"
-            />
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginBottom="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/dateJoined"
-                        android:textSize="@dimen/text_size"
-                        android:hint="Date Joined Zvandiri"
-                        android:inputType="text"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Reason For Not Reaching O'Level"
+                        android:id="@+id/reasonLabel"
                 />
-            </android.support.design.widget.TextInputLayout>
+                <Spinner
+                        android:id="@+id/reasonForNotReachingOLevel"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+
+            </LinearLayout>
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewLabel"
+                    android:text="Date Joined Zvandiri"
+            />
+            <EditText
+                    android:id="@+id/dateJoined"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
                     android:text="Referer"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:textSize="@dimen/text_size"
             />
             <Spinner
                     android:id="@+id/referer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-                    android:layout_marginTop="12dp"
+                    style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_top"
-                    android:layout_marginBottom="@dimen/margin_top"
-                    android:layout_marginStart="@dimen/input_side_margin"
-                    android:layout_marginEnd="@dimen/input_side_margin"
-            >
-                <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/refererName"
-                        android:textSize="@dimen/text_size"
-                        android:hint="Referer Name"
-                        android:inputType="text"
-                />
-            </android.support.design.widget.TextInputLayout>
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Referer Name"
+            />
+            <EditText
+                    android:id="@+id/refererName"
+                    style="@style/TextBoxStyle"
+            />
             <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_save"
                     style="@style/ButtonStyle"

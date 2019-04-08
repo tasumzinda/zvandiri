@@ -3,6 +3,8 @@ package zw.org.zvandiri.activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,10 +34,12 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
     private EditText lastName;
     private Spinner gender;
     private EditText dateOfBirth;
+    private Spinner hei;
     private Button next;
     private DatePickerDialog dialog;
     private EditText[] fields;
     private EditText oiNumber;
+    private LinearLayout heiLayout;
     private Patient holder;
     private String mobileNumber;
     private String ownerName;
@@ -75,6 +79,8 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         middleName = (EditText) findViewById(R.id.middleName);
         lastName = (EditText) findViewById(R.id.lastName);
         dateOfBirth = (EditText) findViewById(R.id.dateOfBirth);
+        hei = (Spinner) findViewById(R.id.hei);
+        heiLayout = (LinearLayout) findViewById(R.id.heiLayout);
         gender = (Spinner) findViewById(R.id.gender);
         oiNumber = (EditText) findViewById(R.id.OINumber);
         Intent intent = getIntent();
@@ -85,6 +91,10 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         genderArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender.setAdapter(genderArrayAdapter);
         genderArrayAdapter.notifyDataSetChanged();
+        ArrayAdapter<YesNo> yesNoArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
+        yesNoArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hei.setAdapter(yesNoArrayAdapter);
+        yesNoArrayAdapter.notifyDataSetChanged();
         dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
@@ -95,6 +105,29 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
         dateOfBirth.setOnClickListener(this);
+        dateOfBirth.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                Date date = DateUtil.getDateFromString(text);
+                int months = DateUtil.getMonths(date);
+                if(months <= 18){
+                    heiLayout.setVisibility(View.VISIBLE);
+                }else{
+                    heiLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         if(holder != null){
             updateLabel(holder.dateOfBirth, dateOfBirth);
             firstName.setText(holder.firstName);
@@ -105,6 +138,14 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
             for(Gender m : Gender.values()){
                 if(holder.gender != null  && holder.gender.equals(gender.getItemAtPosition(i))){
                     gender.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(YesNo m : YesNo.values()){
+                if(holder.hei != null  && holder.hei.equals(hei.getItemAtPosition(i))){
+                    hei.setSelection(i, true);
                     break;
                 }
                 i++;
@@ -144,26 +185,6 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep1Activity.this, PatientListActivity.class);
         startActivity(intent);
@@ -178,13 +199,15 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
         if(view.getId() == next.getId()){
             if(validate(fields)){
                 if(validateLocal()){
-                    Intent intent = new Intent(PatientRegStep1Activity.this, PatientRegStep2Activity.class);
                     holder = new Patient();
                     holder.dateOfBirth = DateUtil.getDateFromString(dateOfBirth.getText().toString());
                     holder.firstName = firstName.getText().toString();
                     holder.lastName = lastName.getText().toString();
                     holder.middleName = middleName.getText().toString();
                     holder.gender = (Gender) gender.getSelectedItem();
+                    if(heiLayout.getVisibility() == View.VISIBLE){
+                        holder.hei = (YesNo) hei.getSelectedItem();
+                    }
                     holder.oINumber = oiNumber.getText().toString();
                     holder.mobileNumber = mobileNumber;
                     holder.ownerName = ownerName;
@@ -215,6 +238,12 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                     holder.consentToMHealth = consentToMHealth;
                     holder.consentToPhoto = consentToPhoto;
                     holder.youngMumGroup = youngMumGroup;
+                    Intent intent;
+                    if(DateUtil.getMonths(holder.dateOfBirth) <= 18){
+                        intent = new Intent(PatientRegStep1Activity.this, PatientRegStep3Activity.class);
+                    }else{
+                        intent = new Intent(PatientRegStep1Activity.this, PatientRegStep2Activity.class);
+                    }
                     intent.putExtra("patient", holder);
                     startActivity(intent);
                     finish();

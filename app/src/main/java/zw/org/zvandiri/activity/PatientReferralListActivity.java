@@ -1,6 +1,7 @@
 package zw.org.zvandiri.activity;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,34 +35,17 @@ public class PatientReferralListActivity extends BaseActivity /*implements Adapt
         listView.setAdapter(referralAdapter);
         setSupportActionBar(createToolBar("Referral History for " + name));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //listView.setOnItemClickListener(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_add:
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(PatientReferralListActivity.this, PatientReferralActivity.class);
                 intent.putExtra(AppUtil.ID, id);
                 intent.putExtra(AppUtil.NAME, name);
                 startActivity(intent);
                 finish();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
     }
 
     public void onBackPressed(){
@@ -71,15 +55,4 @@ public class PatientReferralListActivity extends BaseActivity /*implements Adapt
         startActivity(intent);
         finish();
     }
-
-    /*@Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long i) {
-        Referral Referral = (Referral) parent.getAdapter().getItem(position);
-        Intent intent = new Intent(PatientReferralListActivity.this, PatientReferralActivity.class);
-        intent.putExtra(AppUtil.DETAILS_ID, Referral.id);
-        intent.putExtra(AppUtil.NAME, name);
-        intent.putExtra(AppUtil.ID, id);
-        startActivity(intent);
-        finish();
-    }*/
 }
