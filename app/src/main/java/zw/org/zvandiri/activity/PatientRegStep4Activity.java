@@ -71,7 +71,7 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
                         reasonForNotReachingOLevel.setAdapter(reasonForNotReachingOLevelArrayAdapter);
                         reasonForNotReachingOLevelArrayAdapter.notifyDataSetChanged();
                     }else{
-                        container.setVisibility(View.VISIBLE);
+                        container.setVisibility(View.GONE);
                     }
                 }
 
@@ -169,7 +169,7 @@ public class PatientRegStep4Activity extends BaseActivity implements View.OnClic
                 holder.educationLevelId = ((EducationLevel) educationLevel.getSelectedItem()).id;
                 holder.referrerId = ((Referer) referer.getSelectedItem()).id;
                 holder.refererName = refererName.getText().toString();
-                if(reasonForNotReachingOLevel.getVisibility() == View.VISIBLE){
+                if(container.getVisibility() == View.VISIBLE){
                     holder.reasonForNotReachingOLevelId = ((ReasonForNotReachingOLevel) reasonForNotReachingOLevel.getSelectedItem()).id;
                 }
                 intent.putExtra("patient", holder);

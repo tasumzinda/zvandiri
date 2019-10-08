@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <include layout="@layout/toolbar"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_top"
+                android:paddingLeft="@dimen/input_side_margin"
+                android:paddingRight="@dimen/input_side_margin"
+                android:paddingTop="@dimen/margin_top">
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Date of death"
+            />
+            <EditText
+                    android:id="@+id/dateOfDeath"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Cause of death"
+            />
+            <Spinner
+                    android:id="@+id/causeOfDeath"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Receiving enhanced care"
+            />
+            <Spinner
+                    android:id="@+id/receivingEnhancedCare"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Date put on enhanced care"
+            />
+            <EditText
+                    android:id="@+id/datePutOnEnhancedCare"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Brief description/ background of case"
+            />
+            <EditText
+                    android:id="@+id/caseBackground"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Brief description of care provided/ events related to the adverse outcome"
+            />
+            <EditText
+                    android:id="@+id/careProvided"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:textSize="16sp"
+                    android:text="Factors contributing to poor outcome"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Home"
+            />
+            <EditText
+                    android:id="@+id/home"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Beneficiary"
+            />
+            <EditText
+                    android:id="@+id/beneficiary"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Facility"
+            />
+            <EditText
+                    android:id="@+id/facility"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="CATS"
+            />
+            <EditText
+                    android:id="@+id/cats"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="ZM"
+            />
+            <EditText
+                    android:id="@+id/zm"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Others "
+            />
+            <EditText
+                    android:id="@+id/others"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Learning points for the case "
+            />
+            <EditText
+                    android:id="@+id/learningPoints"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Actions plan to address learning points and prevent similar problems in the future"
+            />
+            <EditText
+                    android:id="@+id/actionPlan"
+                    style="@style/TextBoxStyle"
+            />
+            <Button
+                    android:id="@+id/save"
+                    style="@style/ButtonStyle"
+                    android:text="Save" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

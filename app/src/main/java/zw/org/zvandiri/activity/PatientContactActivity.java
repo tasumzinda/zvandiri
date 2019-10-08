@@ -22,6 +22,9 @@ import java.util.Date;
 public class PatientContactActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText contactDate;
+    private EditText subjective;
+    private EditText objective;
+    private EditText plan;
     private Spinner location;
     private Spinner position;
     private Spinner reason;
@@ -51,6 +54,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_patient_contact_first);
         contactDate = (EditText) findViewById(R.id.contactDate);
         contactDate.setFocusable(false);
+        subjective = (EditText) findViewById(R.id.subjective);
+        objective = (EditText) findViewById(R.id.objective);
+        plan = (EditText) findViewById(R.id.plan);
         location = (Spinner) findViewById(R.id.location);
         position = (Spinner) findViewById(R.id.position);
         reason = (Spinner) findViewById(R.id.reason);
@@ -120,6 +126,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         if(itemID != null){
             item = Contact.findById(itemID);
             updateLabel(item.contactDate, contactDate);
+            subjective.setText(item.subjective);
+            objective.setText(item.objective);
+            plan.setText(item.plan);
             if(item.lastClinicAppointmentDate != null){
                 updateLabel(item.lastClinicAppointmentDate, lastClinicAppointmentDate);
             }
@@ -196,6 +205,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             setSupportActionBar(createToolBar("Update Contact - Step 1"));
         }else if(holder != null){
             updateLabel(holder.contactDate, contactDate);
+            subjective.setText(holder.subjective);
+            objective.setText(holder.objective);
+            plan.setText(holder.plan);
             if(holder.lastClinicAppointmentDate != null){
                 updateLabel(holder.lastClinicAppointmentDate, lastClinicAppointmentDate);
             }
@@ -274,6 +286,10 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             setSupportActionBar(createToolBar("Add Contact - Step 1"));
         }else{
             holder = new Contact();
+            if(Contact.findPatientLastContact(Patient.getById(id)) != null) {
+                updateLabel(Contact.findPatientLastContact(Patient.getById(id)).contactDate, lastClinicAppointmentDate);
+                lastClinicAppointmentDate.setEnabled(false);
+            }
             setSupportActionBar(createToolBar("Add Contact - Step 1"));
         }
         reason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -305,26 +321,6 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         save.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }*/
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientContactActivity.this, PatientListActivity.class);
@@ -367,6 +363,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 holder.enhancedId = enhancedId;
                 holder.stableId = stableId;
                 holder.careLevel = careLevel;
+                holder.subjective = subjective.getText().toString();
+                holder.objective = objective.getText().toString();
+                holder.plan = plan.getText().toString();
                 intent.putExtra("contact", holder);
                 startActivity(intent);
                 finish();
@@ -378,8 +377,15 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     public boolean validateLocal(){
         boolean isValid = true;
         String date = contactDate.getText().toString();
+        Date dateofContact = null;
+        if(date.isEmpty()) {
+            contactDate.setError(getString(R.string.required_field_error));
+            isValid = false;
+        }else{
+            contactDate.setError(null);
+            dateofContact = DateUtil.getDateFromString(date);
+        }
         Date today = new Date();
-        Date dateofContact = DateUtil.getDateFromString(date);
 
         Date dateOfBirth = Patient.findById(id).dateOfBirth;
         if( ! checkDateFormat(date)){

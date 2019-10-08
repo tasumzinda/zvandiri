@@ -21,9 +21,9 @@
     <string name="desc_input_hint">Enter description</string>
     <string name="btn_save_label">Save</string>
     <string name="contactDate">Date of contact</string>
-    <string name="level_of_care_label">Level of care</string>
-    <string name="location_label">Location</string>
-    <string name="position_label">Position</string>
+    <string name="level_of_care_label">Current Level of care</string>
+    <string name="location_label">Place of Contact</string>
+    <string name="position_label">Contacted By</string>
     <string name="reason_label">Reason</string>
     <string name="external_referral_label">External Referral</string>
     <string name="internal_referral_label">Internal Referral</string>

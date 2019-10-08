@@ -18,6 +18,7 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
     private CardView contact;
     private CardView referral;
     private CardView mentalHealth;
+    private CardView mortality;
     private String id;
     private String name;
 
@@ -28,12 +29,14 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
         contact = (CardView) findViewById(R.id.card_contact);
         referral = (CardView) findViewById(R.id.card_referral);
         mentalHealth = (CardView) findViewById(R.id.card_mental_health);
+        mortality = (CardView) findViewById(R.id.card_mortality);
         Intent intent = getIntent();
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         contact.setOnClickListener(this);
         referral.setOnClickListener(this);
         mentalHealth.setOnClickListener(this);
+        mortality.setOnClickListener(this);
         setSupportActionBar(createToolBar(name + "'s Dashboard"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -66,6 +69,13 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
 
         if(view.getId() == mentalHealth.getId()){
             Intent intent = new Intent(this, MentalHealthScreeningListActivity.class);
+            intent.putExtra(AppUtil.NAME, name);
+            intent.putExtra(AppUtil.ID, id);
+            startActivity(intent);
+            finish();
+        }
+        if(view.getId() == mortality.getId()){
+            Intent intent = new Intent(this, MortalityListActivity.class);
             intent.putExtra(AppUtil.NAME, name);
             intent.putExtra(AppUtil.ID, id);
             startActivity(intent);

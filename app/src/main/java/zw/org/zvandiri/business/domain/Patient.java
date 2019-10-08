@@ -76,9 +76,13 @@ public class Patient extends Model implements Serializable {
     @Expose
     @Column(name = "gender")
     public Gender gender;
-    @Expose
+
+    //Consult with Judge and get rid of these two
     @Column(name = "consent_to_photo")
     public YesNo consentToPhoto;
+    @Column(name = "email")
+    public String email;
+
     @Expose
     @Column(name = "consent_to_mhealth")
     public YesNo consentToMHealth;
@@ -94,9 +98,6 @@ public class Patient extends Model implements Serializable {
     @Expose
     @Column(name = "mobile_number")
     public String mobileNumber;
-    @Expose
-    @Column(name = "email")
-    public String email;
     @Expose
     @Column(name = "date_of_birth")
     public Date dateOfBirth;

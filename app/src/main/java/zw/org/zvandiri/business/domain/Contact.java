@@ -72,12 +72,24 @@ public class Contact extends Model implements Serializable{
     public Location location;
     public String locationId;
     @Expose
+    @Column
+    public String otherLocation;
+    @Expose
+    @Column
+    public ContactPhoneOption contactPhoneOption;
+    @Expose
+    @Column
+    public Integer numberOfSms;
+    @Expose
     @Column(name = "position")
     public Position position;
     public String positionId;
     @Expose
     @Column(name = "reason")
     public Reason reason;
+    @Expose
+    @Column
+    public String otherReason;
     @Expose
     @Column(name = "period")
     public Period period;
@@ -178,6 +190,15 @@ public class Contact extends Model implements Serializable{
                 .where("patient = ?", patient.getId())
                 .and("pushed = ?", 1)
                 .execute();
+    }
+
+    public static Contact findPatientLastContact(Patient patient) {
+        return new Select()
+                .from(Contact.class)
+                .where("patient = ?", patient.getId())
+                .orderBy("_id DESC")
+                .limit(1)
+                .executeSingle();
     }
 
     @Override

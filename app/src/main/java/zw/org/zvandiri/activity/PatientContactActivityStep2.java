@@ -30,6 +30,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     private ListView enhanced;
     private TextView stableLabel;
     private TextView enhancedLabel;
+    private ListView assessment;
     private String itemID;
     private String id;
     private String name;
@@ -37,6 +38,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     private Contact c;
     private ArrayAdapter<Stable> stableArrayAdapter;
     private ArrayAdapter<Enhanced> enhancedArrayAdapter;
+    private ArrayAdapter<Assessment> assessmentArrayAdapter;
     private Spinner actionTaken;
     private ArrayAdapter<zw.org.zvandiri.business.domain.ActionTaken> actionTakenArrayAdapter;
     private Contact holder;
@@ -53,6 +55,7 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         careLevel = (Spinner) findViewById(R.id.careLevel);
         stable = (ListView) findViewById(R.id.stable);
         enhanced = (ListView) findViewById(R.id.enhanced);
+        assessment = (ListView) findViewById(R.id.assessment);
         stableLabel = (TextView) findViewById(R.id.stableLabel);
         enhancedLabel = (TextView) findViewById(R.id.enhancedLabel);
         actionTaken = (Spinner) findViewById(R.id.actionTaken);
@@ -62,6 +65,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         careLevelArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         careLevel.setAdapter(careLevelArrayAdapter);
         careLevelArrayAdapter.notifyDataSetChanged();
+        assessmentArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Assessment.getAll());
+        assessment.setAdapter(assessmentArrayAdapter);
+        assessmentArrayAdapter.notifyDataSetChanged();
         stableArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Stable.getAll());
         stable.setAdapter(stableArrayAdapter);
         stableArrayAdapter.notifyDataSetChanged();
@@ -89,6 +95,8 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
 
             }
         });
+        assessment.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        assessment.setItemsCanFocus(false);
         stable.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         stable.setItemsCanFocus(false);
         enhanced.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -108,19 +116,27 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 i++;
             }
             ArrayList<Stable> stables = (ArrayList<Stable>) Stable.findByContact(Contact.findById(itemID));
-            int stableCount = stableArrayAdapter.getCount();
-            for(i = 0; i < stableCount; i++){
+            int count = stableArrayAdapter.getCount();
+            for(i = 0; i < count; i++){
                 Stable current = stableArrayAdapter.getItem(i);
                 if(stables.contains(current)){
                     stable.setItemChecked(i, true);
                 }
             }
             ArrayList<Enhanced> enhanceds = (ArrayList<Enhanced>) Enhanced.findByContact(Contact.findById(itemID));
-            int enhancedCount = enhancedArrayAdapter.getCount();
-            for(i = 0; i < enhancedCount; i++){
+            count = enhancedArrayAdapter.getCount();
+            for(i = 0; i < count; i++){
                 Enhanced current = enhancedArrayAdapter.getItem(i);
                 if(enhanceds.contains(current)){
                     enhanced.setItemChecked(i, true);
+                }
+            }
+            ArrayList<Assessment> assessments = (ArrayList<Assessment>) Assessment.findByContact(Contact.findById(itemID));
+            count = assessmentArrayAdapter.getCount();
+            for(i = 0; i < count; i++){
+                Assessment current = assessmentArrayAdapter.getItem(i);
+                if(assessments.contains(current)){
+                    assessment.setItemChecked(i, true);
                 }
             }
             i = 0;
@@ -164,6 +180,18 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 }
             }
 
+            if(holder.assessmentId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.assessmentId;
+                int count = assessmentArrayAdapter.getCount();
+                for(i = 0; i < count; i++){
+                    Assessment current = assessmentArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        assessment.setItemChecked(i, true);
+                    }
+                }
+            }
+
+
 
             i = 0;
             for (ActionTaken m : ActionTaken.getAll()) {
@@ -182,26 +210,6 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_exit:
-                onExit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }*/
 
     public void onBackPressed(){
         Intent intent = new Intent(PatientContactActivityStep2.this, PatientContactActivity.class);
@@ -260,9 +268,8 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         c.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
         c.attendedClinicAppointment = holder.attendedClinicAppointment;
         c.save();
-        Log.d("Json", AppUtil.createGson().toJson(c));
         if(itemID != null){
-            deleteCareLevelSelections();
+            deleteMultipleSelections();
         }
         if(careLevel.getSelectedItem().equals(CareLevel.ENHANCED)){
             for(int i = 0; i < getEnhanceds().size(); i++){
@@ -288,6 +295,17 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 contract.id = UUIDGen.generateUUID();
                 contract.save();
             }
+        }
+        for(int i = 0; i <  getAssessments().size(); i++){
+            ContactAssessmentContract contract = new ContactAssessmentContract();
+            contract.assessment = Assessment.getItem(getAssessments().get(i));
+            if(itemID != null){
+                contract.contact = Contact.findById(itemID);
+            }else{
+                contract.contact = Contact.findById(contactId);
+            }
+            contract.id = UUIDGen.generateUUID();
+            contract.save();
         }
         AppUtil.createShortNotification(getApplicationContext(), getResources().getString(R.string.save_success_message));
         Intent intent;
@@ -325,12 +343,28 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         return a;
     }
 
-    public void deleteCareLevelSelections(){
+    private ArrayList<String> getAssessments(){
+        ArrayList<String> a = new ArrayList<>();
+        for(int i = 0; i < assessment.getCount(); i++){
+            if(assessment.isItemChecked(i)){
+                a.add(assessmentArrayAdapter.getItem(i).id);
+            }else{
+                a.remove(assessmentArrayAdapter.getItem(i).id);
+            }
+        }
+        return a;
+    }
+
+    public void deleteMultipleSelections(){
         for(ContactStableContract c : ContactStableContract.findByContact(Contact.findById(itemID))){
             if(c != null)
                 c.delete();
         }
         for(ContactEnhancedContract c: ContactEnhancedContract.findByContact(Contact.findById(itemID))){
+            if(c != null)
+                c.delete();
+        }
+        for(ContactAssessmentContract c: ContactAssessmentContract.findByContact(Contact.findById(itemID))){
             if(c != null)
                 c.delete();
         }

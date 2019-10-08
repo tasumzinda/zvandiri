@@ -89,6 +89,30 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Client's Observations (What is the Client saying)"
+            />
+            <EditText
+                    android:id="@+id/subjective"
+                    style="@style/TextAreaStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Findings (What are you noticing)"
+            />
+            <EditText
+                    android:id="@+id/objective"
+                    style="@style/TextAreaStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Plan"
+            />
+            <EditText
+                    android:id="@+id/plan"
+                    style="@style/TextAreaStyle"
+            />
             <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_save"
                     style="@style/ButtonStyle"

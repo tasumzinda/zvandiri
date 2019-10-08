@@ -15,4 +15,5 @@
     <color name="beige"> #424949</color>
     <color name="greyDark">#2E3A42</color>
     <color name="colorBlueFade">#DFF6FE</color>
+    <color name="black">#000000</color>
 </resources>
