@@ -35,7 +35,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         userNameField = (EditText) findViewById(R.id.username);
         passwordField = (EditText) findViewById(R.id.password);
         urlField = (EditText) findViewById(R.id.url);
-        urlField.setText(AppUtil.getBaseUrl(this));
+        urlField.setText(AppUtil.BASE_URL);
         button = (Button) findViewById(R.id.login);
         button.setOnClickListener(this);
         progressDialog = new ProgressDialog(this);
@@ -56,12 +56,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.LOGGED_IN, Boolean.TRUE);
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
+                                AppUtil.savePreferences(getApplicationContext(), AppUtil.BASE_URL, urlField.getText().toString());
                                 syncAppData();
                             }else{
                                 //delete();
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.LOGGED_IN, Boolean.TRUE);
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.USERNAME, userNameField.getText().toString());
                                 AppUtil.savePreferences(getApplicationContext(), AppUtil.PASSWORD, passwordField.getText().toString());
+                                AppUtil.savePreferences(getApplicationContext(), AppUtil.BASE_URL, urlField.getText().toString());
                                 syncAppData();
                             }
 

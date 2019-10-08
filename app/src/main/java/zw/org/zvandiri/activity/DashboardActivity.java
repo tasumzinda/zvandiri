@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.toolbox.Log;
 
 /**
  * @uthor Tasu Muzinda

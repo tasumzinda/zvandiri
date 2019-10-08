@@ -37,8 +37,8 @@ public class AppUtil {
     public static String LOGGED_IN = "LOGGED_IN";
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";
-    public static String BASE_URL = "http://db.zvandiri.org:8080/zvandiri-mobile/rest/mobile";
-    //public static String BASE_URL = "http://192.168.43.102:8084/zvandiri-mobile/rest/mobile";
+   // public static String BASE_URL = "http://db.zvandiri.org:8080/zvandiri-mobile/rest/mobile";
+    public static String BASE_URL = "http://192.168.100.120:8080/zvandiri-mobile/rest/mobile";
     public static String NAME = "NAME";
     public static String ID = "ID";
     public static String DETAILS_ID = "DETAILS_ID";
@@ -133,7 +133,8 @@ public class AppUtil {
     }
 
     public static String getBaseUrl(Context context){
-        return BASE_URL;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(BASE_URL, "BASE_URL");
     }
 
     public RequestQueue getRequestQueue() {
