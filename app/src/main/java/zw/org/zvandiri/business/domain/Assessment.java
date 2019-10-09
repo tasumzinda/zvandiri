@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.annotations.Expose;
+import zw.org.zvandiri.business.domain.util.ContactAssessment;
 import zw.org.zvandiri.business.util.AppUtil;
 
 import java.util.*;
@@ -60,6 +61,10 @@ public class Assessment extends Model {
     @Column(name = "description")
     public String description;
 
+    @Expose
+    @Column
+    public ContactAssessment contactAssessment;
+
     public Assessment() {
         super();
     }
@@ -78,6 +83,13 @@ public class Assessment extends Model {
         return new Select()
                 .from(Assessment.class)
                 .orderBy("name ASC")
+                .execute();
+    }
+
+    public static List<Assessment> getAssessmentByType(String type) {
+        return new Select()
+                .from(Assessment.class)
+                .where("contactAssessment = ?", type)
                 .execute();
     }
 
@@ -133,12 +145,21 @@ public class Assessment extends Model {
         AppUtil.getInstance(context).addToRequestQueue(stringRequest);
     }
 
-    public static List<Assessment> findByContact(Contact contact){
+    public static List<Assessment> findClinicalByContact(Contact contact){
         return new Select()
                 .from(Assessment.class)
-                .innerJoin(ContactAssessmentContract.class)
-                .on("contact_assessment.assessment_id = assessment._id ")
-                .where("contact_assessment.contact_id = ?", contact.getId())
+                .innerJoin(ContactClinicalAssessmentContract.class)
+                .on("contact_clinical_assessment.assessment_id = assessment._id ")
+                .where("contact_clinical_assessment.contact_id = ?", contact.getId())
+                .execute();
+    }
+
+    public static List<Assessment> findNonClinicalByContact(Contact contact){
+        return new Select()
+                .from(Assessment.class)
+                .innerJoin(ContactNonClinicalAssessmentContract.class)
+                .on("contact_non_clinical_assessment.assessment_id = assessment._id ")
+                .where("contact_non_clinical_assessment.contact_id = ?", contact.getId())
                 .execute();
     }
 }

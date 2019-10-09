@@ -77,7 +77,7 @@ public class PatientContactActivityStep3 extends BaseActivity implements View.On
         if(itemID != null){
             c = Contact.findById(itemID);
             int i = 0;
-            ArrayList<Assessment> assessmentList = (ArrayList<Assessment>) Assessment.findByContact(Contact.findById(itemID));
+            ArrayList<Assessment> assessmentList = (ArrayList<Assessment>) Assessment.findClinicalByContact(Contact.findById(itemID));
             int assessmentCount = assessmentArrayAdapter.getCount();
             for(i = 0; i < assessmentCount; i++){
                 Assessment current = assessmentArrayAdapter.getItem(i);

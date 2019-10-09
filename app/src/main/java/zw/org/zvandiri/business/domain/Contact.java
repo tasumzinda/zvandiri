@@ -132,14 +132,20 @@ public class Contact extends Model implements Serializable{
 
 
     @Expose
-    public List<Assessment> assessments;
-    public List<String> assessmentId;
+    public List<Assessment> clinicalAssessments;
+    public List<String> clinicalAssessmentId;
+    @Expose
+    public List<Assessment> nonClinicalAssessments;
+    public List<String> nonClinicalAssessmentId;
     @Expose
     public List<Stable> stables;
     public List<String> stableId;
     @Expose
     public List<Enhanced> enhanceds;
     public List<String> enhancedId;
+    @Expose
+    public List<ServiceOffered> serviceOffereds;
+    public List<String> serviceOfferedId;
     @Expose
     @Column
     public zw.org.zvandiri.business.domain.ActionTaken actionTaken;

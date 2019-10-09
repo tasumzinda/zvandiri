@@ -19,6 +19,7 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
     private CardView referral;
     private CardView mentalHealth;
     private CardView mortality;
+    private CardView tbIpt;
     private String id;
     private String name;
 
@@ -30,6 +31,7 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
         referral = (CardView) findViewById(R.id.card_referral);
         mentalHealth = (CardView) findViewById(R.id.card_mental_health);
         mortality = (CardView) findViewById(R.id.card_mortality);
+        tbIpt = (CardView) findViewById(R.id.tb_ipt);
         Intent intent = getIntent();
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
@@ -37,6 +39,7 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
         referral.setOnClickListener(this);
         mentalHealth.setOnClickListener(this);
         mortality.setOnClickListener(this);
+        tbIpt.setOnClickListener(this);
         setSupportActionBar(createToolBar(name + "'s Dashboard"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -76,6 +79,13 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
         }
         if(view.getId() == mortality.getId()){
             Intent intent = new Intent(this, MortalityListActivity.class);
+            intent.putExtra(AppUtil.NAME, name);
+            intent.putExtra(AppUtil.ID, id);
+            startActivity(intent);
+            finish();
+        }
+        if(view.getId() == tbIpt.getId()){
+            Intent intent = new Intent(this, TbIptListActivity.class);
             intent.putExtra(AppUtil.NAME, name);
             intent.putExtra(AppUtil.ID, id);
             startActivity(intent);

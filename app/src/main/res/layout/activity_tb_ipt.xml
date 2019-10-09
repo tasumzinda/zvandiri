@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <include layout="@layout/toolbar"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_top"
+                android:paddingLeft="@dimen/input_side_margin"
+                android:paddingRight="@dimen/input_side_margin"
+                android:paddingTop="@dimen/margin_top">
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Screened For Tb"
+            />
+            <Spinner
+                    android:id="@+id/screenedForTb"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Date Screened"
+            />
+            <EditText
+                    android:id="@+id/dateScreened"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Presence with signs or symptoms of TB"
+            />
+            <ListView
+                    android:id="@+id/tbSymptoms"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="@dimen/input_side_margin"
+                    android:layout_marginEnd="@dimen/input_side_margin"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="7.0sp"/>
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Identified with TB"
+            />
+            <Spinner
+                    android:id="@+id/identifiedWithTb"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Action Taken"
+            />
+            <Spinner
+                    android:id="@+id/tbIdentificationOutcome"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Date Started Treatment"
+            />
+            <EditText
+                    android:id="@+id/dateStartedTreatment"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Outcome"
+            />
+            <Spinner
+                    android:id="@+id/tbTreatmentOutcome"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Referred For IPT"
+            />
+            <Spinner
+                    android:id="@+id/referredForIpt"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="On IPT"
+            />
+            <Spinner
+                    android:id="@+id/onIpt"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Date Started On IPT"
+            />
+            <EditText
+                    android:id="@+id/dateStartedIpt"
+                    style="@style/TextBoxStyle"
+            />
+            <Button
+                    android:id="@+id/save"
+                    style="@style/ButtonStyle"
+                    android:text="Save" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

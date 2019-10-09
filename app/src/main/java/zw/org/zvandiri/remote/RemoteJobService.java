@@ -193,7 +193,8 @@ public class RemoteJobService extends JobService {
     public List<Contact> getAllContacts(){
         final List<Contact> contacts = new ArrayList<>();
         for(Contact c : Contact.getAll()){
-            c.assessments = Assessment.findByContact(c);
+            c.clinicalAssessments = Assessment.findClinicalByContact(c);
+            c.nonClinicalAssessments = Assessment.findNonClinicalByContact(c);
             c.stables = Stable.findByContact(c);
             c.enhanceds = Enhanced.findByContact(c);
             c.id = "";

@@ -1,22 +1,13 @@
 package zw.org.zvandiri.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.domain.util.CareLevel;
-import zw.org.zvandiri.business.domain.util.FollowUp;
-import zw.org.zvandiri.business.domain.util.Reason;
-import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
-import zw.org.zvandiri.business.util.DateUtil;
 import zw.org.zvandiri.business.util.UUIDGen;
 
 import java.util.ArrayList;
@@ -30,7 +21,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     private ListView enhanced;
     private TextView stableLabel;
     private TextView enhancedLabel;
-    private ListView assessment;
+    private ListView nonClinicalAssessments;
+    private ListView clinicalAssessments;
+    private ListView servicesOffered;
     private String itemID;
     private String id;
     private String name;
@@ -38,7 +31,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
     private Contact c;
     private ArrayAdapter<Stable> stableArrayAdapter;
     private ArrayAdapter<Enhanced> enhancedArrayAdapter;
-    private ArrayAdapter<Assessment> assessmentArrayAdapter;
+    private ArrayAdapter<Assessment> clinicalAssessmentArrayAdapter;
+    private ArrayAdapter<Assessment> nonClinicalAssessmentArrayAdapter;
+    private ArrayAdapter<ServiceOffered> serviceOfferedArrayAdapter;
     private Spinner actionTaken;
     private ArrayAdapter<zw.org.zvandiri.business.domain.ActionTaken> actionTakenArrayAdapter;
     private Contact holder;
@@ -55,7 +50,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         careLevel = (Spinner) findViewById(R.id.careLevel);
         stable = (ListView) findViewById(R.id.stable);
         enhanced = (ListView) findViewById(R.id.enhanced);
-        assessment = (ListView) findViewById(R.id.assessment);
+        clinicalAssessments = (ListView) findViewById(R.id.clinicalAssessments);
+        nonClinicalAssessments = (ListView) findViewById(R.id.nonClinicalAssessments);
+        servicesOffered = (ListView) findViewById(R.id.servicesOffered);
         stableLabel = (TextView) findViewById(R.id.stableLabel);
         enhancedLabel = (TextView) findViewById(R.id.enhancedLabel);
         actionTaken = (Spinner) findViewById(R.id.actionTaken);
@@ -65,15 +62,21 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         careLevelArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         careLevel.setAdapter(careLevelArrayAdapter);
         careLevelArrayAdapter.notifyDataSetChanged();
-        assessmentArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Assessment.getAll());
-        assessment.setAdapter(assessmentArrayAdapter);
-        assessmentArrayAdapter.notifyDataSetChanged();
+        clinicalAssessmentArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Assessment.getAssessmentByType("CLINICAL"));
+        clinicalAssessments.setAdapter(clinicalAssessmentArrayAdapter);
+        clinicalAssessmentArrayAdapter.notifyDataSetChanged();
+        nonClinicalAssessmentArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Assessment.getAssessmentByType("NON_CLINICAL"));
+        nonClinicalAssessments.setAdapter(nonClinicalAssessmentArrayAdapter);
+        nonClinicalAssessmentArrayAdapter.notifyDataSetChanged();
         stableArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Stable.getAll());
         stable.setAdapter(stableArrayAdapter);
         stableArrayAdapter.notifyDataSetChanged();
         enhancedArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, Enhanced.getAll());
         enhanced.setAdapter(enhancedArrayAdapter);
         enhancedArrayAdapter.notifyDataSetChanged();
+        serviceOfferedArrayAdapter = new ArrayAdapter<>(this, R.layout.check_box_item, ServiceOffered.getAll());
+        servicesOffered.setAdapter(serviceOfferedArrayAdapter);
+        serviceOfferedArrayAdapter.notifyDataSetChanged();
         careLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -95,12 +98,16 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
 
             }
         });
-        assessment.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        assessment.setItemsCanFocus(false);
+        clinicalAssessments.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        clinicalAssessments.setItemsCanFocus(false);
+        nonClinicalAssessments.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        nonClinicalAssessments.setItemsCanFocus(false);
         stable.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         stable.setItemsCanFocus(false);
         enhanced.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         enhanced.setItemsCanFocus(false);
+        servicesOffered.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        servicesOffered.setItemsCanFocus(false);
         actionTakenArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, zw.org.zvandiri.business.domain.ActionTaken.getAll());
         actionTakenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         actionTaken.setAdapter(actionTakenArrayAdapter);
@@ -131,12 +138,28 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                     enhanced.setItemChecked(i, true);
                 }
             }
-            ArrayList<Assessment> assessments = (ArrayList<Assessment>) Assessment.findByContact(Contact.findById(itemID));
-            count = assessmentArrayAdapter.getCount();
+            ArrayList<Assessment> assessments = (ArrayList<Assessment>) Assessment.findClinicalByContact(Contact.findById(itemID));
+            count = clinicalAssessmentArrayAdapter.getCount();
             for(i = 0; i < count; i++){
-                Assessment current = assessmentArrayAdapter.getItem(i);
+                Assessment current = clinicalAssessmentArrayAdapter.getItem(i);
                 if(assessments.contains(current)){
-                    assessment.setItemChecked(i, true);
+                    clinicalAssessments.setItemChecked(i, true);
+                }
+            }
+            assessments = (ArrayList<Assessment>) Assessment.findNonClinicalByContact(Contact.findById(itemID));
+            count = nonClinicalAssessmentArrayAdapter.getCount();
+            for(i = 0; i < count; i++){
+                Assessment current = nonClinicalAssessmentArrayAdapter.getItem(i);
+                if(assessments.contains(current)){
+                    nonClinicalAssessments.setItemChecked(i, true);
+                }
+            }
+            ArrayList<ServiceOffered> serviceOffereds = (ArrayList<ServiceOffered>) ServiceOffered.findByContact(Contact.findById(itemID));
+            count = serviceOfferedArrayAdapter.getCount();
+            for(i = 0; i < count; i++){
+                ServiceOffered current = serviceOfferedArrayAdapter.getItem(i);
+                if(serviceOffereds.contains(current)){
+                    servicesOffered.setItemChecked(i, true);
                 }
             }
             i = 0;
@@ -180,18 +203,38 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 }
             }
 
-            if(holder.assessmentId != null){
-                ArrayList<String> list = (ArrayList<String>) holder.assessmentId;
-                int count = assessmentArrayAdapter.getCount();
+            if(holder.clinicalAssessmentId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.clinicalAssessmentId;
+                int count = clinicalAssessmentArrayAdapter.getCount();
                 for(i = 0; i < count; i++){
-                    Assessment current = assessmentArrayAdapter.getItem(i);
+                    Assessment current = clinicalAssessmentArrayAdapter.getItem(i);
                     if(list.contains(current.id)){
-                        assessment.setItemChecked(i, true);
+                        clinicalAssessments.setItemChecked(i, true);
                     }
                 }
             }
 
+            if(holder.nonClinicalAssessmentId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.nonClinicalAssessmentId;
+                int count = nonClinicalAssessmentArrayAdapter.getCount();
+                for(i = 0; i < count; i++){
+                    Assessment current = nonClinicalAssessmentArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        nonClinicalAssessments.setItemChecked(i, true);
+                    }
+                }
+            }
 
+            if(holder.serviceOfferedId != null){
+                ArrayList<String> list = (ArrayList<String>) holder.serviceOfferedId;
+                int count = serviceOfferedArrayAdapter.getCount();
+                for(i = 0; i < count; i++){
+                    ServiceOffered current = serviceOfferedArrayAdapter.getItem(i);
+                    if(list.contains(current.id)){
+                        servicesOffered.setItemChecked(i, true);
+                    }
+                }
+            }
 
             i = 0;
             for (ActionTaken m : ActionTaken.getAll()) {
@@ -223,6 +266,9 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         }else{
             holder.stableId = getStables();
         }
+        holder.clinicalAssessmentId = getClinicalAssessments();
+        holder.nonClinicalAssessmentId = getNonClinicalAssessments();
+        holder.serviceOfferedId = getServicesOffered();
         intent.putExtra("contact", holder);
         startActivity(intent);
         finish();
@@ -296,9 +342,31 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
                 contract.save();
             }
         }
-        for(int i = 0; i <  getAssessments().size(); i++){
-            ContactAssessmentContract contract = new ContactAssessmentContract();
-            contract.assessment = Assessment.getItem(getAssessments().get(i));
+        for(int i = 0; i <  getClinicalAssessments().size(); i++){
+            ContactClinicalAssessmentContract contract = new ContactClinicalAssessmentContract();
+            contract.assessment = Assessment.getItem(getClinicalAssessments().get(i));
+            if(itemID != null){
+                contract.contact = Contact.findById(itemID);
+            }else{
+                contract.contact = Contact.findById(contactId);
+            }
+            contract.id = UUIDGen.generateUUID();
+            contract.save();
+        }
+        for(int i = 0; i <  getNonClinicalAssessments().size(); i++){
+            ContactNonClinicalAssessmentContract contract = new ContactNonClinicalAssessmentContract();
+            contract.assessment = Assessment.getItem(getNonClinicalAssessments().get(i));
+            if(itemID != null){
+                contract.contact = Contact.findById(itemID);
+            }else{
+                contract.contact = Contact.findById(contactId);
+            }
+            contract.id = UUIDGen.generateUUID();
+            contract.save();
+        }
+        for(int i = 0; i <  getServicesOffered().size(); i++){
+            ContactServiceOfferedContract contract = new ContactServiceOfferedContract();
+            contract.serviceOffered = ServiceOffered.getItem(getServicesOffered().get(i));
             if(itemID != null){
                 contract.contact = Contact.findById(itemID);
             }else{
@@ -343,19 +411,43 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
         return a;
     }
 
-    private ArrayList<String> getAssessments(){
+    private ArrayList<String> getClinicalAssessments(){
         ArrayList<String> a = new ArrayList<>();
-        for(int i = 0; i < assessment.getCount(); i++){
-            if(assessment.isItemChecked(i)){
-                a.add(assessmentArrayAdapter.getItem(i).id);
+        for(int i = 0; i < clinicalAssessments.getCount(); i++){
+            if(clinicalAssessments.isItemChecked(i)){
+                a.add(clinicalAssessmentArrayAdapter.getItem(i).id);
             }else{
-                a.remove(assessmentArrayAdapter.getItem(i).id);
+                a.remove(clinicalAssessmentArrayAdapter.getItem(i).id);
             }
         }
         return a;
     }
 
-    public void deleteMultipleSelections(){
+    private ArrayList<String> getNonClinicalAssessments(){
+        ArrayList<String> a = new ArrayList<>();
+        for(int i = 0; i < nonClinicalAssessments.getCount(); i++){
+            if(nonClinicalAssessments.isItemChecked(i)){
+                a.add(nonClinicalAssessmentArrayAdapter.getItem(i).id);
+            }else{
+                a.remove(nonClinicalAssessmentArrayAdapter.getItem(i).id);
+            }
+        }
+        return a;
+    }
+
+    private ArrayList<String> getServicesOffered(){
+        ArrayList<String> a = new ArrayList<>();
+        for(int i = 0; i < servicesOffered.getCount(); i++){
+            if(servicesOffered.isItemChecked(i)){
+                a.add(serviceOfferedArrayAdapter.getItem(i).id);
+            }else{
+                a.remove(serviceOfferedArrayAdapter.getItem(i).id);
+            }
+        }
+        return a;
+    }
+
+    private void deleteMultipleSelections(){
         for(ContactStableContract c : ContactStableContract.findByContact(Contact.findById(itemID))){
             if(c != null)
                 c.delete();
@@ -364,7 +456,15 @@ public class PatientContactActivityStep2 extends BaseActivity implements View.On
             if(c != null)
                 c.delete();
         }
-        for(ContactAssessmentContract c: ContactAssessmentContract.findByContact(Contact.findById(itemID))){
+        for(ContactClinicalAssessmentContract c: ContactClinicalAssessmentContract.findByContact(Contact.findById(itemID))){
+            if(c != null)
+                c.delete();
+        }
+        for(ContactNonClinicalAssessmentContract c: ContactNonClinicalAssessmentContract.findByContact(Contact.findById(itemID))){
+            if(c != null)
+                c.delete();
+        }
+        for(ContactServiceOfferedContract c: ContactServiceOfferedContract.findByContact(Contact.findById(itemID))){
             if(c != null)
                 c.delete();
         }

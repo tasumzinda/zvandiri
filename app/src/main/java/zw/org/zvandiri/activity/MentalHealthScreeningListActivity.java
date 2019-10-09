@@ -60,4 +60,12 @@ public class MentalHealthScreeningListActivity extends BaseActivity implements A
         startActivity(intent);
         finish();
     }
+
+    public void onBackPressed(){
+        Intent intent = new Intent(MentalHealthScreeningListActivity.this, SelectionActivity.class);
+        intent.putExtra(AppUtil.NAME, name);
+        intent.putExtra(AppUtil.ID, id);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -7,17 +7,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import zw.org.zvandiri.R;
-import zw.org.zvandiri.adapter.MortalityAdapter;
-import zw.org.zvandiri.business.domain.Mortality;
+import zw.org.zvandiri.adapter.TbIptAdapter;
+import zw.org.zvandiri.business.domain.TbIpt;
 import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
 
-public class MortalityListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class TbIptListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    MortalityAdapter adapter;
+    TbIptAdapter adapter;
     String name;
     String id;
 
@@ -29,20 +29,20 @@ public class MortalityListActivity extends BaseActivity implements AdapterView.O
         id = intent.getStringExtra(AppUtil.ID);
         name = intent.getStringExtra(AppUtil.NAME);
         Patient patient = Patient.getById(id);
-        final ArrayList<Mortality> list = (ArrayList<Mortality>) Mortality.findByPatient(patient);
-        adapter = (new MortalityAdapter(this, list));
+        final ArrayList<TbIpt> list = (ArrayList<TbIpt>) TbIpt.findByPatient(patient);
+        adapter = (new TbIptAdapter(this, list));
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setEmptyView(findViewById(R.id.empty));
         listView.setAdapter(adapter);
-        adapter.onDataSetChanged((ArrayList<Mortality>) Mortality.findByPatient(patient));
-        setSupportActionBar(createToolBar("Mortality Details For " + patient));
+        adapter.onDataSetChanged((ArrayList<TbIpt>) TbIpt.findByPatient(patient));
+        setSupportActionBar(createToolBar("TbIpt Details For " + patient));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView.setOnItemClickListener(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MortalityActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TbIptActivity.class);
                 intent.putExtra(AppUtil.ID, id);
                 startActivity(intent);
                 finish();
@@ -52,16 +52,16 @@ public class MortalityListActivity extends BaseActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Mortality item = (Mortality) parent.getAdapter().getItem(position);
+        TbIpt item = (TbIpt) parent.getAdapter().getItem(position);
         Log.d("Item", AppUtil.createGson().toJson(item));
-        Intent intent = new Intent(this, MortalityActivity.class);
+        Intent intent = new Intent(this, TbIptActivity.class);
         intent.putExtra("itemId", item.getId());
         startActivity(intent);
         finish();
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(MortalityListActivity.this, SelectionActivity.class);
+        Intent intent = new Intent(TbIptListActivity.this, SelectionActivity.class);
         intent.putExtra(AppUtil.NAME, name);
         intent.putExtra(AppUtil.ID, id);
         startActivity(intent);

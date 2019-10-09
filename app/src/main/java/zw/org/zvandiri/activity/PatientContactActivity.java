@@ -45,6 +45,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     Contact holder;
     ArrayList<String> stableId;
     ArrayList<String> enhancedId;
+    ArrayList<String> nonClinicalAssessmentId;
+    ArrayList<String> clinicalAssessmentId;
+    ArrayList<String> serviceOfferedId;
     CareLevel careLevel;
     String actionTakenId;
 
@@ -282,6 +285,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             stableId = (ArrayList<String>) holder.stableId;
             enhancedId = (ArrayList<String>) holder.enhancedId;
             careLevel = holder.careLevel;
+            clinicalAssessmentId = (ArrayList<String>) holder.clinicalAssessmentId;
+            nonClinicalAssessmentId = (ArrayList<String>) holder.nonClinicalAssessmentId;
+            serviceOfferedId = (ArrayList<String>) holder.serviceOfferedId;
             actionTakenId = holder.actionTakenId;
             setSupportActionBar(createToolBar("Add Contact - Step 1"));
         }else{
@@ -362,6 +368,9 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 holder.actionTakenId = actionTakenId;
                 holder.enhancedId = enhancedId;
                 holder.stableId = stableId;
+                holder.clinicalAssessmentId = clinicalAssessmentId;
+                holder.nonClinicalAssessmentId = nonClinicalAssessmentId;
+                holder.serviceOfferedId = serviceOfferedId;
                 holder.careLevel = careLevel;
                 holder.subjective = subjective.getText().toString();
                 holder.objective = objective.getText().toString();

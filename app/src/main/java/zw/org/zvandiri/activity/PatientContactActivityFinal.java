@@ -3,13 +3,10 @@ package zw.org.zvandiri.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import zw.org.zvandiri.R;
-import zw.org.zvandiri.business.domain.ContactActionTakenContract;
 import zw.org.zvandiri.business.domain.*;
 import zw.org.zvandiri.business.domain.ActionTaken;
 import zw.org.zvandiri.business.domain.ContactStableContract;
@@ -138,13 +135,13 @@ public class PatientContactActivityFinal extends BaseActivity implements View.On
        }
         c.save();
         if(itemID != null){
-            for(ContactAssessmentContract c : ContactAssessmentContract.findByContact(Contact.findById(itemID))){
+            for(ContactClinicalAssessmentContract c : ContactClinicalAssessmentContract.findByContact(Contact.findById(itemID))){
                 c.delete();
             }
             deleteCareLevelSelections();
         }
         for(int i = 0; i < assessments.size(); i++){
-            ContactAssessmentContract contract = new ContactAssessmentContract();
+            ContactClinicalAssessmentContract contract = new ContactClinicalAssessmentContract();
             contract.assessment = Assessment.getItem(assessments.get(i));
             if(itemID != null){
                 contract.contact = Contact.findById(itemID);

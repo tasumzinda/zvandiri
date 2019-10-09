@@ -331,6 +331,8 @@
         </activity>
         <activity android:name=".activity.MortalityListActivity"/>
         <activity android:name=".activity.MortalityActivity"/>
+        <activity android:name=".activity.TbIptListActivity"/>
+        <activity android:name=".activity.TbIptActivity"/>
     </application>
 
 </manifest>

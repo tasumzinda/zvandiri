@@ -42,14 +42,21 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Date put on enhanced care"
-            />
-            <EditText
-                    android:id="@+id/datePutOnEnhancedCare"
-                    style="@style/TextBoxStyle"
-            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/careLayout"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Date put on enhanced care"
+                />
+                <EditText
+                        android:id="@+id/datePutOnEnhancedCare"
+                        style="@style/TextBoxStyle"
+                />
+            </LinearLayout>
             <TextView
                     style="@style/TextViewLabel"
                     android:text="Brief description/ background of case"

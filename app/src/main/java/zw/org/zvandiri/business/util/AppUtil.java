@@ -227,6 +227,11 @@ public class AppUtil {
                 .build();
     }
 
+    public static HttpUrl getPushMortalityUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/person/add-mortality")).newBuilder()
+                .build();
+    }
+
     public static HttpUrl getPushPatientUrl(Context context) {
         return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-patient")).newBuilder()
                 //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))

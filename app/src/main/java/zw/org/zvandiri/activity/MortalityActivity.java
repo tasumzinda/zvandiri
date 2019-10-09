@@ -11,6 +11,8 @@ import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.domain.util.CauseOfDeath;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
+import zw.org.zvandiri.toolbox.Log;
 
 import java.util.Calendar;
 
@@ -31,6 +33,7 @@ public class MortalityActivity extends BaseActivity implements View.OnClickListe
     EditText learningPoints;
     EditText actionPlan;
     Button save;
+    LinearLayout careLayout;
     Patient patient;
     Mortality item;
     ArrayAdapter<CauseOfDeath> causeOfDeathArrayAdapter;
@@ -61,6 +64,7 @@ public class MortalityActivity extends BaseActivity implements View.OnClickListe
         others = (EditText) findViewById(R.id.others);
         learningPoints= (EditText) findViewById(R.id.learningPoints);
         actionPlan = (EditText) findViewById(R.id.actionPlan);
+        careLayout = (LinearLayout) findViewById(R.id.careLayout);
         causeOfDeathArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, CauseOfDeath.values());
         causeOfDeathArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         causeOfDeath.setAdapter(causeOfDeathArrayAdapter);
@@ -93,24 +97,59 @@ public class MortalityActivity extends BaseActivity implements View.OnClickListe
         );
         datePutOnEnhancedCare.setFocusable(false);
         datePutOnEnhancedCare.setOnClickListener(this);
-        Patient patient = Patient.getById(id);
+        receivingEnhancedCare.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                YesNo selected = yesNoArrayAdapter.getItem(i);
+                if(selected.equals(YesNo.YES)) {
+                    careLayout.setVisibility(View.VISIBLE);
+                }else {
+                    careLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         if(itemId != 0L){
             item = Mortality.getItem(itemId);
             int i = 0;
-            /*for(YesNo m : YesNo.values()){
-                if(item.screenedForMentalHealth != null && item.screenedForMentalHealth.equals(screenedForMentalHealth.getItemAtPosition(i))){
-                    screenedForMentalHealth.setSelection(i, true);
+            for(YesNo m : YesNo.values()){
+                if(item.receivingEnhancedCare != null && item.receivingEnhancedCare.equals(receivingEnhancedCare.getItemAtPosition(i))){
+                    receivingEnhancedCare.setSelection(i, true);
                     break;
                 }
                 i++;
-            }*/
+            }
             i = 0;
-            /*actionTakenText.setText(item.actionTakenText);
-            rescreenActionTakenText.setText(item.rescreenActionTakenText);*/
+            for(CauseOfDeath m : CauseOfDeath.values()){
+                if(item.causeOfDeath != null && item.causeOfDeath.equals(causeOfDeath.getItemAtPosition(i))){
+                    causeOfDeath.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            updateLabel(item.dateOfDeath, dateOfDeath);
+            if(item.datePutOnEnhancedCare != null) {
+                updateLabel(item.datePutOnEnhancedCare, datePutOnEnhancedCare);
+            }
+            caseBackground.setText(item.caseBackground);
+            careProvided.setText(item.careProvided);
+            home.setText(item.home);
+            beneficiary.setText(item.beneficiary);
+            facility.setText(item.facility);
+            cats.setText(item.cats);
+            zm.setText(item.zm);
+            others.setText(item.others);
+            learningPoints.setText(item.learningPoints);
+            actionPlan.setText(item.actionPlan);
             patient = item.patient;
             setSupportActionBar(createToolBar("Update Mortality Details For " + patient));
         }else{
             item = new Mortality();
+            patient = Patient.getById(id);
             setSupportActionBar(createToolBar("Add Mortality Details For " + patient));
         }
     }
@@ -125,18 +164,26 @@ public class MortalityActivity extends BaseActivity implements View.OnClickListe
         }
         if(v.getId() == save.getId()) {
             item.patient = patient;
-        /*item.screenedForMentalHealth = (YesNo) screenedForMentalHealth.getSelectedItem();
-        item.identifiedRisk = (IdentifiedRisk) identifiedRisk.getSelectedItem();
-        item.rescreenIdentifiedRisk = (IdentifiedRisk) rescreenIdentifiedRisk.getSelectedItem();
-        item.actionTaken = (ActionTaken) actionTaken.getSelectedItem();
-        item.rescreenActionTaken = (ActionTaken) rescreenActionTaken.getSelectedItem();
-        item.mentalScreenResult = (MentalScreenResult) mentalScreenResult.getSelectedItem();
-        item.actionTakenText = actionTakenText.getText().toString();
-        item.rescreenActionTakenText = rescreenActionTakenText.getText().toString();*/
+            item.receivingEnhancedCare = (YesNo) receivingEnhancedCare.getSelectedItem();
+            item.causeOfDeath = (CauseOfDeath) causeOfDeath.getSelectedItem();
+            item.dateOfDeath = DateUtil.getDateFromString(dateOfDeath.getText().toString());
+            if(!datePutOnEnhancedCare.getText().toString().isEmpty()) {
+                item.datePutOnEnhancedCare = DateUtil.getDateFromString(datePutOnEnhancedCare.getText().toString());
+            }
+            item.caseBackground = caseBackground.getText().toString();
+            item.careProvided = careProvided.getText().toString();
+            item.home = home.getText().toString();
+            item.beneficiary = beneficiary.getText().toString();
+            item.facility = facility.getText().toString();
+            item.cats = cats.getText().toString();
+            item.zm = zm.getText().toString();
+            item.others = others.getText().toString();
+            item.learningPoints = learningPoints.getText().toString();
+            item.actionPlan = actionPlan.getText().toString();
             item.save();
             AppUtil.createShortNotification(this, "Saved successfully!");
-            Intent intent = new Intent(this, HivSelfTestingListActivity.class);
-            intent.putExtra(AppUtil.ID, id);
+            Intent intent = new Intent(this, MortalityListActivity.class);
+            intent.putExtra(AppUtil.ID, patient.id);
             startActivity(intent);
             finish();
         }

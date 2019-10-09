@@ -94,6 +94,18 @@ public class PushPullService extends IntentService {
                         if(c != null)
                             c.delete();
                     }
+                    for(ContactClinicalAssessmentContract c: ContactClinicalAssessmentContract.findByContact(item)){
+                        if(c != null)
+                            c.delete();
+                    }
+                    for(ContactNonClinicalAssessmentContract c: ContactNonClinicalAssessmentContract.findByContact(item)){
+                        if(c != null)
+                            c.delete();
+                    }
+                    for(ContactServiceOfferedContract c: ContactServiceOfferedContract.findByContact(item)){
+                        if(c != null)
+                            c.delete();
+                    }
                     for(Contact c : Contact.findByPatientAndPushed(item.patient)){
                         c.delete();
                     }
@@ -127,6 +139,20 @@ public class PushPullService extends IntentService {
                     item.delete();
                 }
             }
+            try{
+                for(Mortality testing : Mortality.getAll()){
+                    String testingOutcome = run(AppUtil.getPushMortalityUrl(context), testing);
+                    String code = "";
+                    JSONObject jsonObject = new JSONObject(testingOutcome);
+                    code = jsonObject.getString("statusCode");
+                    if(code.equals("OK")){
+                        testing.delete();
+                    }
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+                result = Activity.RESULT_CANCELED;
+            }
             Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         }catch (Exception e) {
             e.printStackTrace();
@@ -139,7 +165,6 @@ public class PushPullService extends IntentService {
                 try{
                     JSONObject object = new JSONObject(res);
                     code = object.getString("statusCode");
-                    Log.d("Response", object.toString());
                 }catch (JSONException ex){
                     ex.printStackTrace();
                     result = Activity.RESULT_CANCELED;
@@ -243,6 +268,16 @@ public class PushPullService extends IntentService {
     }
 
     private String run(HttpUrl httpUrl, HivSelfTesting form) {
+
+        OkHttpClient client = new OkHttpClient();
+        client = AppUtil.connectionSettings(client);
+        client = AppUtil.getUnsafeOkHttpClient(client);
+        client = AppUtil.createAuthenticationData(client, context);
+        String json = AppUtil.createGson().toJson(form);
+        return AppUtil.getResponeBody(client, httpUrl, json);
+    }
+
+    private String run(HttpUrl httpUrl, Mortality form) {
 
         OkHttpClient client = new OkHttpClient();
         client = AppUtil.connectionSettings(client);
@@ -544,7 +579,8 @@ public class PushPullService extends IntentService {
     public List<Contact> getAllContacts(){
         final List<Contact> contacts = new ArrayList<>();
         for(Contact c : Contact.getAll()){
-            c.assessments = Assessment.findByContact(c);
+            c.clinicalAssessments = Assessment.findClinicalByContact(c);
+            c.nonClinicalAssessments = Assessment.findNonClinicalByContact(c);
             c.stables = Stable.findByContact(c);
             c.enhanceds = Enhanced.findByContact(c);
             c.id = "";

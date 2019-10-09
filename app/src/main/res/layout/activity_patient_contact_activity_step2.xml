@@ -67,10 +67,36 @@
                 android:dividerHeight="7.0sp"/>
         <TextView
                 style="@style/TextViewLabel"
-                android:text="Assessment"
+                android:text="Clinical Assessment"
         />
         <ListView
-                android:id="@+id/assessment"
+                android:id="@+id/clinicalAssessments"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/input_side_margin"
+                android:layout_marginEnd="@dimen/input_side_margin"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="7.0sp"/>
+        <TextView
+                style="@style/TextViewLabel"
+                android:text="Non Clinical Assessment"
+        />
+        <ListView
+                android:id="@+id/nonClinicalAssessments"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/input_side_margin"
+                android:layout_marginEnd="@dimen/input_side_margin"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="7.0sp"/>
+        <TextView
+                style="@style/TextViewLabel"
+                android:text="Services Offered"
+        />
+        <ListView
+                android:id="@+id/servicesOffered"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="12dp"

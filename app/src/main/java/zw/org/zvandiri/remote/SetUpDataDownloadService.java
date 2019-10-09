@@ -70,6 +70,7 @@ public class SetUpDataDownloadService extends IntentService{
         ArvMedicine.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         HospCause.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ReasonForNotReachingOLevel.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
+        ServiceOffered.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         //Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
     }
 }

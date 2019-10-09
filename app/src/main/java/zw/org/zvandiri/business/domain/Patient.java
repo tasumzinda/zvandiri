@@ -331,7 +331,6 @@ public class Patient extends Model implements Serializable {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("Response", response);
                         List<Patient> itemList = Arrays.asList(AppUtil.createGson().fromJson(response, Patient[].class));
                         for (Patient item : itemList) {
                             Patient checkDuplicate = Patient.getById(item.id);
@@ -348,9 +347,11 @@ public class Patient extends Model implements Serializable {
                                         item.sex = 3;
                                 }
                                 item.save();
-                                //Log.d("Patient", AppUtil.createGson().toJson(item));
+                            }else {
+                                checkDuplicate.active = item.active;
+                                checkDuplicate.deleted = item.deleted;
+                                checkDuplicate.save();
                             }
-
                         }
                         isFinished = false;
                     }
