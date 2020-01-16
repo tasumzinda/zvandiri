@@ -25,7 +25,7 @@ public class PatientAdapter extends ArrayAdapter<Patient> {
     TextView name;
 
     public PatientAdapter(Context context, ArrayList<Patient> list){
-        super(context, R.layout.list_view_item, list);
+        super(context, R.layout.patient_item, list);
         this.context = context;
         this.list = list;
     }

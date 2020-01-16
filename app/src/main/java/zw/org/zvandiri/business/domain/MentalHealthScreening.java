@@ -6,10 +6,10 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
-import zw.org.zvandiri.business.domain.util.IdentifiedRisk;
-import zw.org.zvandiri.business.domain.util.MentalScreenResult;
-import zw.org.zvandiri.business.domain.util.YesNo;
+import zw.org.zvandiri.business.domain.util.*;
+import zw.org.zvandiri.business.domain.util.Referral;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,40 +23,57 @@ public class MentalHealthScreening extends Model {
     public String id;
 
     @Column
-    @Expose
     public Patient patient;
 
     @Column
     @Expose
     public YesNo screenedForMentalHealth;
-
     @Column
     @Expose
-    public IdentifiedRisk identifiedRisk;
-
+    public Screening screening;
     @Column
     @Expose
-    public ActionTaken actionTaken;
-
+    public YesNo risk;
+    @Expose
+    public List<IdentifiedRisk> identifiedRisks;
+    @Expose
+    @Column
+    public YesNo support;
+    @Expose
+    public List<Support> supports;
     @Column
     @Expose
-    public String actionTakenText;
-
+    public YesNo referral;
+    @Expose
+    public List<Referral> referrals;
+    @Expose
+    @Column
+    public YesNo diagnosis;
+    @Expose
+    public List<Diagnosis> diagnoses;
+    @Expose
+    @Column
+    public String otherDiagnosis;
+    @Expose
+    @Column
+    public YesNo intervention;
+    @Expose
+    public List<Intervention> interventions;
     @Column
     @Expose
-    public MentalScreenResult mentalScreenResult;
-
+    public String otherIntervention;
+    @Column
+    public int pushed = 0;
+    @Column(name = "is_new")
+    public int isNew = 0;
+    @Expose
+    public String patientId;
     @Column
     @Expose
-    public ActionTaken rescreenActionTaken;
-
+    public Date dateScreened;
     @Column
     @Expose
-    public String rescreenActionTakenText;
-
-    @Column
-    @Expose
-    public IdentifiedRisk rescreenIdentifiedRisk;
+    public YesNo referralComplete;
 
     public static MentalHealthScreening getItem(Long id) {
         return new Select()

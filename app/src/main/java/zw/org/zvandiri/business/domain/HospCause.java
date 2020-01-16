@@ -97,7 +97,6 @@ public class HospCause extends Model {
                         for(HospCause hospCause : hospCauseList){
                             HospCause checkDuplicate = HospCause.getItem(hospCause.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving hospCause", hospCause.name);
                                 hospCause.save();
                             }
 

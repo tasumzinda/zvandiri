@@ -47,6 +47,7 @@ public class SetUpDataDownloadService extends IntentService{
 
 
     public  void fetchStatic(){
+        LabTask.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         InternalReferral.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ExternalReferral.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         Assessment.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
@@ -71,6 +72,7 @@ public class SetUpDataDownloadService extends IntentService{
         HospCause.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ReasonForNotReachingOLevel.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         ServiceOffered.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
+        //User.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         //Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
     }
 }

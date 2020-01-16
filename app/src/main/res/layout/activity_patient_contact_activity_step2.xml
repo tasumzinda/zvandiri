@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+<LinearLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -26,7 +30,7 @@
         <ListView
                 android:id="@+id/stable"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="@dimen/input_side_margin"
                 android:layout_marginEnd="@dimen/input_side_margin"
@@ -42,7 +46,7 @@
         <ListView
                 android:id="@+id/enhanced"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="@dimen/input_side_margin"
                 android:layout_marginEnd="@dimen/input_side_margin"
@@ -58,7 +62,7 @@
         <ListView
                 android:id="@+id/intensive"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="@dimen/input_side_margin"
                 android:layout_marginEnd="@dimen/input_side_margin"
@@ -72,7 +76,7 @@
         <ListView
                 android:id="@+id/clinicalAssessments"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="@dimen/input_side_margin"
                 android:layout_marginEnd="@dimen/input_side_margin"
@@ -85,7 +89,29 @@
         <ListView
                 android:id="@+id/nonClinicalAssessments"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="@dimen/input_side_margin"
+                android:layout_marginEnd="@dimen/input_side_margin"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="7.0sp"/>
+        <TextView
+                style="@style/TextViewLabel"
+                android:text="@string/follow_up_label"
+        />
+        <Spinner
+                android:id="@+id/followUp"
+                style="@style/SpinnerStyle"
+                android:prompt="@string/prompt"
+        />
+        <TextView
+                style="@style/TextViewLabel"
+                android:text="Laboratory Requests"
+        />
+        <ListView
+                android:id="@+id/labTasks"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="@dimen/input_side_margin"
                 android:layout_marginEnd="@dimen/input_side_margin"
@@ -98,7 +124,7 @@
         <ListView
                 android:id="@+id/servicesOffered"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="@dimen/input_side_margin"
                 android:layout_marginEnd="@dimen/input_side_margin"
@@ -113,7 +139,170 @@
                 style="@style/SpinnerStyle"
                 android:prompt="@string/prompt"
         />
-
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/provinceContainer"
+                android:visibility="gone"
+                android:orientation="vertical">
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Region"
+            />
+            <Spinner
+                    android:id="@+id/province"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/districtContainer"
+                android:visibility="gone"
+                android:orientation="vertical">
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="District"
+            />
+            <Spinner
+                    android:id="@+id/district"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/userLevelContainer"
+                android:visibility="gone"
+                android:orientation="vertical">
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="User Level"
+            />
+            <Spinner
+                    android:id="@+id/userLevel"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Zvandiri Staff Member"
+            />
+            <Spinner
+                    android:id="@+id/referredPerson"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/testResultContainer"
+                android:visibility="gone"
+                android:orientation="vertical">
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Viral Load Results Available"
+            />
+            <Spinner
+                    android:id="@+id/vlResultsAvailable"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vlContainer"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Viral Load Date Taken"
+                />
+                <EditText
+                        android:id="@+id/vlDateTaken"
+                        style="@style/TextBoxStyle"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Viral Load Result"
+                />
+                <EditText
+                        android:id="@+id/vlResult"
+                        android:inputType="numberDecimal"
+                        style="@style/TextBoxStyle"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Viral Load Source"
+                />
+                <Spinner
+                        android:id="@+id/vlSource"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Viral Load Next Lab Due"
+                />
+                <EditText
+                        android:id="@+id/vlNextLab"
+                        style="@style/TextBoxStyle"
+                />
+            </LinearLayout>
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="CD4 Count Results Available"
+            />
+            <Spinner
+                    android:id="@+id/cd4ResultsAvailable"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cd4Container"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="CD4 Count Date Taken"
+                />
+                <EditText
+                        android:id="@+id/cd4DateTaken"
+                        style="@style/TextBoxStyle"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="CD4 Count Result"
+                />
+                <EditText
+                        android:id="@+id/cd4Result"
+                        android:inputType="numberDecimal"
+                        style="@style/TextBoxStyle"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="CD4 Count Source"
+                />
+                <Spinner
+                        android:id="@+id/cd4Source"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="CD4 Count Next Lab Due"
+                />
+                <EditText
+                        android:id="@+id/cd4NextLab"
+                        style="@style/TextBoxStyle"
+                />
+            </LinearLayout>
+        </LinearLayout>
         <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_next"
                 style="@style/ButtonStyle"
@@ -121,3 +310,4 @@
         />
     </LinearLayout>
 </LinearLayout>
+</ScrollView>

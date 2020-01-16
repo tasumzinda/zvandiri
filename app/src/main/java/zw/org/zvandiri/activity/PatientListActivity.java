@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -20,6 +23,7 @@ import zw.org.zvandiri.R;
 import zw.org.zvandiri.adapter.PatientAdapter;
 import zw.org.zvandiri.business.domain.DisabilityCategory;
 import zw.org.zvandiri.business.domain.Patient;
+import zw.org.zvandiri.business.domain.util.PatientChangeEvent;
 import zw.org.zvandiri.business.domain.util.YesNo;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
@@ -29,6 +33,7 @@ import zw.org.zvandiri.remote.SetUpDataDownloadService;
 import zw.org.zvandiri.toolbox.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -37,11 +42,12 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
 
     PatientAdapter patientAdapter;
     ProgressDialog progressDialog;
+    EditText search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.generic_list_view);
+        setContentView(R.layout.activity_patient_list);
         WVersionManager versionManager = new WVersionManager(this);
         versionManager.setVersionContentUrl("http://db.zvandiri.org/version.txt"); // your update content url, see the response format below
         versionManager.setUpdateUrl("http://db.zvandiri.org/zvandiri.apk");
@@ -54,6 +60,7 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
         listView.setEmptyView(findViewById(R.id.empty));
         listView.setAdapter(patientAdapter);
         patientAdapter.onDataSetChanged((ArrayList<Patient>) Patient.getAll());
+        search = (EditText) findViewById(R.id.search);
         setSupportActionBar(createToolBar("Patients"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView.setOnItemClickListener(this);
@@ -78,13 +85,33 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
                 startActivity(intent);
             }
         });
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String name = charSequence.toString();
+                List<Patient> patients = Patient.search(name);
+                patientAdapter.clear();
+                patientAdapter.addAll(patients);
+                patientAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Patient patient = (Patient) parent.getAdapter().getItem(position);
         Intent intent;
-        if (patient.pushed == 1 && patient.hei.equals(YesNo.YES) && patient.motherOfHei == null) {
+        if (patient.pushed == 1 && patient.hei != null && patient.hei.equals(YesNo.YES) && patient.motherOfHei == null) {
             intent = new Intent(PatientListActivity.this, HeuMotherDetailsActivity.class);
             intent.putExtra(AppUtil.ID, patient.getId());
             String name = patient.name != null ? patient.name : patient.firstName + " " + patient.lastName;
@@ -93,8 +120,10 @@ public class PatientListActivity extends BaseActivity implements AdapterView.OnI
             finish();
         } else {
             if (patient.pushed == 1) {
-                AppUtil.createShortNotification(this, "Please upload patient to server before performing any operation on the patient");
-            } else {
+                AppUtil.createShortNotification(this, "Please upload client to server before performing any operation on the patient");
+            } else if(!patient.active || patient.status.equals(PatientChangeEvent.DECEASED)) {
+                AppUtil.createShortNotification(this, "This client is no longer active in the database!");
+            }else {
                 intent = new Intent(PatientListActivity.this, SelectionActivity.class);
                 intent.putExtra(AppUtil.ID, patient.id);
                 String name = patient.name != null ? patient.name : patient.firstName + " " + patient.lastName;

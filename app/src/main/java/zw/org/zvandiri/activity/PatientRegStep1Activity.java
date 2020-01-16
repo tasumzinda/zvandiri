@@ -176,8 +176,8 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
             disabilityCategorysId =  holder.disabilityCategorysId;
             disability = holder.disability;
             cat = holder.cat;
-            consentToMHealth = holder.consentToMHealth;
-            consentToPhoto = holder.consentToPhoto;
+            /*consentToMHealth = holder.consentToMHealth;
+            consentToPhoto = holder.consentToPhoto;*/
             youngMumGroup = holder.youngMumGroup;
         }
         next.setOnClickListener(this);
@@ -235,8 +235,8 @@ public class PatientRegStep1Activity  extends BaseActivity implements View.OnCli
                     holder.disabilityCategorysId = disabilityCategorysId;
                     holder.disability = disability;
                     holder.cat = cat;
-                    holder.consentToMHealth = consentToMHealth;
-                    holder.consentToPhoto = consentToPhoto;
+                    /*holder.consentToMHealth = consentToMHealth;
+                    holder.consentToPhoto = consentToPhoto;*/
                     holder.youngMumGroup = youngMumGroup;
                     Intent intent;
                     if(DateUtil.getMonths(holder.dateOfBirth) <= 18){

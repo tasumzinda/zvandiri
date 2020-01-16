@@ -68,9 +68,9 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
             youngMumGroupLabel.setVisibility(View.GONE);
         }
         youngMumGroupArrayAdapter.notifyDataSetChanged();
-        if(holder.consentToPhoto != null){
+        if(holder.cat != null){
             int i = 0;
-            for(YesNo m : YesNo.values()){
+            /*for(YesNo m : YesNo.values()){
                 if(holder.consentToPhoto != null && holder.consentToPhoto.equals(consentToPhoto.getItemAtPosition(i))){
                     consentToPhoto.setSelection(i);
                     break;
@@ -85,7 +85,7 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
                 }
                 i++;
             }
-            i = 0;
+            i = 0;*/
             for(YesNo m : YesNo.values()){
                 if(holder.cat != null && holder.cat.equals(cat.getItemAtPosition(i))){
                     cat.setSelection(i);
@@ -111,8 +111,8 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
     public void onBackPressed(){
         Intent intent = new Intent(PatientRegStep6Activity.this, PatientRegStep5ContActivity.class);
         holder.cat = (YesNo) cat.getSelectedItem();
-        holder.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
-        holder.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();
+        /*holder.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
+        holder.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();*/
         if(youngMumGroup.getVisibility() == View.VISIBLE){
             holder.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();
         }
@@ -128,8 +128,8 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
                 Intent intent = new Intent(PatientRegStep6Activity.this, PatientRegStep7Activity.class);
                 //save();
                 holder.cat = (YesNo) cat.getSelectedItem();
-                holder.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
-                holder.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();
+                /*holder.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
+                holder.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();*/
                 holder.pushed = 1;
                 if(youngMumGroup.getVisibility() == View.VISIBLE){
                     holder.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();
@@ -160,8 +160,8 @@ public class PatientRegStep6Activity extends BaseActivity implements View.OnClic
 
     public void save(){
         holder.cat = (YesNo) cat.getSelectedItem();
-        holder.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
-        holder.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();
+        /*holder.consentToMHealth = (YesNo) consentToMHealth.getSelectedItem();
+        holder.consentToPhoto = (YesNo) consentToPhoto.getSelectedItem();*/
         holder.pushed = 1;
         if(youngMumGroup.getVisibility() == View.VISIBLE){
             holder.youngMumGroup = (YesNo) youngMumGroup.getSelectedItem();

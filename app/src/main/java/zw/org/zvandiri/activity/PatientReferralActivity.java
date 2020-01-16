@@ -89,6 +89,9 @@ public class PatientReferralActivity extends BaseActivity implements View.OnClic
             }
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
+        referralDate.setFocusable(false);
+        dateAttended.setFocusable(false);
+        expectedVisitDate.setFocusable(false);
         referralDate.setOnClickListener(this);
         dateAttended.setOnClickListener(this);
         expectedVisitDate.setOnClickListener(this);

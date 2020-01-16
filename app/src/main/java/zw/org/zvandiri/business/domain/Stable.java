@@ -105,7 +105,6 @@ public class Stable extends Model implements Serializable{
                         for (Stable stable: stableList) {
                             Stable checkDuplicate = Stable.getItem(stable.id);
                             if(checkDuplicate == null){
-                                Log.d("Getting Stable", stable.name);
                                 stable.save();
                             }
 

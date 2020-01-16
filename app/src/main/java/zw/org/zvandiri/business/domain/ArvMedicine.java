@@ -104,7 +104,6 @@ public class ArvMedicine extends Model {
                         for(ArvMedicine arvMedicine : arvMedicineList){
                             ArvMedicine checkDuplicate = ArvMedicine.getItem(arvMedicine.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving Arv Medicine", arvMedicine.name);
                                 arvMedicine.save();
                             }
 

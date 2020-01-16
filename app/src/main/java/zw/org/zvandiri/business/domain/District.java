@@ -140,7 +140,6 @@ public class District extends Model implements Serializable{
                                 District checkDuplicate = District.getItem(jsonObject.getString("id"));
                                 if(checkDuplicate == null){
                                     district.save();
-                                    Log.d("Created district", district.name);
                                 }
 
                             }catch (JSONException ex){

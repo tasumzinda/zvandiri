@@ -27,11 +27,6 @@
                 style="@style/ButtonStyle"
         />
         <android.support.v7.widget.AppCompatButton
-                android:id="@+id/lab_results"
-                android:text="Lab Results"
-                style="@style/ButtonStyle"
-        />
-        <android.support.v7.widget.AppCompatButton
                 android:id="@+id/operations"
                 android:text="Operations"
                 style="@style/ButtonStyle"

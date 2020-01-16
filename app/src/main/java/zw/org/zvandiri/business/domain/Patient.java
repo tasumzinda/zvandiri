@@ -184,7 +184,7 @@ public class Patient extends Model implements Serializable {
     @Expose
     @Column(name = "hiv_status_known")
     public YesNo hivStatusKnown;
-    @Expose
+    /*@Expose
     @Column(name = "photo")
     public String photo;
     @Expose
@@ -198,9 +198,9 @@ public class Patient extends Model implements Serializable {
     public PatientChangeEvent status;
     @Expose
     @Column(name = "selfConsent")
-    public YesNo selfConsent;
+    public YesNo selfConsent;*/
     @Expose
-    public List<DisabilityCategory> disabilityCategorys;
+    public List<PatientDisability> disabilityCategorys;
     public ArrayList<String> disabilityCategorysId;
     @Expose
     @Column(name = "refererName")
@@ -231,6 +231,9 @@ public class Patient extends Model implements Serializable {
     @Column
     @Expose
     public YesNo selfPrimaryCareGiver;
+    @Column
+    @Expose
+    public PatientChangeEvent status;
 
     /*
     Dummy column to save gender as an integer in order to ease database queries where gender is required as a parameter
@@ -282,6 +285,13 @@ public class Patient extends Model implements Serializable {
         return new Select()
                 .from(Patient.class)
                 .orderBy("name ASC")
+                .execute();
+    }
+
+    public static List<Patient> search(String name) {
+        return new Select()
+                .from(Patient.class)
+                .where("name LIKE ?", new String[] {'%' + name + '%'})
                 .execute();
     }
 
@@ -349,7 +359,7 @@ public class Patient extends Model implements Serializable {
                                 item.save();
                             }else {
                                 checkDuplicate.active = item.active;
-                                checkDuplicate.deleted = item.deleted;
+                                checkDuplicate.status = item.status;
                                 checkDuplicate.save();
                             }
                         }

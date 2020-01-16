@@ -112,7 +112,6 @@ public class ActionTaken extends Model implements Serializable{
                         for (ActionTaken actionTaken : actionTakenList) {
                             ActionTaken checkDuplicate = ActionTaken.getItem(actionTaken.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving actionTaken", actionTaken.name);
                                 actionTaken.save();
                             }
 

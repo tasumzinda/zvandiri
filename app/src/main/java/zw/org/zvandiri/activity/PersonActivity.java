@@ -39,7 +39,7 @@ public class PersonActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
-        setSupportActionBar(createToolBar("Create/Edit Person"));
+        setSupportActionBar(createToolBar("Create/Edit Index"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         nameOfClient = (EditText) findViewById(R.id.nameOfClient);
         age = (EditText) findViewById(R.id.age);
@@ -143,5 +143,11 @@ public class PersonActivity extends BaseActivity implements View.OnClickListener
             selectedTextView.setError(null);
         }
         return isValid;
+    }
+
+    public void onBackPressed(){
+        Intent intent = new Intent(this, PersonListActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -113,7 +113,6 @@ public class Substance extends Model {
                             Substance checkDuplicate = Substance.getItem(substance.id);
                             if(checkDuplicate == null){
                                 substance.save();
-                                Log.d("Save substance", substance.name);
                             }
 
                         }

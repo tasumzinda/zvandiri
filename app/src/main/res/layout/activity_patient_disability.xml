@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <include layout="@layout/toolbar"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_top"
+                android:paddingLeft="@dimen/input_side_margin"
+                android:paddingRight="@dimen/input_side_margin"
+                android:paddingTop="@dimen/margin_top">
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Disability Category"
+            />
+            <Spinner
+                    android:id="@+id/disabilityCategory"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Disability Severity"
+            />
+            <Spinner
+                    android:id="@+id/disabilitySeverity"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Screened?"
+            />
+            <Spinner
+                    android:id="@+id/screened"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Date Screened"
+            />
+            <EditText
+                    android:id="@+id/dateScreened"
+                    style="@style/TextBoxStyle"
+            />
+            <Button
+                    android:id="@+id/save"
+                    style="@style/ButtonStyle"
+                    android:text="Save" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

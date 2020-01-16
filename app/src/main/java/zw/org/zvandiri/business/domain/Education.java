@@ -137,7 +137,6 @@ public class Education extends Model implements Serializable{
                         for (Education education : educationList) {
                             Education checkDuplicate = Education.getItem(education.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving Education", education.name);
                                 education.save();
                             }
 

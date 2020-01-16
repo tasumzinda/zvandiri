@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import zw.org.zvandiri.R;
+import zw.org.zvandiri.business.domain.Patient;
 import zw.org.zvandiri.business.util.AppUtil;
 
 /**
@@ -20,6 +21,7 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
     private CardView mentalHealth;
     private CardView mortality;
     private CardView tbIpt;
+    private CardView disability;
     private String id;
     private String name;
 
@@ -32,15 +34,18 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
         mentalHealth = (CardView) findViewById(R.id.card_mental_health);
         mortality = (CardView) findViewById(R.id.card_mortality);
         tbIpt = (CardView) findViewById(R.id.tb_ipt);
+        disability = (CardView) findViewById(R.id.disability);
         Intent intent = getIntent();
         id = intent.getStringExtra(AppUtil.ID);
+        Patient patient = Patient.getById(id);
         name = intent.getStringExtra(AppUtil.NAME);
         contact.setOnClickListener(this);
         referral.setOnClickListener(this);
         mentalHealth.setOnClickListener(this);
         mortality.setOnClickListener(this);
         tbIpt.setOnClickListener(this);
-        setSupportActionBar(createToolBar(name + "'s Dashboard"));
+        disability.setOnClickListener(this);
+        setSupportActionBar(createToolBar(patient + "'s Dashboard"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -86,6 +91,13 @@ public class SelectionActivity extends BaseActivity implements View.OnClickListe
         }
         if(view.getId() == tbIpt.getId()){
             Intent intent = new Intent(this, TbIptListActivity.class);
+            intent.putExtra(AppUtil.NAME, name);
+            intent.putExtra(AppUtil.ID, id);
+            startActivity(intent);
+            finish();
+        }
+        if(view.getId() == disability.getId()){
+            Intent intent = new Intent(this, PatientDisabilityListActivity.class);
             intent.putExtra(AppUtil.NAME, name);
             intent.putExtra(AppUtil.ID, id);
             startActivity(intent);

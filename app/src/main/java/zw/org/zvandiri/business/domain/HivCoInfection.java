@@ -58,7 +58,6 @@ public class HivCoInfection extends Model {
                         for (HivCoInfection hivCoInfection: hivCoInfectionList) {
                             HivCoInfection checkDuplicate = HivCoInfection.getItem(hivCoInfection.id);
                             if(checkDuplicate == null){
-                                Log.d("Getting  hivCoInfection", hivCoInfection.name);
                                 hivCoInfection.save();
                             }
 

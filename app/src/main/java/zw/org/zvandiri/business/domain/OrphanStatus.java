@@ -97,7 +97,6 @@ public class OrphanStatus extends Model {
                         for (OrphanStatus orphanStatus: orphanStatusList) {
                             OrphanStatus checkDuplicate = OrphanStatus.getItem(orphanStatus.id);
                             if(checkDuplicate == null){
-                                Log.d("Getting  orphanStatus", orphanStatus.name);
                                 orphanStatus.save();
                             }
 

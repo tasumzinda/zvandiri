@@ -98,7 +98,6 @@ public class Referer extends Model implements Serializable{
                         for (Referer referer: refererList) {
                             Referer checkDuplicate = Referer.getItem(referer.id);
                             if(checkDuplicate == null){
-                                Log.d("Getting  referer", referer.name);
                                 referer.save();
                             }
 

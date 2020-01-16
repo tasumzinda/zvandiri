@@ -58,7 +58,6 @@ public class HivSelfTestingActivity extends BaseActivity implements View.OnClick
         artInitiation.setAdapter(yesNoArrayAdapter);
         if(itemId != 0L){
             item = HivSelfTesting.getItem(itemId);
-            Log.d("Item", AppUtil.createGson().toJson(item));
             int i = 0;
             for(YesNo m : YesNo.values()){
                 if(item.selfTestKitDistributed != null && item.selfTestKitDistributed.equals(selfTestKitDistributed.getItemAtPosition(i))){
@@ -129,6 +128,13 @@ public class HivSelfTestingActivity extends BaseActivity implements View.OnClick
         item.confirmatoryTestingResult = (Result) confirmatoryTestingResult.getSelectedItem();
         item.save();
         AppUtil.createShortNotification(this, "Saved successfully!");
+        Intent intent = new Intent(this, HivSelfTestingListActivity.class);
+        intent.putExtra(AppUtil.ID, person.getId());
+        startActivity(intent);
+        finish();
+    }
+
+    public void onBackPressed(){
         Intent intent = new Intent(this, HivSelfTestingListActivity.class);
         intent.putExtra(AppUtil.ID, person.getId());
         startActivity(intent);

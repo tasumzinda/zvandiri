@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "tb_ipt_symptom", id = "_id")
 public class TbIptTbSymptomContract extends Model {
 
+    @Expose
     @Column(name = "tb_ipt")
     public TbIpt tbIpt;
 
@@ -27,7 +28,7 @@ public class TbIptTbSymptomContract extends Model {
         super();
     }
 
-    public static List<TbIptTbSymptomContract> findByTbIpt(Contact c){
+    public static List<TbIptTbSymptomContract> findByTbIpt(TbIpt c){
         return new Select()
                 .from(TbIptTbSymptomContract.class)
                 .where("tb_ipt = ?", c.getId())

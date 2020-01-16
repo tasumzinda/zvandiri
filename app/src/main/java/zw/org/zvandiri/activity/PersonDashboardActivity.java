@@ -15,7 +15,6 @@ import zw.org.zvandiri.toolbox.Log;
 public class PersonDashboardActivity extends BaseActivity implements View.OnClickListener {
 
     CardView selfTesting;
-    CardView tbScreening;
     Long id;
 
     @Override
@@ -25,9 +24,7 @@ public class PersonDashboardActivity extends BaseActivity implements View.OnClic
         setSupportActionBar(createToolBar("Person Dashboard"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         selfTesting = (CardView) findViewById(R.id.card_testing);
-        tbScreening = (CardView) findViewById(R.id.card_screening);
         selfTesting.setOnClickListener(this);
-        tbScreening.setOnClickListener(this);
         Intent intent = getIntent();
         id = intent.getLongExtra(AppUtil.ID, 0L);
     }
@@ -37,9 +34,6 @@ public class PersonDashboardActivity extends BaseActivity implements View.OnClic
         Intent intent = null;
         if(v.getId() == selfTesting.getId()){
             intent = new Intent(this, HivSelfTestingListActivity.class);
-        }
-        if(v.getId() == tbScreening.getId()){
-            intent = new Intent(this, TbScreeningListActivity.class);
         }
         intent.putExtra(AppUtil.ID, id);
         startActivity(intent);

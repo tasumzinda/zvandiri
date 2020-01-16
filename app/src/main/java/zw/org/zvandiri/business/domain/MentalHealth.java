@@ -93,7 +93,6 @@ public class MentalHealth extends Model {
                         for(MentalHealth mentalHealth : mentalHealthList){
                             MentalHealth checkDuplicate = MentalHealth.getItem(mentalHealth.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving MentalHealth", mentalHealth.name);
                                 mentalHealth.save();
                             }
 

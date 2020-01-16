@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import zw.org.zvandiri.business.domain.util.CauseOfDeath;
 import zw.org.zvandiri.business.domain.util.YesNo;
 
@@ -15,22 +16,6 @@ import java.util.List;
 
 @Table(name = "mortality", id = "_id")
 public class Mortality extends Model implements Serializable {
-
-    @Expose
-    @Column(name = "uuid")
-    public String uuid;
-    @Expose
-    @Column(name = "version")
-    public Long version;
-
-    @Expose
-    @Column(name = "active")
-    public Boolean active;
-
-    @Expose
-    @Column(name = "deleted")
-    public Boolean deleted;
-
     @Expose
     @Column(name = "id")
     public String id;
@@ -55,7 +40,7 @@ public class Mortality extends Model implements Serializable {
     public Date datePutOnEnhancedCare;
     @Expose
     @Column
-    public String caseBackground;
+    public String descriptionOfCase;
     @Expose
     @Column
     public String careProvided;
@@ -73,16 +58,22 @@ public class Mortality extends Model implements Serializable {
     public String cats;
     @Expose
     @Column
-    public String zm;
+    public YesNo contactWithZM;
     @Expose
     @Column
-    public String others;
+    public Date dateOfContactWithZim;
+    @Expose
+    @Column
+    public String other;
     @Expose
     @Column
     public String learningPoints;
     @Expose
     @Column
     public String actionPlan;
+    @Expose
+    @Column
+    public String zm;
 
     public static Mortality getItem(Long id) {
         return new Select()

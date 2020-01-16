@@ -121,7 +121,7 @@ public class PatientRegStep7Activity extends BaseActivity implements View.OnClic
             }else{
 
             }
-            intent = new Intent(this, PersonListActivity.class);
+            intent = new Intent(this, PatientListActivity.class);
             startActivity(intent);
             finish();
 
@@ -170,9 +170,6 @@ public class PatientRegStep7Activity extends BaseActivity implements View.OnClic
                 contract.id = UUIDGen.generateUUID();
                 contract.save();
             }
-        }
-        for (DisabilityCategory i : DisabilityCategory.findByPatient(Patient.findById(patientId))) {
-            Log.d("Diasbility category", AppUtil.createGson().toJson(i));
         }
         return item.getId();
 

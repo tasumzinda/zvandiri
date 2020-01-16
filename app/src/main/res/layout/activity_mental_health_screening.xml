@@ -10,7 +10,7 @@
         <include layout="@layout/toolbar"/>
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/margin_top"
                 android:paddingLeft="@dimen/input_side_margin"
@@ -25,76 +25,175 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Identified Risk"
-            />
-            <Spinner
-                    android:id="@+id/identifiedRisk"
-                    style="@style/SpinnerStyle"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Action Taken"
-            />
-            <Spinner
-                    android:id="@+id/actionTaken"
-                    style="@style/SpinnerStyle"
-                    android:prompt="@string/prompt"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Action Taken(Other)"
-            />
-            <EditText
-                    android:id="@+id/actionTakenText"
-                    style="@style/TextBoxStyle"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Result"
-            />
-            <Spinner
-                    android:id="@+id/mentalScreenResult"
-                    style="@style/SpinnerStyle"
-                    android:prompt="@string/prompt"
-            />
             <LinearLayout
-                    android:id="@+id/rescreen"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/margin_top"
-                    android:paddingLeft="@dimen/input_side_margin"
-                    android:paddingRight="@dimen/input_side_margin"
-                    android:paddingTop="@dimen/margin_top">
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Identified Risk"
-            />
-            <Spinner
-                    android:id="@+id/rescreenIdentifiedRisk"
-                    style="@style/SpinnerStyle"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Action Taken"
-            />
-            <Spinner
-                    android:id="@+id/rescreenActionTaken"
-                    style="@style/SpinnerStyle"
-                    android:prompt="@string/prompt"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Action Taken(Other)"
-            />
-            <EditText
-                    android:id="@+id/rescreenActionTakenText"
-                    style="@style/TextBoxStyle"
-            />
+                    android:layout_height="match_parent"
+                    android:id="@+id/container"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Date Screened"
+                />
+                <EditText
+                        android:id="@+id/dateScreened"
+                        style="@style/TextBoxStyle"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Mental health screening"
+                />
+                <ListView
+                        android:id="@+id/screening"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginStart="@dimen/input_side_margin"
+                        android:layout_marginEnd="@dimen/input_side_margin"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="7.0sp"/>
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Risk"
+                />
+                <Spinner
+                        android:id="@+id/risk"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <ListView
+                        android:id="@+id/identifiedRisks"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginStart="@dimen/input_side_margin"
+                        android:layout_marginEnd="@dimen/input_side_margin"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="7.0sp"/>
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Support"
+                />
+                <Spinner
+                        android:id="@+id/support"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <ListView
+                        android:id="@+id/supports"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginStart="@dimen/input_side_margin"
+                        android:layout_marginEnd="@dimen/input_side_margin"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="7.0sp"/>
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Referral"
+                />
+                <Spinner
+                        android:id="@+id/referral"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <ListView
+                        android:id="@+id/referrals"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginStart="@dimen/input_side_margin"
+                        android:layout_marginEnd="@dimen/input_side_margin"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="7.0sp"/>
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:id="@+id/completeLabel"
+                        android:visibility="gone"
+                        android:text="Referral Complete?"
+                />
+                <Spinner
+                        android:id="@+id/referralComplete"
+                        android:visibility="gone"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Diagnosis"
+                />
+                <Spinner
+                        android:id="@+id/diagnosis"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/diagnosisContainer"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                    <ListView
+                            android:id="@+id/diagnoses"
+                            android:layout_width="match_parent"
+                            android:layout_height="220dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="@dimen/input_side_margin"
+                            android:layout_marginEnd="@dimen/input_side_margin"
+                            android:divider="@android:color/transparent"
+                            android:dividerHeight="7.0sp"/>
+                    <TextView
+                            style="@style/TextViewLabel"
+                            android:id="@+id/otherDiagnosisLabel"
+                            android:visibility="gone"
+                            android:text="Other"
+                    />
+                    <EditText
+                            android:id="@+id/otherDiagnosis"
+                            android:visibility="gone"
+                            style="@style/TextBoxStyle"
+                    />
+                </LinearLayout>
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Intervention"
+                />
+                <Spinner
+                        android:id="@+id/intervention"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/interventionContainer"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                    <ListView
+                            android:id="@+id/interventions"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="@dimen/input_side_margin"
+                            android:layout_marginEnd="@dimen/input_side_margin"
+                            android:divider="@android:color/transparent"
+                            android:dividerHeight="7.0sp"/>
+                    <TextView
+                            style="@style/TextViewLabel"
+                            android:id="@+id/otherInterventionLabel"
+                            android:visibility="gone"
+                            android:text="Other"
+                    />
+                    <EditText
+                            android:id="@+id/otherIntervention"
+                            android:visibility="gone"
+                            style="@style/TextBoxStyle"
+                    />
+                </LinearLayout>
             </LinearLayout>
+
             <Button
                     android:id="@+id/save"
                     style="@style/ButtonStyle"

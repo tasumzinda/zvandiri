@@ -78,7 +78,10 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void updateLabel(Date date, EditText editText){
-        editText.setText(DateUtil.getStringFromDate(date));
+        if(date != null) {
+            editText.setText(DateUtil.getStringFromDate(date));
+        }
+
     }
 
     public boolean validate(EditText [] fields){

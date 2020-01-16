@@ -206,7 +206,7 @@ public class RemoteJobService extends JobService {
     public List<Patient> getAllPatients(){
         final List<Patient> patients = new ArrayList<>();
         for(Patient c : Patient.findByPushed()){
-            c.disabilityCategorys = DisabilityCategory.findByPatient(c);
+            //c.disabilityCategorys = DisabilityCategory.findByPatient(c);
             c.id = "";
             patients.add(c);
         }

@@ -8,6 +8,7 @@ import android.widget.*;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.domain.TbIpt;
 import zw.org.zvandiri.business.domain.Patient;
+import zw.org.zvandiri.business.domain.TbIptTbSymptomContract;
 import zw.org.zvandiri.business.domain.TbTreatmentOutcome;
 import zw.org.zvandiri.business.domain.util.TbIdentificationOutcome;
 import zw.org.zvandiri.business.domain.util.TbSymptom;
@@ -31,6 +32,10 @@ public class TbIptActivity extends BaseActivity implements View.OnClickListener 
     EditText dateStartedIpt;
     private ListView tbSymptoms;
     Button save;
+    LinearLayout dateScreenedContainer;
+    LinearLayout tbIdentificationOutcomeContainer;
+    LinearLayout dateStartedTreatmentContainer;
+    LinearLayout dateStartedIptContainer;
     Patient patient;
     TbIpt item;
     ArrayAdapter<YesNo> yesNoArrayAdapter;
@@ -60,6 +65,10 @@ public class TbIptActivity extends BaseActivity implements View.OnClickListener 
         referredForIpt = (Spinner) findViewById(R.id.referredForIpt);
         onIpt = (Spinner) findViewById(R.id.onIpt);
         dateStartedIpt = (EditText) findViewById(R.id.dateStartedIpt);
+        dateScreenedContainer = (LinearLayout) findViewById(R.id.dateScreenedContainer);
+        dateStartedTreatmentContainer = (LinearLayout) findViewById(R.id.dateStartedTreatmentContainer);
+        dateStartedIptContainer = (LinearLayout) findViewById(R.id.dateStartedIptContainer);
+        tbIdentificationOutcomeContainer = (LinearLayout) findViewById(R.id.tbIdentificationOutcomeContainer);
         yesNoArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, YesNo.values());
         yesNoArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         screenedForTb.setAdapter(yesNoArrayAdapter);
@@ -115,28 +124,142 @@ public class TbIptActivity extends BaseActivity implements View.OnClickListener 
         );
         dateStartedIpt.setFocusable(false);
         dateStartedIpt.setOnClickListener(this);
+        screenedForTb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getItemAtPosition(i).equals(YesNo.YES)) {
+                    dateScreenedContainer.setVisibility(View.VISIBLE);
+                }else {
+                    dateScreenedContainer.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        identifiedWithTb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getItemAtPosition(i).equals(YesNo.YES)) {
+                    tbIdentificationOutcomeContainer.setVisibility(View.VISIBLE);
+                }else {
+                    tbIdentificationOutcomeContainer.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        tbIdentificationOutcome.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getItemAtPosition(i).equals(TbIdentificationOutcome.ON_TB_TREATMENT)) {
+                    dateStartedTreatmentContainer.setVisibility(View.VISIBLE);
+                }else {
+                    dateStartedTreatmentContainer.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        onIpt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getItemAtPosition(i).equals(YesNo.YES)) {
+                    dateStartedIptContainer.setVisibility(View.VISIBLE);
+                }else {
+                    dateStartedIptContainer.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         if(itemId != 0L){
             item = TbIpt.getItem(itemId);
             int i = 0;
-            /*for(YesNo m : YesNo.values()){
-                if(item.receivingEnhancedCare != null && item.receivingEnhancedCare.equals(receivingEnhancedCare.getItemAtPosition(i))){
-                    receivingEnhancedCare.setSelection(i, true);
+            for(YesNo m : YesNo.values()){
+                if(item.screenedForTb != null && item.screenedForTb.equals(screenedForTb.getItemAtPosition(i))){
+                    screenedForTb.setSelection(i, true);
                     break;
                 }
                 i++;
             }
             i = 0;
-            updateLabel(item.dateScreened, dateOfDeath);
-            if(item.datePutOnEnhancedCare != null) {
-                updateLabel(item.datePutOnEnhancedCare, datePutOnEnhancedCare);
-            }*/
+            for(YesNo m : YesNo.values()){
+                if(item.identifiedWithTb != null && item.identifiedWithTb.equals(identifiedWithTb.getItemAtPosition(i))){
+                    identifiedWithTb.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(TbIdentificationOutcome m : TbIdentificationOutcome.values()){
+                if(item.tbIdentificationOutcome != null && item.tbIdentificationOutcome.equals(tbIdentificationOutcome.getItemAtPosition(i))){
+                    tbIdentificationOutcome.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(TbTreatmentOutcome m : TbTreatmentOutcome.values()){
+                if(item.tbTreatmentOutcome != null && item.tbTreatmentOutcome.equals(tbTreatmentOutcome.getItemAtPosition(i))){
+                    tbTreatmentOutcome.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(YesNo m : YesNo.values()){
+                if(item.referredForIpt != null && item.referredForIpt.equals(referredForIpt.getItemAtPosition(i))){
+                    referredForIpt.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(YesNo m : YesNo.values()){
+                if(item.onIpt != null && item.onIpt.equals(onIpt.getItemAtPosition(i))){
+                    onIpt.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            ArrayList<TbIptTbSymptomContract> tbSymptomContracts = (ArrayList<TbIptTbSymptomContract>) TbIptTbSymptomContract.findByTbIpt(item);
+            if(!tbSymptomContracts.isEmpty()) {
+                ArrayList<TbSymptom> symptoms = new ArrayList<>();
+                for (TbIptTbSymptomContract contract : tbSymptomContracts) {
+                    symptoms.add(contract.tbSymptom);
+                }
+                int count = symptomArrayAdapter.getCount();
+                for(i = 0; i < count; i++){
+                    TbSymptom current = symptomArrayAdapter.getItem(i);
+                    if(symptoms.contains(current)){
+                        tbSymptoms.setItemChecked(i, true);
+                    }
+                }
+            }
+            updateLabel(item.dateScreened, dateScreened);
+            updateLabel(item.dateStartedTreatment, dateStartedTreatment);
+            updateLabel(item.dateStartedIpt, dateStartedIpt);
             patient = item.patient;
+            id = patient.id;
             setSupportActionBar(createToolBar("Update TB/IPT Details For " + patient));
         }else{
             item = new TbIpt();
             patient = Patient.getById(id);
             setSupportActionBar(createToolBar("Add TB/IPT Details For " + patient));
         }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -154,7 +277,25 @@ public class TbIptActivity extends BaseActivity implements View.OnClickListener 
             item.patient = patient;
             item.screenedForTb = (YesNo) screenedForTb.getSelectedItem();
             item.dateScreened = DateUtil.getDateFromString(dateScreened.getText().toString());
+            item.identifiedWithTb = (YesNo) identifiedWithTb.getSelectedItem();
+            item.tbIdentificationOutcome = (TbIdentificationOutcome) tbIdentificationOutcome.getSelectedItem();
+            item.dateStartedTreatment = DateUtil.getDateFromString(dateStartedTreatment.getText().toString());
+            item.tbTreatmentOutcome = (TbTreatmentOutcome) tbTreatmentOutcome.getSelectedItem();
+            item.referredForIpt = (YesNo) referredForIpt.getSelectedItem();
+            item.onIpt = (YesNo) onIpt.getSelectedItem();
+            item.dateStartedIpt = DateUtil.getDateFromString(dateStartedIpt.getText().toString());
             item.save();
+            if(itemId != null) {
+                deleteMultipleSelections();
+            }
+            if(! getTbSymptoms().isEmpty()) {
+                for (TbSymptom symptom : getTbSymptoms()) {
+                    TbIptTbSymptomContract contract = new TbIptTbSymptomContract();
+                    contract.tbIpt = item;
+                    contract.tbSymptom = symptom;
+                    contract.save();
+                }
+            }
             AppUtil.createShortNotification(this, "Saved successfully!");
             Intent intent = new Intent(this, TbIptListActivity.class);
             intent.putExtra(AppUtil.ID, patient.id);
@@ -173,5 +314,19 @@ public class TbIptActivity extends BaseActivity implements View.OnClickListener 
             }
         }
         return a;
+    }
+
+    private void deleteMultipleSelections(){
+        for(TbIptTbSymptomContract c : TbIptTbSymptomContract.findByTbIpt(item)){
+            if(c != null)
+                c.delete();
+        }
+    }
+
+    public void onBackPressed(){
+        Intent intent = new Intent(this, TbIptListActivity.class);
+        intent.putExtra(AppUtil.ID, patient.id);
+        startActivity(intent);
+        finish();
     }
 }

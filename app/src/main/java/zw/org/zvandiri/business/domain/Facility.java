@@ -128,7 +128,6 @@ public class Facility extends Model implements Serializable{
                                 Facility checkDuplicate = Facility.getItem(jsonObject.getString("id"));
                                 if(checkDuplicate == null){
                                     facility.save();
-                                    Log.d("Created facility", facility.name);
                                 }
 
                             }catch (JSONException ex){

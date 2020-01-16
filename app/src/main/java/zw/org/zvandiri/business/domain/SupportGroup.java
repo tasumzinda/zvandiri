@@ -138,7 +138,6 @@ public class SupportGroup extends Model implements Serializable{
                                 SupportGroup checkDuplicate = SupportGroup.getItem(jsonObject.getString("id"));
                                 if(checkDuplicate == null){
                                     item.save();
-                                    Log.d("Support Group", item.name);
                                 }
 
                             }catch (JSONException ex){
@@ -146,7 +145,8 @@ public class SupportGroup extends Model implements Serializable{
                             }
 
                         }
-                        Patient.fetchRemote(context, userName, password);
+
+                        User.fetchRemote(context, userName, password);
                     }
                 },
                 new Response.ErrorListener() {

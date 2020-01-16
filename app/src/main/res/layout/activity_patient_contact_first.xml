@@ -10,10 +10,44 @@
             <include layout="@layout/toolbar"/>
             <TextView
                     style="@style/TextViewLabel"
+                    android:text="Visit Outcome"
+            />
+            <Spinner
+                    android:id="@+id/visitOutcome"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
                     android:text="@string/contactDate"
             />
             <EditText
                     android:id="@+id/contactDate"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Attended Clinic Appointment"
+            />
+            <Spinner
+                    android:id="@+id/attendedClinicAppointment"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Last Clinic Appointment Date"
+            />
+            <EditText
+                    android:id="@+id/lastClinicAppointmentDate"
+                    style="@style/TextBoxStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Next Clinic Appointment Date"
+            />
+            <EditText
+                    android:id="@+id/nextClinicAppointmentDate"
                     style="@style/TextBoxStyle"
             />
             <TextView
@@ -25,6 +59,39 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
+            <LinearLayout
+                    android:id="@+id/phoneOptionContainer"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Contact Type"
+                />
+                <Spinner
+                        android:id="@+id/contactPhoneOption"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+                <LinearLayout
+                        android:id="@+id/smsContainer"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    <TextView
+                            style="@style/TextViewLabel"
+                            android:text="Number of SMSes"
+                    />
+                    <EditText
+                            android:id="@+id/numberOfSms"
+                            android:inputType="number"
+                            style="@style/TextBoxStyle"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+
             <TextView
                     style="@style/TextViewLabel"
                     android:text="@string/position_label"
@@ -63,32 +130,7 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="@string/follow_up_label"
-            />
-            <Spinner
-                    android:id="@+id/followUp"
-                    style="@style/SpinnerStyle"
-                    android:prompt="@string/prompt"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Last Clinic Appointment Date"
-            />
-            <EditText
-                    android:id="@+id/lastClinicAppointmentDate"
-                    style="@style/TextBoxStyle"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Attended Clinic Appointment"
-            />
-            <Spinner
-                    android:id="@+id/attendedClinicAppointment"
-                    style="@style/SpinnerStyle"
-                    android:prompt="@string/prompt"
-            />
+
             <TextView
                     style="@style/TextViewLabel"
                     android:text="Client's Observations (What is the Client saying)"
@@ -112,6 +154,15 @@
             <EditText
                     android:id="@+id/plan"
                     style="@style/TextAreaStyle"
+            />
+            <TextView
+                    style="@style/TextViewLabel"
+                    android:text="Differentiated Service Delivery"
+            />
+            <Spinner
+                    android:id="@+id/differentiatedService"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
             />
             <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_save"

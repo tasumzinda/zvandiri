@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import zw.org.zvandiri.R;
 import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.toolbox.Log;
 
 public class LauncherActivity extends BaseActivity {
 

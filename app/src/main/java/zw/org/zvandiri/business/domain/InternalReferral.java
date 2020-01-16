@@ -108,7 +108,6 @@ public class InternalReferral extends Model implements Serializable{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("InternalReferral", error.toString());
                     }
                 }
         ){

@@ -112,7 +112,6 @@ public class EducationLevel extends Model implements Serializable{
                         for (EducationLevel educationLevel : educationLevelList) {
                             EducationLevel checkDuplicate = EducationLevel.getItem(educationLevel.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving EducationLevel", educationLevel.name);
                                 educationLevel.save();
                             }
 

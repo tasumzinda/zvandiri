@@ -243,7 +243,6 @@ public class ServicesReferred extends Model implements Serializable{
                     @Override
                     public void onResponse(JSONArray response) {
                         for(int i = 0; i < response.length(); i++){
-                            Log.d("Response", response.toString());
                             try{
                                 JSONObject jsonObject = response.getJSONObject(i);
                                 ServicesReferred item = new ServicesReferred();
@@ -264,7 +263,6 @@ public class ServicesReferred extends Model implements Serializable{
                                 ServicesReferred checkDuplicate = ServicesReferred.getItem(jsonObject.getString("id"));
                                 if(checkDuplicate == null){
                                     item.save();
-                                    Log.d("Created item", item.name);
                                 }
 
                             }catch (JSONException ex){

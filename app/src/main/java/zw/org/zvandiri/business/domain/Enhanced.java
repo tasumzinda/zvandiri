@@ -105,7 +105,6 @@ public class Enhanced extends Model implements Serializable{
                         for (Enhanced enhanced : enhancedList) {
                             Enhanced checkDuplicate = Enhanced.getItem(enhanced.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving Enhanced", enhanced.name);
                                 enhanced.save();
                             }
 

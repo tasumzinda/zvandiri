@@ -1,5 +1,6 @@
 package zw.org.zvandiri.business.util;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -8,9 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -26,6 +25,7 @@ import java.net.SocketTimeoutException;
 import java.security.cert.CertificateException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -37,8 +37,7 @@ public class AppUtil {
     public static String LOGGED_IN = "LOGGED_IN";
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";
-   // public static String BASE_URL = "http://db.zvandiri.org:8080/zvandiri-mobile/rest/mobile";
-    public static String BASE_URL = "http://192.168.100.120:8080/zvandiri-mobile/rest/mobile";
+    public static String BASE_URL = "http://db.zvandiri.org:8080/zvandiri-mobile/rest/mobile";
     public static String NAME = "NAME";
     public static String ID = "ID";
     public static String DETAILS_ID = "DETAILS_ID";
@@ -95,10 +94,6 @@ public class AppUtil {
 
     public static Gson createGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        /*new GraphAdapterBuilder()
-                .addType(Patient.class)
-                .addType(Contact.class)
-                .registerOn(gsonBuilder);*/
         gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd").create();
         return gson;
     }
@@ -232,8 +227,29 @@ public class AppUtil {
                 .build();
     }
 
+    public static HttpUrl getPushInvestigationTestUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/person/add-investigation-test")).newBuilder()
+                .build();
+    }
+
+    public static HttpUrl getPushTbIptUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/person/add-tb-ipt")).newBuilder()
+                .build();
+    }
+
+    public static HttpUrl getPushMentalHealthScreeningUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/person/add-mental-health-screening")).newBuilder()
+                .build();
+    }
+
     public static HttpUrl getPushPatientUrl(Context context) {
         return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-patient")).newBuilder()
+                //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))
+                .build();
+    }
+
+    public static HttpUrl getPushDisabilityUrl(Context context) {
+        return HttpUrl.parse(getBaseUrl(context).concat("/patient/add-disability")).newBuilder()
                 //.setQueryParameter("id", String.valueOf(AppUtil.getWebUserId(context)))
                 .build();
     }
@@ -359,7 +375,6 @@ public class AppUtil {
     public static String getResponeBody(OkHttpClient client, HttpUrl httpUrl, String json) {
         Response response = null;
         String result = "";
-        zw.org.zvandiri.toolbox.Log.d("Json", json);
         try {
             com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
                     .url(httpUrl)
@@ -387,4 +402,23 @@ public class AppUtil {
         return body;
     }
 
+    public static Integer parseInt(String value) {
+        try {
+            return Integer.parseInt(value);
+        }catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    public static Boolean spinnerError(Spinner spinner, String error){
+        View selectedView = spinner.getSelectedView();
+        Long index = spinner.getSelectedItemId();
+        if(index==0){
+            TextView selectedTextView = (TextView) selectedView;
+            selectedTextView.setError(error);
+            return false;
+        }
+        return true;
+
+    }
 }

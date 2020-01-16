@@ -21,6 +21,7 @@ import java.util.Date;
 
 public class PatientContactActivity extends BaseActivity implements View.OnClickListener {
 
+    private Spinner visitOutcome;
     private EditText contactDate;
     private EditText subjective;
     private EditText objective;
@@ -30,26 +31,35 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     private Spinner reason;
     private Spinner externalReferral;
     private Spinner internalReferral;
-    private Spinner followUp;
     TextView externalReferralLabel;
     TextView internalReferralLabel;
     private EditText lastClinicAppointmentDate;
+    private EditText nextClinicAppointmentDate;
     private Spinner attendedClinicAppointment;
+    private Spinner contactPhoneOption;
+    private LinearLayout phoneOptionContainer;
+    private EditText numberOfSms;
+    private LinearLayout smsContainer;
+    private Spinner differentiatedService;
     private Button save;
     private Contact item;
     private String id;
     private String name;
     private String itemID;
     DatePickerDialog dialog;
-    DatePickerDialog dialog1;
     Contact holder;
     ArrayList<String> stableId;
     ArrayList<String> enhancedId;
     ArrayList<String> nonClinicalAssessmentId;
     ArrayList<String> clinicalAssessmentId;
     ArrayList<String> serviceOfferedId;
+    ArrayList<String> labTaskId;
     CareLevel careLevel;
     String actionTakenId;
+    String referredPersonId;
+    private ArrayAdapter<VisitOutcome> visitOutcomeArrayAdapter;
+    private ArrayAdapter<ContactPhoneOption> contactPhoneOptionArrayAdapter;
+    private ArrayAdapter<DifferentiatedService> differentiatedServiceArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +78,17 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         internalReferral = (Spinner) findViewById(R.id.internalReferral);
         lastClinicAppointmentDate = (EditText) findViewById(R.id.lastClinicAppointmentDate);
         lastClinicAppointmentDate.setFocusable(false);
-        followUp = (Spinner) findViewById(R.id.followUp);
+        nextClinicAppointmentDate = (EditText) findViewById(R.id.nextClinicAppointmentDate);
+        nextClinicAppointmentDate.setFocusable(false);
         save = (Button) findViewById(R.id.btn_save);
         externalReferralLabel = (TextView) findViewById(R.id.externalReferralLabel);
         internalReferralLabel = (TextView) findViewById(R.id.internalReferralLabel);
+        visitOutcome = (Spinner) findViewById(R.id.visitOutcome);
+        contactPhoneOption = (Spinner) findViewById(R.id.contactPhoneOption);
+        phoneOptionContainer = (LinearLayout) findViewById(R.id.phoneOptionContainer);
+        numberOfSms = (EditText) findViewById(R.id.numberOfSms);
+        smsContainer = (LinearLayout) findViewById(R.id.smsContainer);
+        differentiatedService = (Spinner) findViewById(R.id.differentiatedService);
         Intent intent = getIntent();
         holder = (Contact) intent.getSerializableExtra("contact");
         id = intent.getStringExtra(AppUtil.ID);
@@ -101,39 +118,65 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         internalReferralArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         internalReferral.setAdapter(internalReferralArrayAdapter);
         internalReferralArrayAdapter.notifyDataSetChanged();
-        ArrayAdapter<FollowUp> followUpArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, FollowUp.values());
-        followUpArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        followUp.setAdapter(followUpArrayAdapter);
-        followUpArrayAdapter.notifyDataSetChanged();
-        dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                updateLabel(newDate.getTime(), contactDate);
-            }
-        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        );
+        visitOutcomeArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, VisitOutcome.values());
+        visitOutcomeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        visitOutcome.setAdapter(visitOutcomeArrayAdapter);
+        visitOutcomeArrayAdapter.notifyDataSetChanged();
+        contactPhoneOptionArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, ContactPhoneOption.values());
+        contactPhoneOptionArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contactPhoneOption.setAdapter(contactPhoneOptionArrayAdapter);
+        contactPhoneOptionArrayAdapter.notifyDataSetChanged();
+        differentiatedServiceArrayAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, DifferentiatedService.values());
+        differentiatedServiceArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        differentiatedService.setAdapter(differentiatedServiceArrayAdapter);
+        differentiatedServiceArrayAdapter.notifyDataSetChanged();
         contactDate.setOnClickListener(this);
-        dialog1 = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                updateLabel(newDate.getTime(), lastClinicAppointmentDate);
-            }
-        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        );
         lastClinicAppointmentDate.setOnClickListener(this);
+        nextClinicAppointmentDate.setOnClickListener(this);
+        location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Location selected = (Location) adapterView.getItemAtPosition(i);
+                if(selected.name.equalsIgnoreCase("Phone")) {
+                    phoneOptionContainer.setVisibility(View.VISIBLE);
+                }else {
+                    phoneOptionContainer.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        contactPhoneOption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ContactPhoneOption selected = (ContactPhoneOption) adapterView.getItemAtPosition(i);
+                if(selected.equals(ContactPhoneOption.SMS)) {
+                    smsContainer.setVisibility(View.VISIBLE);
+                }else{
+                    smsContainer.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         if(itemID != null){
             item = Contact.findById(itemID);
             updateLabel(item.contactDate, contactDate);
             subjective.setText(item.subjective);
             objective.setText(item.objective);
             plan.setText(item.plan);
+            numberOfSms.setText(item.numberOfSms);
             if(item.lastClinicAppointmentDate != null){
                 updateLabel(item.lastClinicAppointmentDate, lastClinicAppointmentDate);
+            }
+            if(item.nextClinicAppointmentDate != null){
+                updateLabel(item.nextClinicAppointmentDate, nextClinicAppointmentDate);
             }
 
             if(item.reason.equals(Reason.EXTERNAL_REFERRAL)){
@@ -190,17 +233,33 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 i++;
             }
             i = 0;
-            for(FollowUp m : FollowUp.values()){
-                if(item.followUp != null && item.followUp.equals(followUp.getItemAtPosition(i))){
-                    followUp.setSelection(i, true);
+            for(YesNo m : YesNo.values()){
+                if(item.attendedClinicAppointment != null && item.attendedClinicAppointment.equals(attendedClinicAppointment.getItemAtPosition(i))){
+                    attendedClinicAppointment.setSelection(i, true);
                     break;
                 }
                 i++;
             }
             i = 0;
-            for(YesNo m : YesNo.values()){
-                if(item.attendedClinicAppointment != null && item.attendedClinicAppointment.equals(attendedClinicAppointment.getItemAtPosition(i))){
-                    attendedClinicAppointment.setSelection(i, true);
+            for(VisitOutcome m : VisitOutcome.values()){
+                if(item.visitOutcome != null && item.visitOutcome.equals(visitOutcome.getItemAtPosition(i))){
+                    visitOutcome.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(ContactPhoneOption m : ContactPhoneOption.values()){
+                if(item.contactPhoneOption != null && item.contactPhoneOption.equals(contactPhoneOption.getItemAtPosition(i))){
+                    contactPhoneOption.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(DifferentiatedService m : DifferentiatedService.values()){
+                if(item.differentiatedService != null && item.differentiatedService.equals(differentiatedService.getItemAtPosition(i))){
+                    differentiatedService.setSelection(i, true);
                     break;
                 }
                 i++;
@@ -211,8 +270,12 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             subjective.setText(holder.subjective);
             objective.setText(holder.objective);
             plan.setText(holder.plan);
+            numberOfSms.setText(holder.numberOfSms != null ? String.valueOf(holder.numberOfSms) : "");
             if(holder.lastClinicAppointmentDate != null){
                 updateLabel(holder.lastClinicAppointmentDate, lastClinicAppointmentDate);
+            }
+            if(holder.nextClinicAppointmentDate != null){
+                updateLabel(holder.nextClinicAppointmentDate, nextClinicAppointmentDate);
             }
             if(holder.reason.equals(Reason.EXTERNAL_REFERRAL)){
                 externalReferral.setVisibility(View.VISIBLE);
@@ -267,17 +330,33 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                 i++;
             }
             i = 0;
-            for(FollowUp m : FollowUp.values()){
-                if(holder.followUp != null && holder.followUp.equals(followUp.getItemAtPosition(i))){
-                    followUp.setSelection(i, true);
+            for(YesNo m : YesNo.values()){
+                if(holder.attendedClinicAppointment != null && holder.attendedClinicAppointment.equals(attendedClinicAppointment.getItemAtPosition(i))){
+                    attendedClinicAppointment.setSelection(i, true);
                     break;
                 }
                 i++;
             }
             i = 0;
-            for(YesNo m : YesNo.values()){
-                if(holder.attendedClinicAppointment != null && holder.attendedClinicAppointment.equals(attendedClinicAppointment.getItemAtPosition(i))){
-                    attendedClinicAppointment.setSelection(i, true);
+            for(VisitOutcome m : VisitOutcome.values()){
+                if(holder.visitOutcome != null && holder.visitOutcome.equals(visitOutcome.getItemAtPosition(i))){
+                    visitOutcome.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(ContactPhoneOption m : ContactPhoneOption.values()){
+                if(holder.contactPhoneOption != null && holder.contactPhoneOption.equals(contactPhoneOption.getItemAtPosition(i))){
+                    contactPhoneOption.setSelection(i, true);
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            for(DifferentiatedService m : DifferentiatedService.values()){
+                if(holder.differentiatedService != null && holder.differentiatedService.equals(differentiatedService.getItemAtPosition(i))){
+                    differentiatedService.setSelection(i, true);
                     break;
                 }
                 i++;
@@ -288,13 +367,14 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
             clinicalAssessmentId = (ArrayList<String>) holder.clinicalAssessmentId;
             nonClinicalAssessmentId = (ArrayList<String>) holder.nonClinicalAssessmentId;
             serviceOfferedId = (ArrayList<String>) holder.serviceOfferedId;
+            labTaskId = (ArrayList<String>) holder.labTaskId;
             actionTakenId = holder.actionTakenId;
+            referredPersonId = holder.referredPersonId;
             setSupportActionBar(createToolBar("Add Contact - Step 1"));
         }else{
             holder = new Contact();
             if(Contact.findPatientLastContact(Patient.getById(id)) != null) {
-                updateLabel(Contact.findPatientLastContact(Patient.getById(id)).contactDate, lastClinicAppointmentDate);
-                lastClinicAppointmentDate.setEnabled(false);
+                updateLabel(Contact.findPatientLastContact(Patient.getById(id)).nextClinicAppointmentDate, lastClinicAppointmentDate);
             }
             setSupportActionBar(createToolBar("Add Contact - Step 1"));
         }
@@ -339,10 +419,13 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         if(view.getId() == contactDate.getId()){
-            dialog.show();
+            showDatePickerDialog(contactDate);
         }
         if(view.getId() == lastClinicAppointmentDate.getId()){
-            dialog1.show();
+            showDatePickerDialog(lastClinicAppointmentDate);
+        }
+        if(view.getId() == nextClinicAppointmentDate.getId()){
+            showDatePickerDialog(nextClinicAppointmentDate);
         }
         if(view.getId() == save.getId()){
             if(validateLocal()){
@@ -360,21 +443,29 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
                     holder.internalReferralId = ((InternalReferral) internalReferral.getSelectedItem()).id;
                 }
                 holder.reason = (Reason) reason.getSelectedItem();
-                holder.followUp = (FollowUp) followUp.getSelectedItem();
                 holder.attendedClinicAppointment = (YesNo) attendedClinicAppointment.getSelectedItem();
                 if( ! lastClinicAppointmentDate.getText().toString().isEmpty()){
                     holder.lastClinicAppointmentDate = DateUtil.getDateFromString(lastClinicAppointmentDate.getText().toString());
                 }
+                if( ! nextClinicAppointmentDate.getText().toString().isEmpty()){
+                    holder.nextClinicAppointmentDate = DateUtil.getDateFromString(nextClinicAppointmentDate.getText().toString());
+                }
                 holder.actionTakenId = actionTakenId;
+                holder.referredPersonId = referredPersonId;
                 holder.enhancedId = enhancedId;
                 holder.stableId = stableId;
                 holder.clinicalAssessmentId = clinicalAssessmentId;
                 holder.nonClinicalAssessmentId = nonClinicalAssessmentId;
                 holder.serviceOfferedId = serviceOfferedId;
+                holder.labTaskId = labTaskId;
                 holder.careLevel = careLevel;
                 holder.subjective = subjective.getText().toString();
                 holder.objective = objective.getText().toString();
                 holder.plan = plan.getText().toString();
+                holder.visitOutcome = (VisitOutcome) visitOutcome.getSelectedItem();
+                holder.contactPhoneOption = (ContactPhoneOption) contactPhoneOption.getSelectedItem();
+                holder.numberOfSms = AppUtil.parseInt(numberOfSms.getText().toString());
+                holder.differentiatedService = (DifferentiatedService) differentiatedService.getSelectedItem();
                 intent.putExtra("contact", holder);
                 startActivity(intent);
                 finish();
@@ -386,13 +477,13 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
     public boolean validateLocal(){
         boolean isValid = true;
         String date = contactDate.getText().toString();
-        Date dateofContact = null;
+        Date dateOfContact = null;
         if(date.isEmpty()) {
             contactDate.setError(getString(R.string.required_field_error));
             isValid = false;
         }else{
             contactDate.setError(null);
-            dateofContact = DateUtil.getDateFromString(date);
+            dateOfContact = DateUtil.getDateFromString(date);
         }
         Date today = new Date();
 
@@ -400,10 +491,10 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
         if( ! checkDateFormat(date)){
             contactDate.setError(getResources().getString(R.string.date_format_error));
             isValid = false;
-        }else if(checkDateFormat(date) && dateofContact.after(today)){
+        }else if(checkDateFormat(date) && dateOfContact.after(today)){
                 contactDate.setError(getResources().getString(R.string.date_aftertoday));
                 isValid = false;
-        }else if(checkDateFormat(date) && dateofContact.before(dateOfBirth)){
+        }else if(checkDateFormat(date) && dateOfContact.before(dateOfBirth)){
                 contactDate.setError(getResources().getString(R.string.date_before_birth));
                 isValid = false;
         }else{
@@ -413,11 +504,13 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
 
         date = lastClinicAppointmentDate.getText().toString();
         Date appointmentDate = null;
-        if( ! date.isEmpty()){
+        if(!date.isEmpty()) {
             appointmentDate = DateUtil.getDateFromString(date);
         }
-
-        if( ! date.isEmpty() && ! checkDateFormat(date)){
+        if(date.isEmpty()) {
+            lastClinicAppointmentDate.setError(getString(R.string.required_field_error));
+            isValid = false;
+        }else if( ! date.isEmpty() && ! checkDateFormat(date)){
             lastClinicAppointmentDate.setError(getResources().getString(R.string.date_format_error));
             isValid = false;
         }else if(checkDateFormat(date) && appointmentDate.after(today)){
@@ -429,7 +522,38 @@ public class PatientContactActivity extends BaseActivity implements View.OnClick
 
         }else{
         lastClinicAppointmentDate.setError(null);
-     }
+       }
+        date = nextClinicAppointmentDate.getText().toString();
+        appointmentDate = null;
+        if(!date.isEmpty()) {
+            appointmentDate = DateUtil.getDateFromString(date);
+        }
+        if(date.isEmpty()) {
+            nextClinicAppointmentDate.setError(getString(R.string.required_field_error));
+            isValid = false;
+        }else if( ! date.isEmpty() && ! checkDateFormat(date)){
+            nextClinicAppointmentDate.setError(getResources().getString(R.string.date_format_error));
+            isValid = false;
+        }else if(checkDateFormat(date) && appointmentDate.before(dateOfBirth)){
+            nextClinicAppointmentDate.setError(getResources().getString(R.string.date_before_birth));
+            isValid = false;
+
+        }else{
+            nextClinicAppointmentDate.setError(null);
+        }
         return isValid;
+    }
+
+    private void showDatePickerDialog(final EditText field) {
+        dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                updateLabel(newDate.getTime(), field);
+            }
+        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        );
+        dialog.show();
     }
 }

@@ -92,7 +92,6 @@ public class Province extends Model implements Serializable{
                            Province checkDuplicate = Province.getItem(province.id);
                            if(checkDuplicate == null){
                                province.save();
-                               Log.d("Created province", province.name);
                            }
                         }
                         District.fetchRemote(context, userName, password);

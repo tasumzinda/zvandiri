@@ -1,18 +1,30 @@
 package zw.org.zvandiri.business.domain;
 
+import android.content.Context;
+import android.util.Base64;
+import android.util.Log;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.gson.annotations.Expose;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import zw.org.zvandiri.business.domain.util.Gender;
+import zw.org.zvandiri.business.domain.util.UserLevel;
 import zw.org.zvandiri.business.domain.util.UserType;
+import zw.org.zvandiri.business.util.AppUtil;
+import zw.org.zvandiri.business.util.DateUtil;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Tasunungurwa Muzinda on 12/10/2016.
@@ -21,36 +33,8 @@ import java.util.List;
 public class User extends Model {
 
     @Expose
-    @Column(name = "uuid")
-    public String uuid;
-
-    @Expose
-    @Column(name = "created_by")
-    public User createdBy;
-
-    @Expose
-    @Column(name = "modified_by")
-    public User modifiedBy;
-
-    @Expose
-    @Column(name = "date_created")
-    public Date dateCreated;
-
-    @Expose
-    @Column(name = "date_modified")
-    public Date dateModified;
-
-    @Expose
     @Column(name = "version")
     public Long version;
-
-    @Expose
-    @Column(name = "active")
-    public Boolean active = Boolean.TRUE;
-
-    @Expose
-    @Column(name = "deleted")
-    public Boolean deleted = Boolean.FALSE;
 
     @Expose
     @Column(name = "id")
@@ -69,15 +53,18 @@ public class User extends Model {
     public String userName;
 
     @Expose
-    @Column(name = "password")
-    public String password;
+    @Column
+    public UserLevel userLevel;
 
     @Expose
-    @Column(name = "gender")
-    public Gender gender;
+    @Column(name = "user_level")
+    public Integer userLevelId;
     @Expose
-    @Column(name = "user_type")
-    public UserType userType;
+    @Column
+    public Province province;
+    @Expose
+    @Column
+    public District district;
 
     public User() {
         super();
@@ -107,6 +94,46 @@ public class User extends Model {
                 .execute();
     }
 
+    public static List<User> getUsers(Province province, District district, UserLevel userLevel) {
+        List<User> users = new ArrayList<>();
+        if(district != null) {
+            users.addAll(getUserByUserLevelAndDistrict(userLevel, district));
+        }else if(province != null) {
+            users.addAll(getUserByUserLevelAndProvince(userLevel, province));
+        }else if(userLevel != null) {
+            users.addAll(getUserByUserLevel(userLevel));
+        }else {
+            users.addAll(getAll());
+        }
+        return users;
+    }
+
+    private static List<User> getUserByUserLevel(UserLevel userLevel) {
+        return new Select()
+                .from(User.class)
+                .where("user_level = ?", userLevel.getCode())
+                .orderBy("last_name ASC")
+                .execute();
+    }
+
+    private static List<User> getUserByUserLevelAndProvince(UserLevel userLevel, Province province) {
+        return new Select()
+                .from(User.class)
+                .where("user_level = ?", userLevel.getCode())
+                .and("province = ?", province.getId())
+                .orderBy("last_name ASC")
+                .execute();
+    }
+
+    private static List<User> getUserByUserLevelAndDistrict(UserLevel userLevel, District district) {
+        return new Select()
+                .from(User.class)
+                .where("user_level = ?", userLevel.getCode())
+                .and("district = ?", district.getId())
+                .orderBy("last_name ASC")
+                .execute();
+    }
+
     public static void deleteAll() {
         new Delete().from(User.class).execute();
     }
@@ -115,20 +142,74 @@ public class User extends Model {
         new Delete().from(User.class).where("id = ?", id).executeSingle();
     }
 
-    public static User getFromServer(JSONObject jsonObject) {
-        User user = new User();
-        try {
-            user.active = jsonObject.getBoolean("active");
-            user.createdBy = getItem(jsonObject.getString("id"));
-            //user.dateCreated = jsonObject.
-        } catch (JSONException exc) {
+    public static void fetchRemote(final Context context, final String userName, final String password) {
+        String URL = AppUtil.getBaseUrl(context) + "/static/user";
+        JsonArrayRequest stringRequest = new JsonArrayRequest(URL,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for(int i = 0; i < response.length(); i++){
+                            try{
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                User user = new User();
+                                user.id = jsonObject.getString("id");
+                                user.firstName = jsonObject.getString("firstName");
+                                user.lastName = jsonObject.getString("lastName");
+                                user.userName = jsonObject.getString("userName");
+                                user.version = jsonObject.getLong("version");
+                                if(!jsonObject.isNull("province")) {
+                                    JSONObject province = jsonObject.optJSONObject("province");
+                                    user.province = Province.getItem(province.getString("id"));
+                                }
+                                if(!jsonObject.isNull("district")) {
+                                    JSONObject district = jsonObject.optJSONObject("district");
+                                    user.district = District.getItem(district.getString("id"));
+                                }
+                                if(!jsonObject.isNull("userLevel")) {
+                                    user.userLevel = UserLevel.valueOf(jsonObject.getString("userLevel"));
+                                    user.userLevelId = user.userLevel.getCode();
+                                }
+                                User checkDuplicate = user.getItem(jsonObject.getString("id"));
+                                if(checkDuplicate == null){
+                                    user.save();
+                                }
 
-        }
-        return user;
+                            }catch (JSONException ex){
+                                Log.d("user", ex.getMessage());
+                            }
+
+                        }
+                        Patient.fetchRemote(context, userName, password);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("user", error.toString());
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put(
+                        "Authorization",
+                        String.format("Basic %s", Base64.encodeToString(
+                                String.format("%s:%s", userName, password).getBytes(), Base64.DEFAULT)));
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                return params;
+            }
+
+            public Priority getPriority(){
+                return Priority.NORMAL;
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000, 3, 2.0F));
+        AppUtil.getInstance(context).addToRequestQueue(stringRequest);
     }
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return lastName + " " + firstName;
     }
 }

@@ -11,7 +11,6 @@
 
     <application
             android:name=".business.util.DbUtil"
-            android:allowBackup="true"
             android:hardwareAccelerated="true"
             android:icon="@mipmap/applogo"
             android:label="@string/app_name"
@@ -23,7 +22,7 @@
                 android:value="1"/>
         <meta-data
                 android:name="AA_DB_NAME"
-                android:value="never.db"/>
+                android:value="zvandiri.db"/>
 
         <activity
                 android:name=".activity.LauncherActivity"
@@ -177,26 +176,6 @@
                 android:label="@string/title_activity_patient_contact"
                 android:theme="@style/MyAppTheme">
         </activity>
-        <activity
-                android:name=".activity.Cd4CountActivity"
-                android:label="@string/title_activity_cd4_count"
-                android:theme="@style/MyAppTheme">
-        </activity>
-        <activity
-                android:name=".activity.Cd4CountListActivity"
-                android:label="@string/title_activity_cd4_count_list"
-                android:theme="@style/MyAppTheme">
-        </activity>
-        <activity
-                android:name=".activity.ViralLoadActivity"
-                android:label="@string/title_activity_viral_load"
-                android:theme="@style/MyAppTheme">
-        </activity>
-        <activity
-                android:name=".activity.ViralLoadListActivity"
-                android:label="@string/title_activity_viral_load_list"
-                android:theme="@style/MyAppTheme">
-        </activity>
         <!--
         <activity
             android:name=".activity.ChangePatientStatusActivity"
@@ -232,11 +211,6 @@
         <activity
                 android:name=".activity.PatientHistoryDashboard"
                 android:label="@string/title_activity_patient_history_dashboard"
-                android:theme="@style/MyAppTheme">
-        </activity>
-        <activity
-                android:name=".activity.LabResultsDashBoard"
-                android:label="@string/title_activity_lab_results_dash_board"
                 android:theme="@style/MyAppTheme">
         </activity>
         <activity
@@ -333,6 +307,8 @@
         <activity android:name=".activity.MortalityActivity"/>
         <activity android:name=".activity.TbIptListActivity"/>
         <activity android:name=".activity.TbIptActivity"/>
+        <activity android:name=".activity.PatientDisabilityListActivity"/>
+        <activity android:name=".activity.PatientDisabilityActivity"/>
     </application>
 
 </manifest>

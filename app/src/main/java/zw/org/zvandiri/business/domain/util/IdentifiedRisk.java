@@ -7,7 +7,7 @@ import zw.org.zvandiri.business.util.StringUtils;
  */
 public enum IdentifiedRisk {
 
-    DEPRESSION(1), POST_TRAUMA(2), SUICIDE(3), PSYCHOSIS(4);
+    DEPRESSION(1), ANXIETY(2), POST_TRAUMATIC_STRESS(3), SUBSTANCE_ABUSE(4), SUICIDE(5), PSYCHOSIS(6);
 
     private final Integer code;
 
@@ -30,5 +30,10 @@ public enum IdentifiedRisk {
 
     public String getName(){
         return StringUtils.toCamelCase3(super.name());
+    }
+
+    @Override
+    public String toString() {
+        return super.name().replace("_", " ");
     }
 }

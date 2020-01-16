@@ -104,7 +104,6 @@ public class ChronicInfection extends Model {
                         for(ChronicInfection chronicInfection : chronicInfectionList){
                             ChronicInfection checkDuplicate = ChronicInfection.getItem(chronicInfection.id);
                             if(checkDuplicate == null){
-                                Log.d("Save chronic infection", chronicInfection.name);
                                 chronicInfection.save();
                             }
 

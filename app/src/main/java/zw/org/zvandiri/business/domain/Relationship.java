@@ -98,7 +98,6 @@ public class Relationship extends Model implements Serializable{
                         for (Relationship relationship: relationshipList) {
                             Relationship checkDuplicate = Relationship.getItem(relationship.id);
                             if(checkDuplicate == null){
-                                Log.d("Getting  relationship", relationship.name);
                                 relationship.save();
                             }
 

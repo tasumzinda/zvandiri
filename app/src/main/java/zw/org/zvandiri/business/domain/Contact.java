@@ -116,9 +116,11 @@ public class Contact extends Model implements Serializable{
     @Expose
     @Column(name = "parent")
     public Contact parent;
-    @Expose
+    //@Expose
     @Column(name = "referred_person")
     public User referredPerson;
+    @Expose
+    public String referredPersonId;
     @Column(name = "pushed")
     public int pushed = 0;
     @Column(name = "is_new")
@@ -129,7 +131,9 @@ public class Contact extends Model implements Serializable{
     @Expose
     @Column(name = "attendedClinicAppointment")
     public YesNo attendedClinicAppointment;
-
+    @Expose
+    @Column
+    public Date nextClinicAppointmentDate;
 
     @Expose
     public List<Assessment> clinicalAssessments;
@@ -147,9 +151,18 @@ public class Contact extends Model implements Serializable{
     public List<ServiceOffered> serviceOffereds;
     public List<String> serviceOfferedId;
     @Expose
+    public List<LabTask> labTasks;
+    public List<String> labTaskId;
+    @Expose
     @Column
     public zw.org.zvandiri.business.domain.ActionTaken actionTaken;
     public String actionTakenId;
+    @Expose
+    @Column
+    public VisitOutcome visitOutcome;
+    @Expose
+    @Column
+    public DifferentiatedService differentiatedService;
 
     public Contact() {
         super();

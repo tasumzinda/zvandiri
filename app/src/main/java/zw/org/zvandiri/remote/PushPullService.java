@@ -4,15 +4,18 @@ import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import zw.org.zvandiri.business.domain.*;
+import zw.org.zvandiri.business.domain.Referral;
+import zw.org.zvandiri.business.domain.util.*;
 import zw.org.zvandiri.business.util.AppUtil;
 import zw.org.zvandiri.business.util.DateUtil;
+import zw.org.zvandiri.business.util.UUIDGen;
+import zw.org.zvandiri.toolbox.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,7 +83,6 @@ public class PushPullService extends IntentService {
                 try{
                     JSONObject object = new JSONObject(res);
                     code = object.getString("statusCode");
-                    Log.d("Response", object.toString());
                 }catch (JSONException ex){
                     ex.printStackTrace();
                     result = Activity.RESULT_CANCELED;
@@ -106,6 +108,10 @@ public class PushPullService extends IntentService {
                         if(c != null)
                             c.delete();
                     }
+                    for(ContactLabTaskContact c: ContactLabTaskContact.findByContact(item)){
+                        if(c != null)
+                            c.delete();
+                    }
                     for(Contact c : Contact.findByPatientAndPushed(item.patient)){
                         c.delete();
                     }
@@ -126,13 +132,12 @@ public class PushPullService extends IntentService {
                 try{
                     JSONObject object = new JSONObject(res);
                     code = object.getString("statusCode");
-                    Log.d("Response", object.toString());
                 }catch (JSONException ex){
                     ex.printStackTrace();
                     result = Activity.RESULT_CANCELED;
                 }
                 if(code.equals("OK")){
-                    for(PatientDisabilityCategoryContract c : PatientDisabilityCategoryContract.findByPatient(item)){
+                    for(PatientDisability c : PatientDisability.findByPatient(item)){
                         if(c != null)
                             c.delete();
                     }
@@ -153,7 +158,77 @@ public class PushPullService extends IntentService {
                 e.printStackTrace();
                 result = Activity.RESULT_CANCELED;
             }
-            Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
+            try{
+                for(InvestigationTest testing : InvestigationTest.getAll()){
+                    String testingOutcome = run(AppUtil.getPushInvestigationTestUrl(context), testing);
+                    String code = "";
+                    JSONObject jsonObject = new JSONObject(testingOutcome);
+                    code = jsonObject.getString("statusCode");
+                    if(code.equals("OK")){
+                        testing.delete();
+                    }
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+                result = Activity.RESULT_CANCELED;
+            }
+            try{
+                for(TbIpt testing : getTbs()){
+                    String testingOutcome = run(AppUtil.getPushTbIptUrl(context), testing);
+                    String code = "";
+                    JSONObject jsonObject = new JSONObject(testingOutcome);
+                    code = jsonObject.getString("statusCode");
+                    if(code.equals("OK")){
+                        for(TbIptTbSymptomContract contract : TbIptTbSymptomContract.findByTbIpt(testing)) {
+                            if(contract != null)
+                                contract.delete();
+                        }
+                        testing.delete();
+                    }
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+                result = Activity.RESULT_CANCELED;
+            }
+            try{
+                for(MentalHealthScreening testing : getMentalHealthScreenings()){
+                    String testingOutcome = run(AppUtil.getPushMentalHealthScreeningUrl(context), testing);
+                    String code = "";
+                    JSONObject jsonObject = new JSONObject(testingOutcome);
+                    code = jsonObject.getString("statusCode");
+                    if(code.equals("OK")){
+                        for(MentalHealthScreeningInterventionContract contract : MentalHealthScreeningInterventionContract.findByMentalHealthScreening(testing)) {
+                            if(contract != null) {
+                                contract.delete();
+                            }
+                        }
+                        for(MentalHealthScreeningReferralContract contract : MentalHealthScreeningReferralContract.findByMentalHealthScreening(testing)) {
+                            if(contract != null) {
+                                contract.delete();
+                            }
+                        }
+                        for(MentalHealthScreeningRiskContract contract : MentalHealthScreeningRiskContract.findByMentalHealthScreening(testing)) {
+                            if(contract != null) {
+                                contract.delete();
+                            }
+                        }
+                        for(MentalHealthScreeningSupportContract contract : MentalHealthScreeningSupportContract.findByMentalHealthScreening(testing)) {
+                            if(contract != null) {
+                                contract.delete();
+                            }
+                        }
+                        for(MentalHealthScreeningDiagnosisContract contract : MentalHealthScreeningDiagnosisContract.findByMentalHealthScreening(testing)) {
+                            if(contract != null) {
+                                contract.delete();
+                            }
+                        }
+                        testing.delete();
+                    }
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+                result = Activity.RESULT_CANCELED;
+            }
         }catch (Exception e) {
             e.printStackTrace();
             result = Activity.RESULT_CANCELED;
@@ -234,10 +309,37 @@ public class PushPullService extends IntentService {
                     item.save();
                 }
             }
+            for(Patient patient : Patient.getAll()) {
+                List<PatientDisability> disabilities = PatientDisability.findByPatient(patient);
+                if( ! disabilities.isEmpty()) {
+                    List<PatientDisability> patientDisabilities = new ArrayList<>();
+                    for(PatientDisability disability : disabilities) {
+                        disability.id = UUIDGen.generateUUID();
+                        patientDisabilities.add(disability);
+                    }
+                    patient.disabilityCategorys = patientDisabilities;
+                    String res = run(AppUtil.getPushDisabilityUrl(context), patient);
+                    String code = "";
+                    try{
+                        JSONObject object = new JSONObject(res);
+                        code = object.getString("statusCode");
+                    }catch (JSONException ex){
+                        ex.printStackTrace();
+                        result = Activity.RESULT_CANCELED;
+                    }
+                    if(code.equals("OK")){
+                        for(PatientDisability c : PatientDisability.findByPatient(patient)){
+                            if(c != null)
+                                c.delete();
+                        }
+                    }
+                }
+            }
         }catch (Exception e) {
             e.printStackTrace();
             result = Activity.RESULT_CANCELED;
         }
+        Patient.fetchRemote(context, AppUtil.getUsername(context), AppUtil.getPassword(context));
         publishResults(result);
     }
 
@@ -287,6 +389,37 @@ public class PushPullService extends IntentService {
         return AppUtil.getResponeBody(client, httpUrl, json);
     }
 
+    private String run(HttpUrl httpUrl, TbIpt form) {
+
+        OkHttpClient client = new OkHttpClient();
+        client = AppUtil.connectionSettings(client);
+        client = AppUtil.getUnsafeOkHttpClient(client);
+        client = AppUtil.createAuthenticationData(client, context);
+        String json = AppUtil.createGson().toJson(form);
+        return AppUtil.getResponeBody(client, httpUrl, json);
+    }
+
+    private String run(HttpUrl httpUrl, InvestigationTest form) {
+
+        OkHttpClient client = new OkHttpClient();
+        client = AppUtil.connectionSettings(client);
+        client = AppUtil.getUnsafeOkHttpClient(client);
+        client = AppUtil.createAuthenticationData(client, context);
+        String json = AppUtil.createGson().toJson(form);
+        return AppUtil.getResponeBody(client, httpUrl, json);
+    }
+
+    private String run(HttpUrl httpUrl, MentalHealthScreening form) {
+
+        OkHttpClient client = new OkHttpClient();
+        client = AppUtil.connectionSettings(client);
+        client = AppUtil.getUnsafeOkHttpClient(client);
+        client = AppUtil.createAuthenticationData(client, context);
+        form.patientId = form.patient.id;
+        String json = AppUtil.createGson().toJson(form);
+        return AppUtil.getResponeBody(client, httpUrl, json);
+    }
+
     private String run(HttpUrl httpUrl, Patient form) {
 
         OkHttpClient client = new OkHttpClient();
@@ -307,275 +440,6 @@ public class PushPullService extends IntentService {
         return AppUtil.getResponeBody(client, httpUrl, json);
     }
 
-    public Contact save(String data, Contact item) {
-        try {
-            /*Long id = Long.valueOf(data);
-            if( id == 1)
-                item.delete();*/
-            return item;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private String loadInternalRefferals(String data) {
-        int i = 0;
-        String msg = "InternalReferral Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                InternalReferral checkDuplicate = InternalReferral.getItem(staticData.id);
-                if (checkDuplicate == null) {
-                    InternalReferral item = new InternalReferral();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "InternalReferral Sync Failed";
-        }
-        return msg;
-    }
-
-    private String loadExternalRefferals(String data) {
-        int i = 0;
-        String msg = "ExternalRefferal Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                ExternalReferral checkDuplicate = ExternalReferral.getItem(staticData.id);
-                if (checkDuplicate == null) {
-                    ExternalReferral item = new ExternalReferral();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "ExternalReferral Sync Failed";
-        }
-        return msg;
-    }
-
-    private String loadAssessment(String data) {
-        int i = 0;
-        String msg = "Assessment Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                Assessment checkDuplicate = Assessment.getItem(staticData.id);
-                if (checkDuplicate == null) {
-                    Assessment item = new Assessment();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "Assessment Sync Failed";
-        }
-        return msg;
-    }
-
-    private String loadIntensive(String data) {
-        int i = 0;
-        String msg = "Intensive Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                Intensive checkDuplicate = Intensive.getItem(staticData.id);
-                if (checkDuplicate == null) {
-                    Intensive item = new Intensive();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "Intensive Sync Failed";
-        }
-        return msg;
-    }
-
-    private String loadLocation(String data) {
-        int i = 0;
-        String msg = "Location Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                Location checkDuplicate = Location.getItem(staticData.id);
-                if (checkDuplicate == null) {
-                    Location item = new Location();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "Location Sync Failed";
-        }
-        return msg;
-    }
-
-    private String loadPosition(String data) {
-        int i = 0;
-        String msg = "Position Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                Position checkDuplicate = Position.getItem(staticData.id);
-                if (checkDuplicate == null) {
-                    Position item = new Position();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "Position Sync Failed";
-        }
-        return msg;
-    }
-
-    private String loadEnhanced(String data) {
-        int i = 0;
-        String msg = "Enhanced Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                Enhanced checkDuplicate = Enhanced.getItem(staticData.id);
-                if (checkDuplicate == null) {
-                    Enhanced item = new Enhanced();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "Enhanced Sync Failed";
-        }
-        return msg;
-    }
-
-    private String loadStable(String data) {
-        int i = 0;
-        String msg = "Stable Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                Stable checkDuplicate = Stable.getItem(staticData.id);
-                if (checkDuplicate == null) {
-                    Stable item = new Stable();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "Stable Sync Failed";
-        }
-        return msg;
-    }
-
-    private String loadPatient(String data) {
-        int i = 0;
-        String msg = "Patient Synced";
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            List<StaticData> list = StaticData.fromJson(jsonArray);
-            for (StaticData staticData : list) {
-                Patient checkDuplicate = Patient.getById(staticData.id);
-                if (checkDuplicate == null) {
-                    Patient item = new Patient();
-                    item.id = staticData.id;
-                    item.name = staticData.name;
-                    item.save();
-                } else {
-                    checkDuplicate.name = staticData.name;
-                    checkDuplicate.save();
-                }
-                i++;
-            }
-            msg = msg.concat(" - " + i);
-
-        } catch (Exception e) {
-            msg = "Patient Sync Failed";
-        }
-        return msg;
-    }
-
-    public List<HttpUrl> getHttpUrls() {
-        List<HttpUrl> static_lists = new ArrayList<>();
-        static_lists.add(AppUtil.getInternalRefferalUrl(context));
-        static_lists.add(AppUtil.getExternalRefferalUrl(context));
-        static_lists.add(AppUtil.getAssessmentUrl(context));
-        static_lists.add(AppUtil.getIntensiveUrl(context));
-        static_lists.add(AppUtil.getLocationUrl(context));
-        static_lists.add(AppUtil.getPositionUrl(context));
-        static_lists.add(AppUtil.getEnhancedUrl(context));
-        static_lists.add(AppUtil.getStableUrl(context));
-        static_lists.add(AppUtil.getPatientUrl(context));
-        return static_lists;
-    }
-
     public List<Contact> getAllContacts(){
         final List<Contact> contacts = new ArrayList<>();
         for(Contact c : Contact.getAll()){
@@ -583,16 +447,53 @@ public class PushPullService extends IntentService {
             c.nonClinicalAssessments = Assessment.findNonClinicalByContact(c);
             c.stables = Stable.findByContact(c);
             c.enhanceds = Enhanced.findByContact(c);
+            c.labTasks = LabTask.findByContact(c);
             c.id = "";
+            if(c.referredPerson != null) {
+                c.referredPersonId = c.referredPerson.id;
+            }
             contacts.add(c);
         }
         return contacts;
     }
 
+    private List<MentalHealthScreening> getMentalHealthScreenings() {
+        final List<MentalHealthScreening> list = new ArrayList<>();
+        for(MentalHealthScreening screening : MentalHealthScreening.getAll()) {
+            List<IdentifiedRisk> identifiedRisks = new ArrayList<>();
+            for(MentalHealthScreeningRiskContract contract : MentalHealthScreeningRiskContract.findByMentalHealthScreening(screening)) {
+                identifiedRisks.add(contract.identifiedRisk);
+            }
+            screening.identifiedRisks = identifiedRisks;
+            List<Support> supports = new ArrayList<>();
+            for(MentalHealthScreeningSupportContract contract : MentalHealthScreeningSupportContract.findByMentalHealthScreening(screening)) {
+                supports.add(contract.support);
+            }
+            screening.supports = supports;
+            List<zw.org.zvandiri.business.domain.util.Referral> referrals = new ArrayList<>();
+            for(MentalHealthScreeningReferralContract contract : MentalHealthScreeningReferralContract.findByMentalHealthScreening(screening)) {
+                referrals.add(contract.referral);
+            }
+            screening.referrals = referrals;
+            List<Diagnosis> diagnoses = new ArrayList<>();
+            for(MentalHealthScreeningDiagnosisContract contract : MentalHealthScreeningDiagnosisContract.findByMentalHealthScreening(screening)) {
+                diagnoses.add(contract.diagnosis);
+            }
+            screening.diagnoses = diagnoses;
+            List<Intervention> interventions = new ArrayList<>();
+            for(MentalHealthScreeningInterventionContract contract : MentalHealthScreeningInterventionContract.findByMentalHealthScreening(screening)) {
+                interventions.add(contract.intervention);
+            }
+            screening.interventions = interventions;
+            list.add(screening);
+        }
+        return list;
+    }
+
     public List<Patient> getAllPatients(){
         final List<Patient> patients = new ArrayList<>();
         for(Patient c : Patient.findByPushed()){
-            c.disabilityCategorys = DisabilityCategory.findByPatient(c);
+            c.disabilityCategorys = PatientDisability.findByPatient(c);
             c.id = "";
             patients.add(c);
         }
@@ -620,6 +521,19 @@ public class PushPullService extends IntentService {
             referrals.add(c);
         }
         return referrals;
+    }
+
+    private List<TbIpt> getTbs() {
+        final List<TbIpt> list = new ArrayList<>();
+        for(TbIpt item : TbIpt.getAll()) {
+            List<TbSymptom> tbSymptoms = new ArrayList<>();
+            for(TbIptTbSymptomContract contract : TbIptTbSymptomContract.findByTbIpt(item)){
+                tbSymptoms.add(contract.tbSymptom);
+            }
+            item.tbSymptoms = tbSymptoms;
+            list.add(item);
+        }
+        return list;
     }
 
 

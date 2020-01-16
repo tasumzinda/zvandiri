@@ -105,7 +105,6 @@ public class ReasonForNotReachingOLevel extends Model implements Serializable{
                         for (ReasonForNotReachingOLevel education : educationList) {
                             ReasonForNotReachingOLevel checkDuplicate = ReasonForNotReachingOLevel.getItem(education.id);
                             if(checkDuplicate == null){
-                                Log.d("Reason", education.name);
                                 education.save();
                             }
 

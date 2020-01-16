@@ -59,10 +59,34 @@
             </LinearLayout>
             <TextView
                     style="@style/TextViewLabel"
+                    android:text="Contact WithZM"
+            />
+            <Spinner
+                    android:id="@+id/contactWithZM"
+                    style="@style/SpinnerStyle"
+                    android:prompt="@string/prompt"
+            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/zmLayout"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Date of contact with ZM"
+                />
+                <EditText
+                        android:id="@+id/dateOfContactWithZim"
+                        style="@style/TextBoxStyle"
+                />
+            </LinearLayout>
+            <TextView
+                    style="@style/TextViewLabel"
                     android:text="Brief description/ background of case"
             />
             <EditText
-                    android:id="@+id/caseBackground"
+                    android:id="@+id/descriptionOfCase"
                     style="@style/TextBoxStyle"
             />
             <TextView

@@ -1,5 +1,7 @@
 package zw.org.zvandiri.business.util;
 
+import zw.org.zvandiri.toolbox.Log;
+
 /**
  * Created by Tasu Nuzinda on 12/10/2016.
  */

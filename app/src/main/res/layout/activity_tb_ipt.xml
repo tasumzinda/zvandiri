@@ -25,14 +25,21 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Date Screened"
-            />
-            <EditText
-                    android:id="@+id/dateScreened"
-                    style="@style/TextBoxStyle"
-            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dateScreenedContainer"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Date Screened"
+                />
+                <EditText
+                        android:id="@+id/dateScreened"
+                        style="@style/TextBoxStyle"
+                />
+            </LinearLayout>
+
             <TextView
                     style="@style/TextViewLabel"
                     android:text="Presence with signs or symptoms of TB"
@@ -55,23 +62,35 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Action Taken"
-            />
-            <Spinner
-                    android:id="@+id/tbIdentificationOutcome"
-                    style="@style/SpinnerStyle"
-                    android:prompt="@string/prompt"
-            />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Date Started Treatment"
-            />
-            <EditText
-                    android:id="@+id/dateStartedTreatment"
-                    style="@style/TextBoxStyle"
-            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tbIdentificationOutcomeContainer"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Action Taken"
+                />
+                <Spinner
+                        android:id="@+id/tbIdentificationOutcome"
+                        style="@style/SpinnerStyle"
+                        android:prompt="@string/prompt"
+                />
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dateStartedTreatmentContainer"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Date Started Treatment"
+                />
+                <EditText
+                        android:id="@+id/dateStartedTreatment"
+                        style="@style/TextBoxStyle"
+                />
+            </LinearLayout>
             <TextView
                     style="@style/TextViewLabel"
                     android:text="Outcome"
@@ -99,14 +118,21 @@
                     style="@style/SpinnerStyle"
                     android:prompt="@string/prompt"
             />
-            <TextView
-                    style="@style/TextViewLabel"
-                    android:text="Date Started On IPT"
-            />
-            <EditText
-                    android:id="@+id/dateStartedIpt"
-                    style="@style/TextBoxStyle"
-            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dateStartedIptContainer"
+                    android:orientation="vertical">
+                <TextView
+                        style="@style/TextViewLabel"
+                        android:text="Date Started On IPT"
+                />
+                <EditText
+                        android:id="@+id/dateStartedIpt"
+                        style="@style/TextBoxStyle"
+                />
+            </LinearLayout>
+
             <Button
                     android:id="@+id/save"
                     style="@style/ButtonStyle"

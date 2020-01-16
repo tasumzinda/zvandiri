@@ -14,7 +14,6 @@ public class PatientActivity extends BaseActivity implements View.OnClickListene
     String id;
     String name;
     Button patientHistory;
-    Button labResults;
     Button primaryCareGiver;
     Button dependant;
     Button operations;
@@ -31,8 +30,6 @@ public class PatientActivity extends BaseActivity implements View.OnClickListene
         primaryCareGiver.setOnClickListener(this);
         patientHistory = (Button) findViewById(R.id.patient_history);
         patientHistory.setOnClickListener(this);
-        labResults = (Button) findViewById(R.id.lab_results);
-        labResults.setOnClickListener(this);
         dependant = (Button) findViewById(R.id.add_dependant);
         dependant.setOnClickListener(this);
         operations = (Button) findViewById(R.id.operations);
@@ -50,14 +47,6 @@ public class PatientActivity extends BaseActivity implements View.OnClickListene
             intent = new Intent(PatientActivity.this, PatientHistoryDashboard.class);
             intent.putExtra(AppUtil.ID, id);
             intent.putExtra(AppUtil.NAME, name);
-            startActivity(intent);
-            finish();
-        }
-
-        if(view.getId() == labResults.getId()){
-            intent = new Intent(PatientActivity.this, LabResultsDashBoard.class);
-            intent.putExtra(AppUtil.NAME, name);
-            intent.putExtra(AppUtil.ID, id);
             startActivity(intent);
             finish();
         }

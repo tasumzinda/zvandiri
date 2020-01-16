@@ -117,7 +117,6 @@ public class DisabilityCategory extends Model implements Serializable{
                         for(DisabilityCategory disabilityCategory : disabilityCategoryList){
                             DisabilityCategory checkDuplicate = DisabilityCategory.getItem(disabilityCategory.id);
                             if(checkDuplicate == null){
-                                Log.d("Saving disability", disabilityCategory.name);
                                 disabilityCategory.save();
                             }
 

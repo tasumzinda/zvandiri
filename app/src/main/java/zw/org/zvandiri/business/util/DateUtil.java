@@ -38,17 +38,17 @@ public class DateUtil {
             String newDate = formatDate(d);
             return fmt.parse(newDate);
         } catch (ParseException ex) {
-            System.out.println("Error occurred");
+            return null;
         }
-        throw new IllegalArgumentException("Un expected parameter provided :" + date);
+        //throw new IllegalArgumentException("Un expected parameter provided :" + date);
     }
     public static Date getFromString(String date) {
         try {
             return fmt.parse(date);
         } catch (ParseException ex) {
-            System.out.println("Error occurred");
+            return null;
         }
-        throw new IllegalArgumentException("Un expected parameter provided :" + date);
+        //throw new IllegalArgumentException("Un expected parameter provided :" + date);
     }
 
     public static Date getDateDiffDate(int factor) {

@@ -53,7 +53,6 @@ public class MortalityListActivity extends BaseActivity implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Mortality item = (Mortality) parent.getAdapter().getItem(position);
-        Log.d("Item", AppUtil.createGson().toJson(item));
         Intent intent = new Intent(this, MortalityActivity.class);
         intent.putExtra("itemId", item.getId());
         startActivity(intent);

@@ -22,7 +22,7 @@ public enum ContactPhoneOption {
                 return item;
             }
         }
-        throw new IllegalArgumentException("Un recognised code passed to method : " + code);
+        throw new IllegalArgumentException("Unrecognised code passed to method : " + code);
     }
 
     public String getName() {

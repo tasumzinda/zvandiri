@@ -26,14 +26,13 @@ public class PersonListActivity extends BaseActivity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generic_list_view);
-        Log.d("Persons", AppUtil.createGson().toJson(Person.getAll()));
         final ArrayList<Person> list = (ArrayList<Person>) Person.getAll();
         adapter = (new PersonAdapter(this, list));
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setEmptyView(findViewById(R.id.empty));
         listView.setAdapter(adapter);
         adapter.onDataSetChanged((ArrayList<Person>) Person.getAll());
-        setSupportActionBar(createToolBar("Person List"));
+        setSupportActionBar(createToolBar("Index List"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView.setOnItemClickListener(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -52,7 +51,7 @@ public class PersonListActivity extends BaseActivity implements AdapterView.OnIt
         Person patient = (Person) parent.getAdapter().getItem(position);
         Intent intent;
         if(patient.pushed == 0){
-            AppUtil.createShortNotification(this, "Please upload person to server before performing any operation on the person");
+            AppUtil.createShortNotification(this, "Please upload index to server before performing any operation on the index");
         }else{
             intent = new Intent(PersonListActivity.this, PersonDashboardActivity.class);
             intent.putExtra(AppUtil.ID, patient.getId());

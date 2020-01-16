@@ -3,6 +3,7 @@
         android:fillViewport="true"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_gravity="center"
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -16,240 +17,176 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-            <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="35sp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
+            <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="AfricAid Zvandiri"/>
+                    app:cardCornerRadius="@dimen/list_card_radius"
+                    app:cardElevation="@dimen/list_card_elevation"
+                    android:layout_margin="@dimen/list_card_radius"
+                    app:cardBackgroundColor="@color/colorPrimary"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-            <!--Start of Card View Dashboard-->
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:gravity="center"
-                    android:weightSum="10"
-                    android:orientation="vertical">
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_contact"
+                <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_weight="5"
-                        android:layout_height="190dp"
-                        app:cardElevation="6dp"
-                        android:layout_margin="10dp"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                    <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="@dimen/list_card_padding">
+                    <TextView
+                            android:textSize="@dimen/dashboard_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="Dashboard"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold|italic" />
+                    <android.support.v7.widget.CardView
+                            android:id="@+id/card_contact"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="@dimen/list_header_height"
+                            android:layout_margin="@dimen/list_card_radius"
+                            android:foreground="?android:attr/selectableItemBackground">
 
-                        <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/circle_background_dark"
-                                android:padding="10dp"
-                                app:srcCompat="@drawable/ic_start_visit" />
-
-                        <TextView
-                                android:textSize="30sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="Contact"
-                                android:textStyle="bold" />
-
-                        <View
+                        <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_margin="10dp"
-                                android:background="@color/greyDark"
-                                android:padding="5dp" />
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                    </LinearLayout>
+                            <TextView
+                                    android:textSize="@dimen/dashboard_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Contact"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold|italic" />
 
-                </android.support.v7.widget.CardView>
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_referral"
-                        android:layout_width="match_parent"
-                        android:layout_weight="5"
-                        android:layout_height="190dp"
-                        android:layout_margin="10dp"
-                        android:clickable="true"
-                        app:cardBackgroundColor="@color/colorBlueFade"
-                        android:foreground="?android:attr/selectableItemBackground">
+                        </LinearLayout>
 
-                    <LinearLayout
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                            android:id="@+id/card_referral"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="@dimen/list_header_height"
+                            android:layout_margin="@dimen/list_card_radius"
+                            android:foreground="?android:attr/selectableItemBackground">
 
-                        <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/circle_background_light"
-                                android:padding="10dp"
-                                app:srcCompat="@drawable/ic_scheduled_visit" />
-
-                        <TextView
-                                android:textSize="30sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="Referral"
-                                android:textStyle="bold" />
-
-                        <View
+                        <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_margin="10dp"
-                                android:background="@color/colorWhite"
-                                android:padding="5dp" />
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                    </LinearLayout>
+                            <TextView
+                                    android:textSize="@dimen/dashboard_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Referral"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold|italic" />
+                        </LinearLayout>
 
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_mental_health"
-                        android:layout_width="match_parent"
-                        android:layout_weight="5"
-                        android:layout_height="190dp"
-                        android:layout_margin="10dp"
-                        android:clickable="true"
-                        app:cardBackgroundColor="@color/colorBlueFade"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                    <LinearLayout
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                            android:id="@+id/card_mental_health"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="@dimen/list_header_height"
+                            android:layout_margin="@dimen/list_card_radius"
+                            android:foreground="?android:attr/selectableItemBackground">
 
-                        <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/circle_background_light"
-                                android:padding="10dp"
-                                app:srcCompat="@drawable/ic_scheduled_visit" />
-
-                        <TextView
-                                android:textSize="30sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="Mental Health Screening"
-                                android:textStyle="bold" />
-
-                        <View
+                        <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_margin="10dp"
-                                android:background="@color/colorWhite"
-                                android:padding="5dp" />
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                    </LinearLayout>
+                            <TextView
+                                    android:textSize="@dimen/dashboard_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Mental Health Screening"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold|italic" />
+                        </LinearLayout>
 
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_mortality"
-                        android:layout_width="match_parent"
-                        android:layout_weight="5"
-                        android:layout_height="190dp"
-                        android:layout_margin="10dp"
-                        android:clickable="true"
-                        app:cardBackgroundColor="@color/colorBlueFade"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                    <LinearLayout
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                            android:id="@+id/card_mortality"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="@dimen/list_header_height"
+                            android:layout_margin="@dimen/list_card_radius"
+                            android:foreground="?android:attr/selectableItemBackground">
 
-                        <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/circle_background_light"
-                                android:padding="10dp"
-                                app:srcCompat="@drawable/ic_scheduled_visit" />
-
-                        <TextView
-                                android:textSize="30sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="Mortality"
-                                android:textStyle="bold" />
-
-                        <View
+                        <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_margin="10dp"
-                                android:background="@color/colorWhite"
-                                android:padding="5dp" />
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                    </LinearLayout>
+                            <TextView
+                                    android:textSize="@dimen/dashboard_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Mortality"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold|italic" />
+                        </LinearLayout>
 
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                        android:id="@+id/tb_ipt"
-                        android:layout_width="match_parent"
-                        android:layout_weight="5"
-                        android:layout_height="190dp"
-                        android:layout_margin="10dp"
-                        android:clickable="true"
-                        app:cardBackgroundColor="@color/colorBlueFade"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                    <LinearLayout
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                            android:id="@+id/tb_ipt"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="@dimen/list_header_height"
+                            android:layout_margin="@dimen/list_card_radius"
+                            android:foreground="?android:attr/selectableItemBackground">
 
-                        <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/circle_background_light"
-                                android:padding="10dp"
-                                app:srcCompat="@drawable/ic_scheduled_visit" />
-
-                        <TextView
-                                android:textSize="30sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="TB/IPT"
-                                android:textStyle="bold" />
-
-                        <View
+                        <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_margin="10dp"
-                                android:background="@color/colorWhite"
-                                android:padding="5dp" />
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:textSize="@dimen/dashboard_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="TB Screening"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold|italic" />
+                        </LinearLayout>
 
-                    </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                            android:id="@+id/disability"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/list_header_height"
+                            android:layout_margin="@dimen/list_card_radius"
+                            android:foreground="?android:attr/selectableItemBackground">
 
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:textSize="@dimen/dashboard_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Patient Disability"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold|italic" />
+                        </LinearLayout>
 
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
